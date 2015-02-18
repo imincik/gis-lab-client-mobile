@@ -1,0 +1,296 @@
+@media screen and (-webkit-min-device-pixel-ratio: 1.5), screen and (-o-min-device-pixel-ratio: 15/10)
+
+{
+
+}
+
+
+.checkbox > input[type="checkbox"]:checked + .checkbox__checkmark:before {
+	background: rgba(24,103,194,0.6);
+	border: 1px solid rgba(24,103,194,0.81);
+}
+
+	.left {
+		text-align: left;
+	}
+	span.ivh-treeview-node-label.ivh-treeview-toggle {
+		font-size: 15px!important;
+		display: table-cell;
+	}
+	span.ivh-treeview-toggle {
+		display: table-cell;
+		vertical-align:middle;
+	}
+	span[ivh-treeview-checkbox="node"] {
+		display: table-cell;
+		padding: 1px 5px 1px 5px!important;
+		vertical-align:middle;
+	}
+
+    .tab {
+      line-height: 1;
+    }
+    .tab-icon {
+      font-size: 24px;
+      padding: 0;
+      margin: 0;
+      vertical-align: top;
+      line-height: 28px;
+    }
+    .tab-label {
+      line-height: 11px;
+      vertical-align: top;
+      font-size: 11px;
+    }
+
+    .profile-wrapper {
+      padding: 16px 10px 0 10px;
+    }
+
+    .profile-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      -webkit-border-radius: 100%;
+      background-color: #ccc;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      padding: 4px 0 2px 0;
+    }
+
+    .profile-email {
+      font-size: 15px;
+      opacity: 0.4;
+    }
+
+    .switch--list-item {
+      margin-right: 0px;
+    }
+
+    .settings-header {
+      font-weight: 500;
+      font-size: 14px;
+      opacity: 0.4;
+      padding: 10px 0 0px 10px;
+      margin-bottom: -4px;
+    }
+
+    .settings-list {
+      margin-top: 10px;
+    }
+
+    .item {
+      padding: 10px;
+      line-height: 1;
+    }
+    .item-thum {
+      background-color: #ccc;
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      -webkit-border-radius: 100%;
+    }
+    .item-title {
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .item-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.3;
+      margin: 4px 0 0 0;
+      padding: 0 30px 0 0;
+    }
+    .item-label {
+      font-size: 12px;
+      color: #999;
+      float: right;
+    }
+    
+    div#map {
+        height: 100%;
+        width: 100%;
+    }
+    .my-grid {
+        width: 100%;
+        height: 150px;
+    }
+
+
+.tree-node {
+	border: 1px solid #dae2ea;
+	background: #f8faff;
+	color: #7c9eb2;
+}
+.tree-node-content {
+	margin: 10px;
+}
+.tree-handle {
+	padding: 10px;
+	background: #428bca;
+	color: #FFF;
+	margin-right: 10px;
+}
+.angular-ui-tree-handle:hover {
+}
+.angular-ui-tree-placeholder {
+	background: #f0f9ff;
+	border: 2px dashed #bed2db;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.btn {
+	width: 25px;
+}
+.ivh-treeview ul, ul.ivh-treeview {
+	list-style-type: none;
+}
+ons-button {
+	width: 80px;
+	margin: 1px !important;
+}
+ul.ivh-treeview {
+	padding-left: 5px;
+}
+ul.ivh-treeview.ng-scope {
+	padding-left: 20px;
+}
+div.map-toolbar {
+	float: left;
+	width: 85px;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+div.page__content {
+	overflow: hidden; position: relative;
+}
+
+div.legend-container {
+	background-color: white;
+}
+img.legend-item {
+	display: block;
+}
+
+.ivh-treeview li {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.ivh-treeview input[type="checkbox"] {
+	width: 25px;
+	height: 25px;
+}
+
+x.ivh-treeview-twistie-leaf div {
+	margin-top: 20px;
+}
+
+.checkbox {
+	margin-top: 0px;
+	margin-bottom: 1px;
+}
+
+
+.layers-container select {
+	width: 90%;
+	height: 30px;
+	margin: 10px;
+}
+
+li.depth-2 {
+	padding-left: 15px;
+}
+li.depth-3 {
+	padding-left: 30px;
+}
+
+.point-layer-icon, .point-layer-icon-queryable, .line-layer-icon, .line-layer-icon-queryable, .polygon-layer-icon, .polygon-layer-icon-queryable, .raster-layer-icon {
+	background-image: url('../images/layer-geometry.png')!important;
+	background: no-repeat;
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+}
+.point-layer-icon {
+	background-position: 0px 0px !important;
+	background-position-x: 0px !important;
+	background-position-y: 0px !important;
+}
+.point-layer-icon-queryable {
+	background-position: 0px -18px !important;
+	background-position-x: 0px !important;
+	background-position-y: -18px !important;
+}
+.line-layer-icon {
+	background-position: 0px -36px !important;
+	background-position-x: 0px !important;
+	background-position-y: -36px !important;
+}
+.line-layer-icon-queryable {
+	background-position: 0px -54px !important;
+	background-position-x: 0px !important;
+	background-position-y: -54px !important;
+}
+.polygon-layer-icon {
+	background-position: 0px -72px !important;
+	background-position-x: 0px !important;
+	background-position-y: -72px !important;
+}
+.polygon-layer-icon-queryable {
+	background-position: 0px -90px !important;
+	background-position-x: 0px !important;
+	background-position-y: -90px !important;
+}
+.raster-layer-icon {
+	background-position: 0px -108px !important;
+	background-position-x: 0px !important;
+	background-position-y: -108px !important;
+}
+
+
+      .webgis-button {
+        position: absolute;
+        background: rgba(255,255,255,0.4);
+        border-radius: 4px;
+        padding: 2px;
+        vertical-align: middle;
+      }
+      .webgis-button.panel {
+        top: 70px;
+        left: 9px;
+      }
+      .ol-touch .webgis-button.panel {
+        top: 90px;
+      }
+      .webgis-button.menu {
+        top: 9px;
+        right: 9px;
+      }
+      .webgis-button a {
+        display: block;
+        color: white;
+        font-size: 16px;
+        font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+        font-weight: bold;
+        margin: 1px;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 2px;
+        height: 22px;
+        width: 26px;
+        background: rgba(0,60,136,0.5);
+        padding-top: 4px;
+      }
+      .ol-touch .webgis-button a {
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
+        line-height: 26px;
+      }
+      .webgis-button a:hover {
+        background: rgba(0,60,136,0.7);
+      }
