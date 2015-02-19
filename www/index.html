@@ -24,7 +24,7 @@
 
 	<script type="text/javascript" src="lib/OpenLayers-3.2.1/build/ol-debug.js"></script>
 	<script type="text/javascript" src="lib/md5.js"></script>
-	<script type="text/javascript" src="http://192.168.1.110:8877/android/map.js?PROJECT=natural-earth%2Fcentral-europe"></script>
+	<script type="text/javascript" src="http://192.168.1.110:8877/mobile/map.js"></script>
 
 	<script src="cordova.js"></script>
 	<script src="js/app.js"></script>
@@ -101,7 +101,7 @@
 			</ons-toolbar>
 			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
 				<div class="legend-container">
-					<img class="legend-item" ng-repeat="layer in flat_layers" ng-if="layer.visible" src="{{ layer.legendUrl }}" />
+					<img class="legend-item" ng-repeat="layer in flat_layers" ng-if="layer.visible" ng-src="{{ layer.legendUrl }}" />
 				</div>
 			</ons-scroller>
 		</ons-page>
