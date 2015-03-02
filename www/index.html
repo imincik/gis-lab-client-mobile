@@ -19,29 +19,59 @@
 	<script src="lib/onsen/js/onsenui.js"></script>
 	<script src="lib/ui-grid/ui-grid.js"></script>
 	<script src="lib/ivh-treeview/ivh-treeview.js"></script>
+	<script src="lib/ngStorage.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="lib/OpenLayers-3.2.1/css/ol.css"/>
 
 	<script type="text/javascript" src="lib/OpenLayers-3.2.1/build/ol-debug.js"></script>
 	<script type="text/javascript" src="lib/md5.js"></script>
-	<script type="text/javascript" src="http://192.168.1.110:8877/mobile/map.js"></script>
 
-	<script src="cordova.js"></script>
-	<script src="js/app.js"></script>
+	<script type="text/javascript">
+	// First, checks if it isn't implemented yet.
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
+</script>
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/map.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
 </head>
 
 <body ng-controller="AppController">
-	<ons-sliding-menu var="app.menu2" main-page="map_container.html" menu-page="menu.html" max-slide-distance="260px" type="overlay" side="right" swipeable="false">
-	</ons-sliding-menu>
+	<ons-navigator var="app.navigator" page="main_page.html">
+	</ons-navigator>
+
+	<ons-template id="main_page.html">
+		<ons-page>
+		<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;">
+			<ons-sliding-menu var="app.menu2" main-page="map_container.html" menu-page="menu.html" max-slide-distance="260px" type="overlay" side="right" swipeable="false">
+			</ons-sliding-menu>
+		</div>
+		</ons-page>
+	</ons-template>
 
 	<ons-template id="map_container.html">
-		<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="panel.html" max-slide-distance="260px" side="left" swipeable="false" type="reveal">
+		<ons-page>
+		<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;">
+		<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="panel.html" max-slide-distance="260px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
 		</ons-sliding-menu>
+		</div>
+		</ons-page>
 	</ons-template>
 
 	<ons-template id="map.html">
-		<ons-page id="map-page">
-			<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;" id="map" ng-controller="MapController"></div>
+		<ons-page id="map-page" ng-controller="MapController">
+			<div ng-hide="mapInitialized"><ons-button ng-click="app.menu2.toggleMenu();">menu</ons-button></div>
+			<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;" id="map"></div>
 <!--			<div id="map" ng-controller="MapController"></div>-->
 		</ons-page>
 	</ons-template>
@@ -83,7 +113,7 @@
 			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
 				<div class="baselayer-container">
 					<ul class="list">
-						<li class="{{ layer.isGroup? 'list__header' : 'list__item' }} list__item--chevron depth-{{ layer.depth }}" ng-click="layer.isGroup || (setBaseLayer(layer) || app.navi.popPage('base_layer.html'))" ng-repeat="layer in baseLayers">
+						<li class="{{ layer.isGroup? 'list__header' : 'list__item' }} list__item--chevron depth-{{ layer.depth }}" ng-click="layer.isGroup || (setBaseLayer(layer) || app.navi.popPage('base_layer.html'))" ng-repeat="layer in baseLayersList">
 							{{ layer.title }}
 						</li>
 					</ul>
@@ -101,7 +131,7 @@
 			</ons-toolbar>
 			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
 				<div class="legend-container">
-					<img class="legend-item" ng-repeat="layer in flat_layers" ng-if="layer.visible" ng-src="{{ layer.legendUrl }}" />
+					<img class="legend-item" ng-repeat="layer in layersList" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
 				</div>
 			</ons-scroller>
 		</ons-page>
@@ -123,9 +153,69 @@
 	<ons-template id="menu.html">
 		<ons-page>
 			<ons-list>
-				<ons-list-item modifier="chevron">Settings</ons-list-item>
-				<ons-list-item modifier="chevron">Project</ons-list-item>
-				<ons-list-item modifier="chevron">GIS.lab</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('settings.html');">Settings</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html');">Project information</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html');">GIS.lab</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.menu2.closeMenu();">Back</ons-list-item>
+			</ons-list>
+		</ons-page>
+	</ons-template>
+	<ons-template id="about_project.html">
+		<ons-page>
+			<ons-toolbar fixed-style>
+				<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center">Project information</div>
+			</ons-toolbar>
+			<ons-list>
+				<ons-list-header>Title</ons-list-header><ons-list-item ng-bind="project.root_title"></ons-list-item>
+				<ons-list-header>Author</ons-list-header><ons-list-item ng-bind="project.author"></ons-list-item>
+				<ons-list-header>E-mail</ons-list-header><ons-list-item ng-bind="project.email"></ons-list-item>
+				<ons-list-header>Phone</ons-list-header><ons-list-item ng-bind="project.phone"></ons-list-item>
+				<ons-list-header>Organization</ons-list-header><ons-list-item ng-bind="project.organization"></ons-list-item>
+				<ons-list-header>Abstract</ons-list-header><ons-list-item ng-bind="project.abstract"></ons-list-item>
+				<ons-list-header>Online resource</ons-list-header>
+				<ons-list-item>
+					<a target="_blank" href="{{ project.online_resource }}" ng-bind="project.online_resource"></a>
+				</ons-list-item>
+				<ons-list-header>Fees</ons-list-header><ons-list-item ng-bind="project.fees"></ons-list-item>
+				<ons-list-header>Access constraints</ons-list-header><ons-list-item ng-bind="project.access_constrains"></ons-list-item>
+				<ons-list-header>Keywords list</ons-list-header><ons-list-item>{{ project.keyword_list.join(', ') }}</ons-list-item>
+				<ons-list-header>Publish date</ons-list-header><ons-list-item ng-bind="project.publish_date"></ons-list-item>
+			</ons-list>
+		</ons-page>
+	</ons-template>
+	<ons-template id="about_gislab.html">
+		<ons-page>
+			<ons-toolbar fixed-style>
+				<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center">GIS.lab</div>
+			</ons-toolbar>
+			<ons-list>
+				<ons-list-header>GIS.lab ID</ons-list-header><ons-list-item ng-bind="project.gislab_unique_id"></ons-list-item>
+				<ons-list-header>Version</ons-list-header><ons-list-item ng-bind="project.gislab_version"></ons-list-item>
+				<ons-list-header>Home page</ons-list-header>
+				<ons-list-item>
+					<a target="_blank" href="{{ project.gislab_homepage }}" ng-bind="project.gislab_homepage"></a>
+				</ons-list-item>
+				<ons-list-header>Documentation</ons-list-header>
+				<ons-list-item>
+					<a target="_blank" href="javascript:void(0);" ng-bind="project.gislab_documentation" ng-click="openLink('fake');"></a>
+				</ons-list-item>
+			</ons-list>
+		</ons-page>
+	</ons-template>
+
+	<ons-template id="settings.html">
+		<ons-page>
+			<ons-toolbar fixed-style>
+				<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center">Settings</div>
+			</ons-toolbar>
+			<ons-list>
+				<ons-list-header>Server/account</ons-list-header>
+				<ons-list-item modifier="chevron" ng-bind="$storage.serverUrl" ng-click="app.navigator.pushPage('server_settings.html');"></ons-list-item>
+				<ons-list-header>Project</ons-list-header>
+				<ons-list-item modifier="chevron" ng-bind="$storage.project" ng-click="app.navigator.pushPage('project_settings.html');"></ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>

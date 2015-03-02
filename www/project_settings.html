@@ -1,0 +1,40 @@
+<ons-page class="settings project-settings"ng-controller="SettingsController">
+	<ons-toolbar fixed-style>
+		<div class="left"><ons-back-button>Back</ons-back-button></div>
+		<div class="center">Project</div>
+	</ons-toolbar>
+	<div class="navigation-bar">
+		<div class="navigation-bar__center">
+
+			<!-- segment control -->
+			<div class="button-bar" style="width:300px; margin:8px auto 0;">
+				<div class="button-bar__item">
+					<input type="radio" name="project-tab" value="1" ng-model="settings.project_tab">
+					<div class="button-bar__button">Recent</div>
+				</div>
+				<div class="button-bar__item">
+					<input type="radio" name="project-tab" value="2" ng-model="settings.project_tab">
+					<div class="button-bar__button">My projects</div>
+				</div>
+				<div class="button-bar__item">
+					<input type="radio" name="project-tab" value="3" ng-model="settings.project_tab">
+					<div class="button-bar__button">Enter</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<ons-list>
+		<ons-list-item ng-switch="settings.project_tab">
+			<ons-list-item ng-switch-when="1" ng-repeat="project in $storage.recentProjects" modifier="chevron" ng-click="app.navigator.popPage();loadProject(project);">
+				{{ project }}
+			</ons-list-item>
+			<ons-list-item ng-switch-when="2" ng-repeat="project in myProjects" modifier="chevron" ng-click="app.navigator.popPage();loadProject(project.project);">
+				{{ project.project }}
+			</ons-list-item>
+			<ons-list-item ng-switch-when="3">
+				<input type="text" class="text-input text-input--transparent" placeholder="Project" style="width: 100%" ng-model="$storage.project">
+			</ons-list-item>
+		</ons-list-item>
+	</ons-list>
+</ons-page>

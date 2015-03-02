@@ -1,0 +1,62 @@
+<ons-page class="settings server-settings" xng-controller="ServerSettingsController">
+	<ons-toolbar fixed-style>
+		<div class="left"><ons-back-button>Back</ons-back-button></div>
+		<div class="center">Server</div>
+	</ons-toolbar>
+	<div class="navigation-bar">
+		<div class="navigation-bar__center">
+
+			<!-- segment control -->
+			<div class="button-bar" style="width:300px; margin:8px auto 0;">
+				<div class="button-bar__item">
+					<input type="radio" name="server-tab" value="1" ng-model="settings.server_tab">
+					<div class="button-bar__button">Current</div>
+				</div>
+				<div class="button-bar__item">
+					<input type="radio" name="server-tab" value="2" ng-model="settings.server_tab">
+					<div class="button-bar__button">History</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<ons-list ng-switch="settings.server_tab">
+		<ons-list ng-switch-when="1">
+			<ons-list-item>
+				<ons-row>
+					<ons-col width="38px">
+						<ons-icon icon="ion-earth" size="28px" fixed-width="true" style="color: gray"></ons-icon>
+					</ons-col>
+					<ons-col>
+						<input type="text" class="text-input text-input--transparent" placeholder="URL" ng-model="$storage.serverUrl">
+					</ons-col>
+				</ons-row>
+			</ons-list-item>
+			<ons-list-item>
+				<ons-row>
+					<ons-col width="38px">
+						<ons-icon icon="ion-person" size="28px" fixed-width="true" style="color: gray"></ons-icon>
+					</ons-col>
+					<ons-col>
+						<input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
+					</ons-col>
+				</ons-row>
+			</ons-list-item>
+			<ons-list-item>
+				<ons-row>
+					<ons-col width="38px">
+						<ons-icon icon="ion-locked" size="28px" fixed-width="true" style="color: gray"></ons-icon>
+					</ons-col>
+					<ons-col>
+						<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
+					</ons-col>
+				</ons-row>
+			</ons-list-item>
+		</ons-list>
+		<ons-list ng-switch-when="2">
+			<ons-list-item ng-repeat="project in $storage.serversHistory" modifier="chevron" ng-click="app.navigator.popPage();loadProject(project);">
+				{{ project }}
+			</ons-list-item>
+		</ons-list-item>
+	</ons-list>
+</ons-page>
