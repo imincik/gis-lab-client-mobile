@@ -5,6 +5,16 @@
     },
     "config_munge": {
         "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
             "AndroidManifest.xml": {
                 "parents": {
                     "/*": [
@@ -18,25 +28,15 @@
                         }
                     ]
                 }
-            },
-            "res/xml/config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
             }
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.geolocation": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "io.cordova.gislab"
         },
-        "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "org.apache.cordova.geolocation": {
+            "PACKAGE_NAME": "io.cordova.gislab"
         }
     },
     "dependent_plugins": {}
