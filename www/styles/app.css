@@ -4,9 +4,120 @@
 
 }
 
+@-moz-document url-prefix() { 
+	#test ons-scroller, .map-panel ons-scroller, .map-toolbar-container ons-scroller {
+		overflow: hidden!important;
+	}
+}
+
+@media screen and (orientation: portrait) {
+	div#map {
+		top: 40px;
+		left: 0;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	div#map {
+		position: absolute;
+		top: 0;
+		left: 40px;
+	}
+}
+
+.page__content {
+	margin-top: 0px!important;
+}
+
+.map-toolbar {
+	background-color: #ccc;
+	border: 1px solid #aaa;
+}
+
+.map-toolbar ons-button {
+	padding: 2px;
+}
+
+.map-toolbar-vertical {
+	width: 40px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 1px;
+	padding-right: 0px;
+}
+
+.map-toolbar-horizontal {
+	height: 36px;
+	xoverflow: visible;
+	width: 375px;
+	padding-top: 2px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.map-toolbar-vertical ons-button {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.map-toolbar-horizontal ons-button {
+	margin-left: 0px;
+	margin-right: 0px;
+	line-height: 26px;
+	padding-bottom: 5px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.ol-attribution ul {
+	width: calc(100% - 50px)!important;
+}
+
+.ol-attribution {
+	right: 0.2em!important;
+	bottom: 0.2em!important;
+}
+
+.ol-zoom {
+	right: 0.2em!important;
+	top: 0.2em!important;
+	left: auto!important;
+}
+
 .checkbox > input[type="checkbox"]:checked + .checkbox__checkmark:before {
 	background: rgba(24,103,194,0.6);
 	border: 1px solid rgba(24,103,194,0.81);
+}
+
+.tab-bar__button {
+	height: 42px;
+}
+.tab-bar {
+	height: 42px;
+	background-color: #ffffff;
+}
+.tab-bar__button {
+	color: #444;
+}
+.tab-bar__label {
+	font-weight: 500!important;
+	font-size: 13px!important;
+}
+.tab-bar__icon {
+	height: 28px;
+}
+.carousel-slider {
+	position: relative;
+	top: 0px;
+	height: 4px;
+	width: 33%;
+	background-color: #7abfff;
+	transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s;
+}
+
+.menu-button {
+	float: right;
+	margin: 4px !important;
 }
 
 .server-settings .list__item {
@@ -35,11 +146,6 @@ span[ivh-treeview-checkbox="node"] {
 	vertical-align:middle;
 }
 
-
-div#map {
-	height: 100%;
-	width: 100%;
-}
 .my-grid {
 	width: 100%;
 	height: 150px;
@@ -76,22 +182,14 @@ div#map {
 .ivh-treeview ul, ul.ivh-treeview {
 	list-style-type: none;
 }
-ons-button {
-	width: 80px;
-	margin: 1px !important;
-}
+
 ul.ivh-treeview {
 	padding-left: 5px;
 }
 ul.ivh-treeview.ng-scope {
 	padding-left: 20px;
 }
-div.map-toolbar {
-	float: left;
-	width: 85px;
-	margin-left: 5px;
-	margin-top: 5px;
-}
+
 div.page__content {
 	overflow: hidden; position: relative;
 }
@@ -178,14 +276,11 @@ li.depth-3 {
 	background-position-y: -108px !important;
 }
 
-.webgis-button.panel span {
+.webgis-button.panel span, .webgis-button.menu span {
 	padding: 4px;
 	line-height: 22px;
 }
-.webgis-button.menu span {
-	padding: 12px 10px 8px 4px;
-	line-height: 26px;
-}
+
 .webgis-button {
 	position: absolute;
 	background: rgba(255,255,255,0.4);
@@ -194,12 +289,12 @@ li.depth-3 {
 	vertical-align: middle;
 }
 .webgis-button.panel {
-	bottom: 9px;
+	top: 9px;
 	left: 9px;
 }
 .webgis-button.menu {
-	top: 9px;
-	right: 3px;
+	top: 90px;
+	right: 9px;
 }
 xx.webgis-button {
 	display: block;

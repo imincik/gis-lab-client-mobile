@@ -1,0 +1,73 @@
+<ons-page ng-controller="PanelController">
+	<div class="tab-bar tab-bar--top">
+
+		<label class="tab-bar__item">
+			<input type="radio" name="panel-tab-radio" value="0" ng-model="ui.panel_tab" ng-change="panel.carousel.setActiveCarouselItemIndex(0);">
+			<button class="tab-bar__button">
+				<i class="tab-bar__icon ion-android-map"></i>
+				<div class="tab-bar__label">Base layer</div>
+			</button>
+		</label>
+
+		<label class="tab-bar__item">
+			<input type="radio" name="panel-tab-radio" value="1" ng-model="ui.panel_tab" ng-change="panel.carousel.setActiveCarouselItemIndex(1);">
+			<button class="tab-bar__button">
+<!--				<i class="tab-bar__icon ion-drag"></i>-->
+				<i class="tab-bar__icon ion-social-buffer"></i>
+<!--				<i class="tab-bar__icon ion-ios-photos"></i>-->
+				<div class="tab-bar__label">Layers</div>
+			</button>
+		</label>
+
+		<label class="tab-bar__item">
+			<input type="radio" name="panel-tab-radio" value="2" ng-model="ui.panel_tab" ng-change="panel.carousel.setActiveCarouselItemIndex(2);">
+			<button class="tab-bar__button">
+				<i class="tab-bar__icon ion-android-color-palette"></i>
+<!--				<i class="tab-bar__icon ion-ios-list"></i>-->
+				<div class="tab-bar__label">Legend</div>
+			</button>
+		</label>
+
+	</div>
+	<div id="carousel-slider" class="carousel-slider"></div>
+
+	<ons-carousel var="panel.carousel" class="map-panel" style="width: 100%; height: {{ mapHeight }}px" swipeable overscrollable auto-scroll>
+
+		<ons-carousel-item>
+			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
+				<div class="baselayer-container">
+					<ul class="list">
+						<li class="{{ layer.isGroup? 'list__header' : 'list__item' }} list__item--chevron depth-{{ layer.depth }}" ng-click="layer.isGroup || (setBaseLayer(layer) || app.navi.popPage('base_layer.html'))" ng-repeat="layer in baseLayersList">
+							{{ layer.title }}
+						</li>
+					</ul>
+				</div>
+			</ons-scroller>
+		</ons-carousel-item>
+
+		<ons-carousel-item>
+			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
+				<div class="layers-container">
+<!--					<ons-list>-->
+<!--						<ons-list-item ng-click="panel.carousel.setActiveCarouselItemIndex(0);" modifier="chevron" ng-bind="baseLayer.title"></ons-list-item>-->
+<!--					</ons-list>-->
+					<div
+						ivh-treeview="layers"
+						ivh-treeview-change-handler="layersVisibilityChanged"
+						ivh-treeview-expand-to-depth="-1">
+					</div>
+					<p ng-bind="position.text"></p>
+					<p ng-bind="error"></p>
+				</div>
+			</ons-scroller>
+		</ons-carousel-item>
+
+		<ons-carousel-item>
+			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
+				<div class="legend-container">
+					<img class="legend-item" ng-repeat="layer in layersList" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
+				</div>
+			</ons-scroller>
+		</ons-carousel-item>
+	</ons-carousel>
+</ons-page>

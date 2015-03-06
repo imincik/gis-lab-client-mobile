@@ -183,6 +183,7 @@ webgis.layersTreeToList = function(layers_tree) {
 			depth = 0;
 		}
 		layer_data.title = layer_data.title? layer_data.title : layer_data.name;
+		//layer_data.title += 'asdsfsfsd f sefeert ter';
 		layer_data.depth = depth;
 		if (layer_data.layers) {
 			if (layer_data.title) {
@@ -276,7 +277,7 @@ webgis.createMap = function(config) {
 
 	base_layer.set("type", "baselayer");
 	var map = new ol.Map({
-		target: 'map',
+		target: config.target,
 		layers: [
 			base_layer,
 			//base_wms_layer,

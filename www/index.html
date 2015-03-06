@@ -43,6 +43,7 @@ if (!String.prototype.format) {
 
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/map.js"></script>
+	<script type="text/javascript" src="js/services.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </head>
 
@@ -50,9 +51,22 @@ if (!String.prototype.format) {
 	<ons-navigator var="app.navigator" page="main_page.html">
 	</ons-navigator>
 
+<!--	<ons-split-view-->
+<!--		var="app.split"-->
+<!--		secondary-page="pages/panel.html"-->
+<!--		main-page="map.html"-->
+<!--		main-page-width="80%"-->
+<!--		collapse="portrait">-->
+<!--	</ons-split-view>-->
+
+	<ons-template id="start.html">
+		<ons-navigator var="app.navigator" page="main_page.html">
+		</ons-navigator>
+	</ons-template>
+
 	<ons-template id="main_page.html">
 		<ons-page>
-		<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;">
+		<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
 			<ons-sliding-menu var="app.menu2" main-page="map_container.html" menu-page="menu.html" max-slide-distance="260px" type="overlay" side="right" swipeable="false">
 			</ons-sliding-menu>
 		</div>
@@ -61,8 +75,8 @@ if (!String.prototype.format) {
 
 	<ons-template id="map_container.html">
 		<ons-page>
-		<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;">
-		<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="panel.html" max-slide-distance="260px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
+		<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
+		<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="pages/panel.html" max-slide-distance="260px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
 		</ons-sliding-menu>
 		</div>
 		</ons-page>
@@ -70,13 +84,47 @@ if (!String.prototype.format) {
 
 	<ons-template id="map.html">
 		<ons-page id="map-page" ng-controller="MapController">
-			<div ng-hide="mapInitialized"><ons-button ng-click="app.menu2.toggleMenu();">menu</ons-button></div>
-			<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;" id="map"></div>
-<!--			<div id="map" ng-controller="MapController"></div>-->
+			<div ons-if-orientation="landscape" class="map-toolbar-container">
+				<ons-scroller style="width: 40px; height: {{ mapHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
+					<div class="map-toolbar map-toolbar-vertical" style="min-height: {{ mapHeight }}px;">
+						<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
+							<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
+						</ons-button>
+						<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					</div>
+				</ons-scroller>
+			</div>
+
+			<div ons-if-orientation="portrait" class="map-toolbar-container">
+				<ons-scroller style="height: 40px; width: {{ mapWidth }}px; border-bottom: 1px solid #ccc; background-color: white;">
+					<div class="map-toolbar map-toolbar-horizontal" style="min-width: {{ mapWidth }}px;">
+						<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
+							<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
+						</ons-button>
+						<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
+						<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					</div>
+				</ons-scroller>
+			</div>
+
+			<div id="map" style="width: {{ mapWidth }}px; height: {{ mapHeight }}px;"></div>
 		</ons-page>
 	</ons-template>
 
-	<ons-template id="panel.html">
+	<ons-template id="panelx.html">
 		<ons-navigator animation="slide" var="app.navi">
 			<ons-page>
 				<ons-toolbar fixed-style>
@@ -153,10 +201,9 @@ if (!String.prototype.format) {
 	<ons-template id="menu.html">
 		<ons-page>
 			<ons-list>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('settings.html');">Settings</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html');">Project information</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html');">GIS.lab</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.menu2.closeMenu();">Back</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('settings.html', { animation: 'fade' });">Settings</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html', { animation: 'slide' });">Project information</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html', { animation: 'lift' });">GIS.lab</ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>
@@ -213,9 +260,9 @@ if (!String.prototype.format) {
 			</ons-toolbar>
 			<ons-list>
 				<ons-list-header>Server/account</ons-list-header>
-				<ons-list-item modifier="chevron" ng-bind="$storage.serverUrl" ng-click="app.navigator.pushPage('server_settings.html');"></ons-list-item>
+				<ons-list-item modifier="chevron" ng-bind="$storage.serverUrl" ng-click="app.navigator.pushPage('pages/server_settings.html');"></ons-list-item>
 				<ons-list-header>Project</ons-list-header>
-				<ons-list-item modifier="chevron" ng-bind="$storage.project" ng-click="app.navigator.pushPage('project_settings.html');"></ons-list-item>
+				<ons-list-item modifier="chevron" ng-bind="$storage.project" ng-click="app.navigator.pushPage('pages/project_settings.html');"></ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>

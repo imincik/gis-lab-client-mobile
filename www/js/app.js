@@ -3,7 +3,7 @@
 (function() {
 	'use strict';
 
-	var app = angular.module('app', ['onsen', 'ngTouch', 'ngStorage', 'ui.grid', 'ui.grid.edit', 'ivh.treeview']);
+	var app = angular.module('app', ['services', 'onsen', 'ngTouch', 'ngStorage', 'ui.grid', 'ui.grid.edit', 'ivh.treeview']);
 	app.config(function(ivhTreeviewOptionsProvider) {
 		ivhTreeviewOptionsProvider.set({
 			idAttribute: 'id',
@@ -22,31 +22,69 @@
 		});
 	});
 	app.config(['$httpProvider', function($httpProvider) {
-		//$httpProvider.defaults.useXDomain = true;
-		//delete $httpProvider.defaults.headers.common["X-Requested-With"];
+		// Intercept POST requests, convert to standard form encoding
+		$httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8";
+		$httpProvider.defaults.transformRequest.unshift(function (data) {
+			var key, result = [];
+			for (key in data) {
+				if (data.hasOwnProperty(key)) {
+					result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+				}
+			}
+			return result.join("&");
+		});
 	}]);
+
 	app.controller('MapController', function($scope) {
 		console.log('MapController');
-		$scope.$parent.loadProject($scope.$storage.project);
+		//$scope.$parent.loadProject($scope.$storage.project);
 	});
 
-	app.controller('SettingsController', function($scope, $http) {
+	app.controller('PanelController', function($scope, $timeout) {
+		console.log('PanelController');
+		$scope.ui = {panel_tab: 0};
+		setImmediate(function() {
+			$scope.panel.carousel._slider = document.getElementById('carousel-slider');
+			$scope.panel.carousel.on('postchange', function(e) {
+				$timeout(function() {
+					$scope.ui.panel_tab = e.activeIndex;
+				}, 0);
+				var x = $scope.panel.carousel._scroll/3.0;
+				var style = "transform: translate3d({0}px, 0px, 0px); -webkit-transform: translate3d({0}px, 0px, 0px);-webkit-transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s".format(x);
+				$scope.panel.carousel._slider.setAttribute("style", style);
+			});
+
+			$scope.panel.carousel._hammer.on('drag', function(e) {
+				var scroll = $scope.panel.carousel._getScrollDelta(e);
+				var x = ($scope.panel.carousel._scroll-scroll)/3.0;
+				var style = "transform: translate3d({0}px, 0px, 0px); -webkit-transform: translate3d({0}px, 0px, 0px);-webkit-transition: all 0 ease 0".format(x);
+				$scope.panel.carousel._slider.setAttribute("style", style);
+			});
+
+			$scope.panel.carousel._hammer.on('dragend', function(e) {
+				var x = $scope.panel.carousel._scroll/3.0;
+				var style = "transform: translate3d({0}px, 0px, 0px); -webkit-transform: translate3d({0}px, 0px, 0px);-webkit-transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s".format(x);
+				$scope.panel.carousel._slider.setAttribute("style", style);
+			});
+		});
+	});
+
+	app.controller('SettingsController', function($scope, WebGIS) {
 		console.log('SettingsController');
-		var url = '{0}/projects.json'.format($scope.$storage.serverUrl);
-		$http.get(url, {withCredentials: true}).
-				success(function(data, status, headers, config) {
+		WebGIS.userProjects($scope.$storage.serverUrl)
+				.success(function(data, status, headers, config) {
 					console.log(data);
-					if (data.length) {
+					if (angular.isArray(data) && data.length) {
 						$scope.myProjects.length = 0;
 						Array.prototype.push.apply($scope.myProjects, data);
 					}
-				}).
-				error(function(data, status, headers, config) {
+				})
+				.error(function(data, status, headers, config) {
 					console.log('error: '+status);
 				});
 	});
 
-	app.controller('AppController', function($scope, $http, $localStorage) {
+	app.controller('AppController', function($scope, $localStorage, WebGIS) {
 		$scope.mapInitialized = false;
 		console.log("AppController");
 		$scope.settings = {
@@ -55,33 +93,63 @@
 		};
 		$scope.$storage = $localStorage;
 		$scope.myProjects = [];
-		if ($scope.$storage.serverUrl) {
-			$http.post('{0}/mobile/login/'.format($scope.$storage.serverUrl), {
-					username: $scope.$storage.username,
-					password: $scope.$storage.password
-				}, {
-					withCredentials: true
-				}).
-				success(function(data, status, headers, config) {
-					console.log('login successful');
-				}).
-				error(function(data, status, headers, config) {
-					console.log('login error');
-				});
-		}
+
 		ons.ready(function() {
 			console.log('ons ready');
+			$scope.updateScreenSize();
+			//return;
+			if ($scope.$storage.project) {
+				if ($scope.$storage.serverUrl && $scope.$storage.username) {
+					WebGIS.login($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password)
+						.then(function(data) {
+							$scope.loadProject($scope.$storage.project);
+						}, function(error) {
+							console.log('ERROR');
+							ons.notification.alert({
+								message: 'Failed to login'
+							});
+							$scope.loadProject($scope.$storage.project);
+						});
+				} else {
+					// try as guest user
+					$scope.loadProject($scope.$storage.project);
+				}
+			} else {
+				ons.notification.alert({
+					message: 'No project is configured'
+				});
+			}
+			/*
 			$scope.app.navigator.on('postpop', function(evt) {
-				if (evt.enterPage.name == 'mainPage.html' && $scope.olMap.getSize()[0] == 0) {
+				if (evt.enterPage.name == 'main_page.html' && $scope.olMap.getSize()[0] == 0) {
 					console.log('update size');
 					$scope.olMap.updateSize();
 				}
-			});
+			});*/
 		});
 
-		$scope.mapWidth = document.body.clientWidth;
-		$scope.mapHeight = document.body.clientHeight;
-		$scope.panelHeight = document.body.clientHeight-45;
+		$scope.updateScreenSize = function() {
+			$scope.screenWidth = document.body.clientWidth;
+			$scope.screenHeight = document.body.clientHeight;
+			$scope.panelHeight = document.body.clientHeight-45;
+			switch (window.orientation) {
+				case 0: // Portrait Mode
+					console.log('Portrait');
+					$scope.mapWidth = document.body.clientWidth;
+					$scope.mapHeight = document.body.clientHeight-40;
+					break;
+				case 90: // Landscape Mode
+					console.log('Landscape');
+					$scope.mapWidth = document.body.clientWidth-40;
+					$scope.mapHeight = document.body.clientHeight;
+					break;
+				default:
+					console.log('DEFAULT');
+					$scope.mapWidth = document.body.clientWidth-40;
+					$scope.mapHeight = document.body.clientHeight;
+			}
+		};
+
 		$scope.baseLayer = {title: 'Select base layer'};
 		$scope.setBaseLayer = function(layer) {
 			console.log('setBaseLayer');
@@ -106,24 +174,21 @@
 		$scope.loadProject = function(project) {
 			console.log('loadProject '+project);
 			$scope.$storage.project = project;
-			var url = '{server}/mobile/config.json?PROJECT={project}'
-				.replace('{server}', $scope.$storage.serverUrl)
-				.replace('{project}', encodeURIComponent(project));
-			$http.get(url).
-				success(function(data, status, headers, config) {
+			WebGIS.project($scope.$storage.serverUrl, project)
+				.success(function(data, status, headers, config) {
 					var controls = [
 						new ol.control.ButtonControl({
 							className: 'webgis-button panel',
 							html: '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-navicon" style="font-size:20px;"></i></span>',
 							callback: function(e) {
 								$scope.$apply(function() {
-									$scope.app.menu.toggleMenu();
+									$scope.app.menu.toggleMenu({autoCloseDisabled: true});
 								});
 							}
 						}),
 						new ol.control.ButtonControl({
 							className: 'webgis-button menu',
-							html: '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-android-more" style="font-size:20px;"></i></span>',
+							html: '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-navicon" style="font-size:20px;"></i></span>',
 							callback: function(e) {
 								$scope.$apply(function() {
 									$scope.app.menu2.toggleMenu();
@@ -132,6 +197,7 @@
 						})
 					];
 					var webgis = angular.module('webgis');
+					data.target = 'map';
 					var olMap = webgis.createMap(data);
 					if (olMap) {
 						$scope.mapInitialized = true;
@@ -154,8 +220,8 @@
 							$scope.olMap.dispose();
 						}
 						$scope.olMap = olMap;
-						$scope.olMap.addControl(controls[0]);
-						$scope.olMap.addControl(controls[1]);
+						//$scope.olMap.addControl(controls[0]);
+						//$scope.olMap.addControl(controls[1]);
 
 						$scope.layers = data.layers;
 						$scope.layersList = webgis.layersTreeToList({layers: $scope.layers});
@@ -197,14 +263,14 @@
 							},
 							{title: 'Third'},
 						];
-						//$scope.baseLayersList = webgis.layersTreeToList({layers: test_base_layers});
-						$scope.baseLayersList = visit_baselayer([], {layers: data.base_layers});
+						$scope.baseLayersList = webgis.layersTreeToList({layers: test_base_layers});
+						//$scope.baseLayersList = webgis.layersTreeToList({layers: data.base_layers});
 
 						// Project info
 						$scope.project = data;
 					}
-				}).
-				error(function(data, status, headers, config) {
+				})
+				.error(function(data, status, headers, config) {
 					console.log('error');
 				});
 		};
@@ -214,11 +280,22 @@
 
 		// device APIs are available
 		function onDeviceReady() {
+			setTimeout(function() {
+				navigator.splashscreen.hide();
+			}, 200);
+			ons.setDefaultDeviceBackButtonListener(function() {
+				ons.notification.confirm({
+					message: 'Are you sure to close the app?',
+					callback: function(index) {
+						if (index === 1) { // OK button
+							navigator.app.exitApp(); // Close the app
+						}
+					}
+				});
+			});
 
 			window.addEventListener('orientationchange', function() {
-				$scope.panelHeight = document.body.clientHeight-45;
-				$scope.mapWidth = document.body.clientWidth;
-				$scope.mapHeight = document.body.clientHeight;
+				$scope.updateScreenSize();
 				$scope.$apply();
 				$scope.olMap.updateSize();
 			});
