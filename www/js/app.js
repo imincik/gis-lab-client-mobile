@@ -132,22 +132,16 @@
 			$scope.screenWidth = document.body.clientWidth;
 			$scope.screenHeight = document.body.clientHeight;
 			$scope.panelHeight = document.body.clientHeight-45;
+			$scope.mapWidth = document.body.clientWidth;
+			$scope.mapHeight = document.body.clientHeight;
+			/*
 			switch (window.orientation) {
 				case 0: // Portrait Mode
-					console.log('Portrait');
-					$scope.mapWidth = document.body.clientWidth;
-					$scope.mapHeight = document.body.clientHeight-40;
 					break;
 				case 90: // Landscape Mode
-					console.log('Landscape');
-					$scope.mapWidth = document.body.clientWidth-40;
-					$scope.mapHeight = document.body.clientHeight;
 					break;
 				default:
-					console.log('DEFAULT');
-					$scope.mapWidth = document.body.clientWidth-40;
-					$scope.mapHeight = document.body.clientHeight;
-			}
+			}*/
 		};
 
 		$scope.baseLayer = {title: 'Select base layer'};

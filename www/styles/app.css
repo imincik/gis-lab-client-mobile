@@ -5,23 +5,24 @@
 }
 
 @-moz-document url-prefix() { 
-	#test ons-scroller, .map-panel ons-scroller, .map-toolbar-container ons-scroller {
+	.map-toolbar ons-scroller, .map-panel ons-scroller {
 		overflow: hidden!important;
 	}
 }
 
 @media screen and (orientation: portrait) {
-	div#map {
-		top: 40px;
-		left: 0;
+	.ol-zoom {
+		right: 0.2em!important;
+		top: 3em!important;
+		left: auto!important;
 	}
 }
 
 @media screen and (orientation: landscape) {
-	div#map {
-		position: absolute;
-		top: 0;
-		left: 40px;
+	.ol-zoom {
+		right: 0.2em!important;
+		top: 0.2em!important;
+		left: auto!important;
 	}
 }
 
@@ -30,43 +31,41 @@
 }
 
 .map-toolbar {
-	background-color: #ccc;
-	border: 1px solid #aaa;
+	position: absolute;
+	top:2px;
+	left: 2px;
+	padding: 3px;
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.4);
 }
 
-.map-toolbar ons-button {
-	padding: 2px;
+.map-toolbar-horizontal ons-scroller {
+	height: 42px;
 }
 
-.map-toolbar-vertical {
-	width: 40px;
-	padding-top: 1px;
-	padding-bottom: 1px;
-	padding-left: 1px;
-	padding-right: 0px;
+.map-toolbar-horizontal .ons-scroller__content {
+	height: 36px;
+	width: auto;
+	display: inline-block;
+	white-space:nowrap;
 }
 
 .map-toolbar-horizontal {
 	height: 36px;
-	xoverflow: visible;
-	width: 375px;
-	padding-top: 2px;
-	padding-left: 3px;
-	padding-right: 3px;
 }
 
-.map-toolbar-vertical ons-button {
-	margin-top: 2px;
-	margin-bottom: 2px;
+.map-toolbar-vertical {
+	width: 36px;
+	padding-bottom: 0px;
 }
 
-.map-toolbar-horizontal ons-button {
-	margin-left: 0px;
-	margin-right: 0px;
-	line-height: 26px;
-	padding-bottom: 5px;
-	padding-left: 3px;
-	padding-right: 3px;
+.map-toolbar .button {
+	vertical-align: baseline;
+}
+
+.map-toolbar ons-button {
+	line-height: 32px;
+	padding: 2px;
 }
 
 .ol-attribution ul {
@@ -76,12 +75,6 @@
 .ol-attribution {
 	right: 0.2em!important;
 	bottom: 0.2em!important;
-}
-
-.ol-zoom {
-	right: 0.2em!important;
-	top: 0.2em!important;
-	left: auto!important;
 }
 
 .checkbox > input[type="checkbox"]:checked + .checkbox__checkmark:before {

@@ -84,43 +84,42 @@ if (!String.prototype.format) {
 
 	<ons-template id="map.html">
 		<ons-page id="map-page" ng-controller="MapController">
-			<div ons-if-orientation="landscape" class="map-toolbar-container">
-				<ons-scroller style="width: 40px; height: {{ mapHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
-					<div class="map-toolbar map-toolbar-vertical" style="min-height: {{ mapHeight }}px;">
-						<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
-							<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
-						</ons-button>
-						<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-					</div>
-				</ons-scroller>
-			</div>
-
-			<div ons-if-orientation="portrait" class="map-toolbar-container">
-				<ons-scroller style="height: 40px; width: {{ mapWidth }}px; border-bottom: 1px solid #ccc; background-color: white;">
-					<div class="map-toolbar map-toolbar-horizontal" style="min-width: {{ mapWidth }}px;">
-						<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
-							<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
-						</ons-button>
-						<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
-						<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-					</div>
-				</ons-scroller>
-			</div>
 
 			<div id="map" style="width: {{ mapWidth }}px; height: {{ mapHeight }}px;"></div>
+			<div ons-if-orientation="portrait" class="map-toolbar map-toolbar-horizontal">
+				<ons-scroller style="max-width: {{ mapWidth }}px; ">
+					<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
+						<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
+					</ons-button>
+					<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+				</ons-scroller>
+			</div>
+			<div ons-if-orientation="landscape" class="map-toolbar map-toolbar-vertical">
+				<ons-scroller style="max-height: {{ mapHeight }}px; ">
+					<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
+						<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
+					</ons-button>
+					<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+				</ons-scroller>
+			</div>
 		</ons-page>
 	</ons-template>
 
