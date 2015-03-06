@@ -123,67 +123,6 @@ if (!String.prototype.format) {
 		</ons-page>
 	</ons-template>
 
-	<ons-template id="panelx.html">
-		<ons-navigator animation="slide" var="app.navi">
-			<ons-page>
-				<ons-toolbar fixed-style>
-					<div class="left"><ons-toolbar-button ng-click="app.navi.pushPage('legend.html');"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
-					<div class="center">Layers</div>
-					<div class="right"></div>
-				</ons-toolbar>
-				<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
-					<div class="layers-container">
-						<ons-list>
-							<ons-list-item ng-click="app.navi.pushPage('base_layer.html');" modifier="chevron" ng-bind="baseLayer.title"></ons-list-item>
-						</ons-list>
-						<div
-							ivh-treeview="layers"
-							ivh-treeview-change-handler="layersVisibilityChanged"
-							ivh-treeview-expand-to-depth="-1">
-						</div>
-						<p ng-bind="position.text"></p>
-						<p ng-bind="error"></p>
-					</div>
-				</ons-scroller>
-			</ons-page>
-		</ons-navigator>
-		</ons-page>
-	</ons-template>
-
-	<ons-template id="base_layer.html">
-		<ons-page>
-			<ons-toolbar fixed-style>
-				<div class="left"><ons-toolbar-button ng-click="app.navi.popPage('base_layer.html');"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
-				<div class="center">Base layer</div>
-				<div class="right"></div>
-			</ons-toolbar>
-			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
-				<div class="baselayer-container">
-					<ul class="list">
-						<li class="{{ layer.isGroup? 'list__header' : 'list__item' }} list__item--chevron depth-{{ layer.depth }}" ng-click="layer.isGroup || (setBaseLayer(layer) || app.navi.popPage('base_layer.html'))" ng-repeat="layer in baseLayersList">
-							{{ layer.title }}
-						</li>
-					</ul>
-				</div>
-			</ons-scroller>
-		</ons-page>
-	</ons-template>
-
-	<ons-template id="legend.html">
-		<ons-page>
-			<ons-toolbar fixed-style>
-				<div class="left"><ons-toolbar-button ng-click="app.navi.popPage('legend.html');"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
-				<div class="center">Legend</div>
-				<div class="right"></div>
-			</ons-toolbar>
-			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
-				<div class="legend-container">
-					<img class="legend-item" ng-repeat="layer in layersList" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
-				</div>
-			</ons-scroller>
-		</ons-page>
-	</ons-template>
-
 
 	<ons-template id="grid.html">
 		<ons-page>
