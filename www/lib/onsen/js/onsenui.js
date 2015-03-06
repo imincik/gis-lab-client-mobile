@@ -12426,8 +12426,10 @@ limitations under the License.
         this._animator.openMenu(function() {
           unlock();
 
-          this._mainPage.children().css('pointer-events', 'none');
-          this._mainPageHammer.on('tap', this._bindedOnTap);
+          if (!options.autoCloseDisabled) {
+              this._mainPage.children().css('pointer-events', 'none');
+              this._mainPageHammer.on('tap', this._bindedOnTap);
+          }
 
           this.emit('postopen');
 
