@@ -43,30 +43,6 @@
 	app.controller('PanelController', function($scope, $timeout) {
 		console.log('PanelController');
 		$scope.ui = {panel_tab: 0};
-		setImmediate(function() {
-			$scope.panel.carousel._slider = document.getElementById('carousel-slider');
-			$scope.panel.carousel.on('postchange', function(e) {
-				$timeout(function() {
-					$scope.ui.panel_tab = e.activeIndex;
-				}, 0);
-				var x = $scope.panel.carousel._scroll/3.0;
-				var style = "transform: translate3d({0}px, 0px, 0px); -webkit-transform: translate3d({0}px, 0px, 0px);-webkit-transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s".format(x);
-				$scope.panel.carousel._slider.setAttribute("style", style);
-			});
-
-			$scope.panel.carousel._hammer.on('drag', function(e) {
-				var scroll = $scope.panel.carousel._getScrollDelta(e);
-				var x = ($scope.panel.carousel._scroll-scroll)/3.0;
-				var style = "transform: translate3d({0}px, 0px, 0px); -webkit-transform: translate3d({0}px, 0px, 0px);-webkit-transition: all 0 ease 0".format(x);
-				$scope.panel.carousel._slider.setAttribute("style", style);
-			});
-
-			$scope.panel.carousel._hammer.on('dragend', function(e) {
-				var x = $scope.panel.carousel._scroll/3.0;
-				var style = "transform: translate3d({0}px, 0px, 0px); -webkit-transform: translate3d({0}px, 0px, 0px);-webkit-transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s".format(x);
-				$scope.panel.carousel._slider.setAttribute("style", style);
-			});
-		});
 	});
 
 	app.controller('SettingsController', function($scope, WebGIS) {

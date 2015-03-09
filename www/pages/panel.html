@@ -2,7 +2,7 @@
 	<div class="tab-bar tab-bar--top">
 
 		<label class="tab-bar__item">
-			<input type="radio" name="panel-tab-radio" value="0" ng-model="ui.panel_tab" ng-change="panel.carousel.setActiveCarouselItemIndex(0);">
+			<input type="radio" name="panel-tab-radio" value="0" ng-model="ui.panel_tab">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-android-map"></i>
 				<div class="tab-bar__label">Base layer</div>
@@ -10,7 +10,7 @@
 		</label>
 
 		<label class="tab-bar__item">
-			<input type="radio" name="panel-tab-radio" value="1" ng-model="ui.panel_tab" ng-change="panel.carousel.setActiveCarouselItemIndex(1);">
+			<input type="radio" name="panel-tab-radio" value="1" ng-model="ui.panel_tab">
 			<button class="tab-bar__button">
 <!--				<i class="tab-bar__icon ion-drag"></i>-->
 				<i class="tab-bar__icon ion-social-buffer"></i>
@@ -20,7 +20,7 @@
 		</label>
 
 		<label class="tab-bar__item">
-			<input type="radio" name="panel-tab-radio" value="2" ng-model="ui.panel_tab" ng-change="panel.carousel.setActiveCarouselItemIndex(2);">
+			<input type="radio" name="panel-tab-radio" value="2" ng-model="ui.panel_tab">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-android-color-palette"></i>
 <!--				<i class="tab-bar__icon ion-ios-list"></i>-->
@@ -29,10 +29,9 @@
 		</label>
 
 	</div>
-	<div id="carousel-slider" class="carousel-slider"></div>
 
-	<ons-carousel var="panel.carousel" class="map-panel" style="width: 100%; height: {{ mapHeight }}px" swipeable overscrollable auto-scroll>
-
+	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ mapHeight }}px" swipeable overscrollable auto-scroll>
+		<ons-carousel-cover ng-model="ui.panel_tab" ng-carousel-slider></ons-carousel-cover>
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
 				<div class="baselayer-container">
@@ -56,8 +55,6 @@
 						ivh-treeview-change-handler="layersVisibilityChanged"
 						ivh-treeview-expand-to-depth="-1">
 					</div>
-					<p ng-bind="position.text"></p>
-					<p ng-bind="error"></p>
 				</div>
 			</ons-scroller>
 		</ons-carousel-item>
