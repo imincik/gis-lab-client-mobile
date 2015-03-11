@@ -46,10 +46,12 @@ if (!String.prototype.format) {
 	<script type="text/javascript" src="js/services.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/directives/carousel_slider.js"></script>
+	<script type="text/javascript" src="js/directives/scroll_indicator.js"></script>
+	<script type="text/javascript" src="js/directives/ng-con-attr.js"></script>
 </head>
 
 <body ng-controller="AppController">
-	<ons-navigator var="app.navigator" page="main_page.html">
+	<ons-navigator var="app.navigator" page="map_container.html">
 	</ons-navigator>
 
 <!--	<ons-split-view-->
@@ -60,65 +62,64 @@ if (!String.prototype.format) {
 <!--		collapse="portrait">-->
 <!--	</ons-split-view>-->
 
-	<ons-template id="start.html">
-		<ons-navigator var="app.navigator" page="main_page.html">
-		</ons-navigator>
-	</ons-template>
-
-	<ons-template id="main_page.html">
-		<ons-page>
-		<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
-			<ons-sliding-menu var="app.menu2" main-page="map_container.html" menu-page="menu.html" max-slide-distance="260px" type="overlay" side="right" swipeable="false">
-			</ons-sliding-menu>
-		</div>
-		</ons-page>
-	</ons-template>
 
 	<ons-template id="map_container.html">
 		<ons-page>
-		<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
-		<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="pages/panel.html" max-slide-distance="260px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
-		</ons-sliding-menu>
-		</div>
+			<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
+				<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="panel_tab_container.html" max-slide-distance="261px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
+				</ons-sliding-menu>
+			</div>
 		</ons-page>
+	</ons-template>
+
+	<ons-template id="panel_container.html">
+		<ons-navigator var="app.panel.navigator">
+		<ons-page></ons-page>
+		</ons-navigator>
+	</ons-template>
+
+	<ons-template id="panel_tab_container.html">
+
+		<ons-tabbar var="app.panel.tabbar" animation="slide" hide-tabs="true">
+			<ons-tab ng-repeat="tool in toolbar | filter:{page:''}" page="{{ tool.page }}" ng-con-attr="{persistent: {{ tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
+			</ons-tab>
+		</ons-tabbar>
+
+<!--		<ons-tabbar var="app.panel.tabbar" animation="fade" hide-tabs="true">-->
+<!--			<ons-tab ng-repeat="tool in toolbar" ng-switch on="tool.persistent">-->
+<!--				<ons-tab ng-switch-when="true" page="{{ tool.page }}" persistent no-reload></ons-tab>-->
+<!--				<ons-tab ng-switch-default page="{{ tool.page }}" no-reload></ons-tab>-->
+<!--			</ons-tab>-->
+<!--		</ons-tabbar>-->
+
+
 	</ons-template>
 
 	<ons-template id="map.html">
 		<ons-page id="map-page" ng-controller="MapController">
 
 			<div id="map" style="width: {{ mapWidth }}px; height: {{ mapHeight }}px;"></div>
-			<div ons-if-orientation="portrait" class="map-toolbar map-toolbar-horizontal">
-				<ons-scroller style="max-width: {{ mapWidth }}px; ">
-					<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
-						<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
+<!--			<div ons-if-orientation="portrait" class="map-toolbar map-toolbar-horizontal">-->
+<!--				<ons-scroller style="max-width: {{ mapWidth }}px; ">-->
+<!--					<ons-button ng-repeat="tool in toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">-->
+<!--						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>-->
+<!--						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>-->
+<!--					</ons-button>-->
+<!--				</ons-scroller>-->
+<!--			</div>-->
+			<div class="map-toolbar map-toolbar-vertical">
+				<ons-scroller id="tbs" style="max-height: {{ 300 }}px;">
+
+					<ons-button ng-repeat="tool in toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">
+						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>
+						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>
 					</ons-button>
-					<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-				</ons-scroller>
-			</div>
-			<div ons-if-orientation="landscape" class="map-toolbar map-toolbar-vertical">
-				<ons-scroller style="max-height: {{ mapHeight }}px; ">
-					<ons-button ng-click="app.menu.toggleMenu({autoCloseDisabled: true});">
-						<ons-icon icon="ion-social-buffer" size="24px" fixed-width="true"></ons-icon>
-					</ons-button>
-					<ons-button><ons-icon icon="ion-qr-scanner" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-location" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-information-circled" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-search" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-edit" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-printer" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button ng-click="app.menu2.toggleMenu();"><ons-icon icon="ion-gear-b" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
-					<ons-button><ons-icon icon="ion-nuclear" size="24px" fixed-width="true"></ons-icon></ons-button>
+					<div class="scroll-top-indicator-bg" ng-scroll-indicator="top">
+						<ons-icon class="scroll-top-indicator" icon="ion-android-arrow-dropup" size="28px" fixed-width="true"></ons-icon>
+					</div>
+					<div class="scroll-bottom-indicator-bg" ng-scroll-indicator="bottom">
+						<ons-icon class="scroll-bottom-indicator" icon="ion-android-arrow-dropdown" size="28px" fixed-width="true"></ons-icon>
+					</div>
 				</ons-scroller>
 			</div>
 		</ons-page>
@@ -132,7 +133,9 @@ if (!String.prototype.format) {
 				<div class="center">Grid</div>
 				<div class="right"></div>
 			</ons-toolbar>
-			<div ui-grid="gridOptions" ui-grid-edit class="my-grid"></div>
+<!--			<div class="grid-container" style="height: {{ panelHeight }}px;">-->
+				<div ui-grid="gridOptions" ui-grid-edit class="features-grid" style="height: {{ panelHeight }}px;"></div>
+<!--			</div>-->
 		</ons-page>
 	</ons-template>
 
@@ -141,8 +144,8 @@ if (!String.prototype.format) {
 		<ons-page>
 			<ons-list>
 				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('settings.html', { animation: 'fade' });">Settings</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html', { animation: 'slide' });">Project information</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html', { animation: 'lift' });">GIS.lab</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html', { animation: 'slide' });">About Project</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html', { animation: 'lift' });">About GIS.lab</ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>

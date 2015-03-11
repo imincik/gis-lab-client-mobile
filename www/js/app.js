@@ -3,7 +3,7 @@
 (function() {
 	'use strict';
 
-	var app = angular.module('app', ['services', 'onsen', 'ngTouch', 'ngStorage', 'ui.grid', 'ui.grid.edit', 'ivh.treeview']);
+	var app = angular.module('app', ['utils', 'services', 'onsen', 'ngTouch', 'ngStorage', 'ui.grid', 'ui.grid.edit', 'ivh.treeview']);
 	app.config(function(ivhTreeviewOptionsProvider) {
 		ivhTreeviewOptionsProvider.set({
 			idAttribute: 'id',
@@ -12,13 +12,12 @@
 			selectedAttribute: 'visible',
 			useCheckboxes: true,
 			expandToDepth: 0,
-			indeterminateAttribute: '__ivhTreeviewIndeterminate',
+			indeterminateAttribute: '__indeterminate',
 			defaultSelectedState: true,
 			validate: true,
 			twistieExpandedTpl: '<i class="fa fa-minus-square"></i>',
 			twistieCollapsedTpl: '<i class="fa fa-plus-square"></i>',
-			twistieLeafTpl: '<div class="{{ node.geom_type | lowercase }}-layer-icon"></div>',
-			//checkBoxTpl: '<p>x</p>'
+			//twistieLeafTpl: '<div class="{{ node.geom_type | lowercase }}-layer-icon"></div>',
 		});
 	});
 	app.config(['$httpProvider', function($httpProvider) {
@@ -35,14 +34,37 @@
 		});
 	}]);
 
-	app.controller('MapController', function($scope) {
+	app.controller('MapController', function($scope, $timeout) {
 		console.log('MapController');
-		//$scope.$parent.loadProject($scope.$storage.project);
+		$scope.setupScrollIndicator = function() {
+			console.log('setupScrollIndicator');
+			/*
+			$scope.$parent.$watch('mapHeight', function(value) {
+				console.log('mapHeight '+value);
+				$timeout(function() {
+					$scope.updateScrollIndicator();
+				}, 100);
+			})
+			$scope.updateScrollIndicator();
+			*/
+		};
 	});
 
 	app.controller('PanelController', function($scope, $timeout) {
-		console.log('PanelController');
+		//console.log('PanelController');
 		$scope.ui = {panel_tab: 0};
+		$scope.baseLayersTreeOptions = {
+			useCheckboxes: false,
+			//labelAttribute: '',
+			twistieLeafTpl: '<label class="radio-button"><input type="radio" name="a"><div class="radio-button__icon-checkmark"></div></label>',
+			//twistieLeafTpl: '<span class="point-layer-icon"></span>',
+			//twistieLeafTpl: '<div><label class="radio-button"><input type="radio" name="a"><ons-icon class="radio-button__icon-checkmark" size="28px" fixed-width="true"></ons-icon></label></div>',
+			//twistieLeafTpl: '<div><label class="radio-button"><input type="radio" name="a"><ons-icon icon="ion-android-radio-button-on" size="28px" fixed-width="true"></ons-icon></label></div>',
+		};
+		$scope.layersTreeOptions = {
+			useCheckboxes: true,
+			twistieLeafTpl: '<span class="{{ node.geom_type | lowercase }}-layer-icon"></span>',
+		};
 	});
 
 	app.controller('SettingsController', function($scope, WebGIS) {
@@ -69,6 +91,96 @@
 		};
 		$scope.$storage = $localStorage;
 		$scope.myProjects = [];
+
+		$scope.toolbar = [
+			{
+				icon: 'ion-images'
+			}, {
+				icon: 'ion-social-buffer',
+				page: 'pages/panel.html',
+				persistent: true,
+			}, {
+				icon: 'ion-qr-scanner',
+				toggle: false,
+				callback: function() {
+					$scope.olMap.getView().fitExtent($scope.project.project_extent, $scope.olMap.getSize());
+				}
+			}, {
+				icon: 'ion-location',
+				toggle: true,
+			}, {
+				icon: 'ion-search'
+			}, {
+				icon: 'ion-information-circled'
+			}, {
+				faIcon:'fa-expand'
+			}, {
+				icon: 'ion-edit',
+				page: 'grid.html',
+				persistent: true,
+			}, {
+				icon: 'ion-gear-b',
+				page: 'menu.html'
+			}
+		];
+		
+		$scope.xtoolTaped = function(tool) {
+			console.log(tool);
+			if (tool.page) {
+				if (!tool.activated) {
+					var switchTool = false;
+					$scope.toolbar.forEach(function(item) {
+						if (item.page && item.activated) {
+							item.activated = false;
+							switchTool = true;
+						}
+					});
+					if ($scope.app.panel.navigator.getCurrentPage().page != tool.page) {
+						var options = {animation: 'none'};
+						if ($scope.app.menu.isMenuOpened()) {
+							options.animation = 'slide';
+						}
+						$scope.app.panel.navigator.resetToPage(tool.page, options);
+					}
+					if (!switchTool) {
+						$scope.app.menu.openMenu({autoCloseDisabled: true});
+					}
+				} else {
+					$scope.app.menu.closeMenu();
+				}
+				//$scope.app.menu.toggleMenu();
+				tool.activated = !tool.activated;
+			}
+		}
+
+		$scope.toolTaped = function(tool) {
+			//console.log(tool);
+			if (tool.page) {
+				if (!tool.activated) {
+					var switchTool = false;
+					$scope.toolbar.forEach(function(item) {
+						if (item.page && item.activated) {
+							item.activated = false;
+							switchTool = true;
+						}
+					});
+					$scope.app.panel.tabbar.setActiveTab(tool._tab_index);
+					if (!switchTool) {
+						$scope.app.menu.openMenu({autoCloseDisabled: true});
+					}
+				} else {
+					$scope.app.menu.closeMenu();
+				}
+				//$scope.app.menu.toggleMenu();
+				tool.activated = !tool.activated;
+			} else if (!tool.toggle) {
+				if (tool.callback) {
+					tool.callback();
+				}
+			} else {
+				tool.activated = !tool.activated;
+			}
+		}
 
 		ons.ready(function() {
 			console.log('ons ready');
@@ -107,7 +219,7 @@
 		$scope.updateScreenSize = function() {
 			$scope.screenWidth = document.body.clientWidth;
 			$scope.screenHeight = document.body.clientHeight;
-			$scope.panelHeight = document.body.clientHeight-45;
+			$scope.panelHeight = document.body.clientHeight-40;
 			$scope.mapWidth = document.body.clientWidth;
 			$scope.mapHeight = document.body.clientHeight;
 			/*
@@ -216,7 +328,6 @@
 						});
 
 						var test_base_layers = [
-							{title: 'First'},
 							{
 								title: 'Group',
 								layers: [
@@ -227,14 +338,17 @@
 										layers: [
 											{title: 'Subsubitem1'},
 											{title: 'Subsubitem2'},
+											{title: 'Subsubitem3'},
 										]
 									}
 								]
 							},
 							{title: 'Third'},
+							{title: 'Fourth'},
 						];
-						$scope.baseLayersList = webgis.layersTreeToList({layers: test_base_layers});
-						//$scope.baseLayersList = webgis.layersTreeToList({layers: data.base_layers});
+						//$scope.baseLayers = test_base_layers;
+						$scope.baseLayers = data.base_layers;
+						$scope.baseLayersList = webgis.layersTreeToList({layers: $scope.baseLayers});
 
 						// Project info
 						$scope.project = data;

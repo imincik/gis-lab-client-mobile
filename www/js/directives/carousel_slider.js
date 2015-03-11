@@ -1,9 +1,20 @@
 angular.module('app')
-	.directive('ngCarouselSlider', function() {
+	.directive('ngTabModel', function() {
 		return {
-			restrict: 'A',
-			require: '^ngModel',
-			template: '<div class="carousel-slider"></div>',
+			controller: function($scope) {}
+		}
+	})
+	.directive('ngCarouselVar', function() {
+		return {
+			controller: function($scope) {}
+		}
+	})
+	.directive('ngCarouselTabSlider', function() {
+		return {
+			restrict: 'E',
+			require: ['ngTabModel' ,'ngCarouselVar'],
+			template: '<div class="carousel-slider-bg"><div class="carousel-slider"></div></div>',
+			replace: true,
 			scope: true,
 			transclude: false,
 			controller: ['$scope', '$timeout', '$parse', function($scope, $timeout, $parse) {
@@ -50,8 +61,8 @@ angular.module('app')
 			}],
 			link: function(scope, iElement, iAttrs, ctrl) {
 				setImmediate(function() {
-					var carousel = scope.$eval(iElement.parent().attr('var'));
-					scope.setupSlider(carousel, iElement[0].children[0], iAttrs.ngModel);
+					var carousel = scope.$eval(iAttrs.ngCarouselVar);
+					scope.setupSlider(carousel, iElement[0].children[0], iAttrs.ngTabModel);
 				});
 			}
 	}});

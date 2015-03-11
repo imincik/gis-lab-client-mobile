@@ -5,15 +5,16 @@
 }
 
 @-moz-document url-prefix() { 
-	.map-toolbar ons-scroller, .map-panel ons-scroller {
-		overflow: hidden!important;
+	ons-scroller {
+		xoverflow: hidden!important;
 	}
 }
 
 @media screen and (orientation: portrait) {
 	.ol-zoom {
 		right: 0.2em!important;
-		top: 3em!important;
+		xtop: 3em!important;
+		top: 0.2em!important;
 		left: auto!important;
 	}
 }
@@ -32,15 +33,15 @@
 
 .map-toolbar {
 	position: absolute;
-	top:2px;
-	left: 2px;
-	padding: 3px;
+	top:1px;
+	left: 1px;
+	padding: 1px;
 	border-radius: 4px;
 	background-color: rgba(255, 255, 255, 0.4);
 }
 
 .map-toolbar-horizontal ons-scroller {
-	height: 42px;
+	height: 40px;
 }
 
 .map-toolbar-horizontal .ons-scroller__content {
@@ -51,21 +52,67 @@
 }
 
 .map-toolbar-horizontal {
-	height: 36px;
+	height: 40px;
 }
 
 .map-toolbar-vertical {
+	width: 40px;
+}
+
+.map-toolbar .ons-icon {
 	width: 36px;
-	padding-bottom: 0px;
+	height: 36px;
+	vertical-align: middle;
+	line-height: 36px!important;
 }
-
-.map-toolbar .button {
-	vertical-align: baseline;
-}
-
 .map-toolbar ons-button {
-	line-height: 32px;
-	padding: 2px;
+	height: 36px;
+	padding: 0px;
+	margin: 2px;
+}
+
+.map-toolbar .fa {
+	width: 36px;
+	height: 36px;
+	text-align: center;
+	line-height: 36px!important;
+	font-size: 24px;
+}
+.ol-control button {
+	background-color: rgba(100, 100, 100, 0.8)!important;
+}
+.ol-control button:hover {
+	background-color: rgba(150, 150, 150, 0.8)!important;
+}
+.map-toolbar ons-button {
+	background-color: rgba(100, 100, 100, 0.8);
+}
+.map-toolbar .ng-click-active ons-icon {
+	background-color: rgba(100, 100, 100, 0.8)!important;
+}
+.map-toolbar ons-button.activated {
+	background-color: rgba(250, 20, 20, 0.4);
+}
+
+.map-toolbar input {
+	opacity: 0.001;
+	z-index: 1;
+	position: absolute;
+	left: 0px;
+	top: -6px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	width: 36px;
+	height: 36px;
+}
+
+:checked + ons-icon {
+	color: #7abfff;
+	background-color: rgba(250, 20, 20, 0.4);
+}
+:checked + ons-button {
+	color: #ff0000;
 }
 
 .ol-attribution ul {
@@ -82,29 +129,48 @@
 	border: 1px solid rgba(24,103,194,0.81);
 }
 
+.tab-bar--top {
+	border: none;
+	background-color: #ddd;
+}
 .tab-bar__button {
-	height: 42px;
+	height: 36px;
+	background-color: #ddd;
+}
+:checked + .tab-bar__button {
+	background-color: gray;
+}
+:checked + .tab-bar__button, :checked + .tab-bar__button .tab-bar__icon {
+	color: white;
 }
 .tab-bar {
-	height: 42px;
-	background-color: #ffffff;
+	height: 36px;
+	
 }
 .tab-bar__button {
 	color: #444;
+	border-right: 1px solid gray;
 }
 .tab-bar__label {
-	font-weight: 500!important;
-	font-size: 13px!important;
+	font-size: 12px!important;
 }
 .tab-bar__icon {
-	height: 28px;
+	width: 100%;
+	height: 20px;
+	color: gray;
+	line-height: 20px;
+	vertical-align:top;
+}
+.tab-bar__icon::before {
+	line-height: 0px!important;
+}
+.carousel-slider-bg {
+	background-color: #ddd;
+	border-bottom: 1px solid gray;
 }
 .carousel-slider {
-	position: relative;
-	top: 0px;
-	height: 4px;
-	width: 33%;
-	background-color: #7abfff;
+	height: 3px;
+	background-color: white;
 	transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s;
 }
 
@@ -125,18 +191,18 @@
 .left {
 	text-align: left;
 }
-span.ivh-treeview-node-label.ivh-treeview-toggle {
+span.ivh-treeview-node-label {
 	font-size: 15px!important;
-	display: table-cell;
+	padding-left: 5px;
 }
 span.ivh-treeview-toggle {
 	display: table-cell;
 	vertical-align:middle;
 }
+
 span[ivh-treeview-checkbox="node"] {
 	display: table-cell;
-	padding: 1px 5px 1px 5px!important;
-	vertical-align:middle;
+	vertical-align: middle;
 }
 
 .my-grid {
@@ -161,6 +227,7 @@ span[ivh-treeview-checkbox="node"] {
 }
 .angular-ui-tree-handle:hover {
 }
+
 .angular-ui-tree-placeholder {
 	background: #f0f9ff;
 	border: 2px dashed #bed2db;
@@ -172,12 +239,14 @@ span[ivh-treeview-checkbox="node"] {
 .btn {
 	width: 25px;
 }
+
 .ivh-treeview ul, ul.ivh-treeview {
 	list-style-type: none;
 }
 
 ul.ivh-treeview {
 	padding-left: 5px;
+	margin: 0;
 }
 ul.ivh-treeview.ng-scope {
 	padding-left: 20px;
@@ -189,27 +258,18 @@ div.page__content {
 
 div.legend-container {
 	background-color: white;
+	height: auto;
 }
 img.legend-item {
 	display: block;
 }
 
-.ivh-treeview li {
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-.ivh-treeview input[type="checkbox"] {
-	width: 25px;
-	height: 25px;
-}
 
-x.ivh-treeview-twistie-leaf div {
-	margin-top: 20px;
-}
-
-.checkbox {
-	margin-top: 0px;
+.checkbox, .radio-button {
+	margin-top: 1px;
 	margin-bottom: 1px;
+	line-height: 1;
+	padding-left: 5px;
 }
 
 
@@ -219,11 +279,33 @@ x.ivh-treeview-twistie-leaf div {
 	margin: 10px;
 }
 
-li.depth-2 {
+.depth-2 {
 	padding-left: 15px;
+	xwidth: 90%;
 }
-li.depth-3 {
+.depth-3 {
 	padding-left: 30px;
+	xwidth: 90%;
+}
+
+
+.ivh-treeview-twistie-leaf {
+	line-height: 1;
+	display: table-cell;
+	vertical-align: middle;
+}
+.ivh-treeview-twistie-expanded, .ivh-treeview-twistie-collapsed {
+	vertical-align: middle;
+}
+
+.ivh-treeview-twistie {
+	height: 40px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.ivh-treeview-twistie, span[ivh-treeview-checkbox="node"] {
+	color: gray;
 }
 
 .point-layer-icon, .point-layer-icon-queryable, .line-layer-icon, .line-layer-icon-queryable, .polygon-layer-icon, .polygon-layer-icon-queryable, .raster-layer-icon {
@@ -303,4 +385,81 @@ xx.webgis-button {
 	width: 26px;
 	background: rgba(0,60,136,0.5);
 	padding-top: 4px;
+}
+
+.ui-grid-render-container, .ui-grid-viewport {
+	height: 100%!important;
+}
+.ui-grid-header-cell {
+	font-size: 13px;
+}
+.ui-grid-row {
+	font-size: 14px;
+}
+.ui-grid-column-menu-button-last-col {
+	margin-right: 0px;
+}
+
+
+.radio-button__icon-checkmark::before, .checkbox__icon-checkmark::before {
+	width: 28px;
+	height: 28px;
+	content: "\f3a6";
+	text-align: center;
+	display: inline-block;
+	font-family: "Ionicons";
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	font-size: 28px;
+	text-rendering: auto;
+	text-transform: none;
+}
+.radio-button > input[type="radio"]:checked + .radio-button__icon-checkmark::before {
+	content: "\f3a7";
+}
+.checkbox > input[type="checkbox"]:checked + .checkbox__icon-checkmark::before {
+	content: "\f120";
+}
+.checkbox > input[type="checkbox"]:indeterminate + .checkbox__icon-checkmark::before {
+	content: "\f275";
+}
+
+.scroll-top-indicator-bg {
+	width: 36px;
+	height: 26px;
+	background: -moz-linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8), transparent);
+	background: -webkit-linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8), transparent);
+	position: absolute;
+	pointer-events: none;
+	left: 3px;
+	top: 1px;
+}
+.scroll-bottom-indicator-bg {
+	width: 36px;
+	height: 26px;
+	background: -moz-linear-gradient(transparent, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1));
+	background: -webkit-linear-gradient(transparent, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1));
+	position: absolute;
+	pointer-events: none;
+	left: 3px;
+	bottom: 2px;
+}
+.map-toolbar .ons-icon.scroll-top-indicator {
+	height: 25px;
+	position: absolute;
+	left: 0;
+	top: -6px;
+	line-height: 25px!important;
+	pointer-events: none;
+	font-size: 25px;
+}
+.map-toolbar .ons-icon.scroll-bottom-indicator {
+	height: 25px;
+	position: absolute;
+	left: 0;
+	bottom: -6px;
+	pointer-events: none;
+	font-size: 25px;
+	line-height: 25px!important;
 }

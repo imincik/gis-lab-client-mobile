@@ -29,38 +29,37 @@
 		</label>
 
 	</div>
-
-	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ mapHeight }}px" swipeable overscrollable auto-scroll>
-		<ons-carousel-cover ng-model="ui.panel_tab" ng-carousel-slider></ons-carousel-cover>
+	<ng-carousel-tab-slider ng-tab-model="ui.panel_tab" ng-carousel-var="app.panel.carousel"></ng-carousel-tab-slider>
+	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
 		<ons-carousel-item>
-			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
+			<ons-scroller style="height: {{ panelHeight }}px;">
 				<div class="baselayer-container">
-					<ul class="list">
-						<li class="{{ layer.isGroup? 'list__header' : 'list__item' }} list__item--chevron depth-{{ layer.depth }}" ng-click="layer.isGroup || (setBaseLayer(layer) || app.navi.popPage('base_layer.html'))" ng-repeat="layer in baseLayersList">
-							{{ layer.title }}
-						</li>
-					</ul>
-				</div>
-			</ons-scroller>
-		</ons-carousel-item>
-
-		<ons-carousel-item>
-			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
-				<div class="layers-container">
-<!--					<ons-list>-->
-<!--						<ons-list-item ng-click="panel.carousel.setActiveCarouselItemIndex(0);" modifier="chevron" ng-bind="baseLayer.title"></ons-list-item>-->
-<!--					</ons-list>-->
 					<div
-						ivh-treeview="layers"
-						ivh-treeview-change-handler="layersVisibilityChanged"
-						ivh-treeview-expand-to-depth="-1">
+						ivh-treeview="baseLayers"
+						ivh-treeview-change-handler="baseLayerChanged"
+						ivh-treeview-expand-to-depth="-1"
+						ivh-treeview-options="baseLayersTreeOptions">
 					</div>
 				</div>
 			</ons-scroller>
 		</ons-carousel-item>
 
 		<ons-carousel-item>
-			<ons-scroller style="height: {{ panelHeight }}px; border-bottom: 1px solid #ccc; background-color: white;">
+			<ons-scroller style="height: {{ panelHeight }}px;">
+				<div class="layers-container">
+					<div
+						ivh-treeview="layers"
+						ivh-treeview-change-handler="layersVisibilityChanged"
+						ivh-treeview-expand-to-depth="-1"
+						ivh-treeview-options="layersTreeOptions"
+						>
+					</div>
+				</div>
+			</ons-scroller>
+		</ons-carousel-item>
+
+		<ons-carousel-item>
+			<ons-scroller style="height: {{ panelHeight }}px;">
 				<div class="legend-container">
 					<img class="legend-item" ng-repeat="layer in layersList" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
 				</div>

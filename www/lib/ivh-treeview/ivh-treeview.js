@@ -16,9 +16,8 @@ angular.module('ivh.treeview', []);
  * @copyright 2014 iVantage Health Analytics, Inc.
  */
 
-angular.module('ivh.treeview').directive('ivhTreeviewCheckbox', ['ivhTreeviewOptions', function(ivhTreeviewOptions) {
+angular.module('ivh.treeview').directive('ivhTreeviewCheckbox', [function() {
   'use strict';
-  //console.log(ivhTreeviewOptions().checkBoxTpl);
   return {
     restrict: 'A',
     scope: {
@@ -52,6 +51,11 @@ angular.module('ivh.treeview').directive('ivhTreeviewCheckbox', ['ivhTreeviewOpt
       });
     },
     template: [
+      '<label class="checkbox"><input type="checkbox"',
+        'ng-model="isSelected"',
+        'ng-change="ctrl.select(node, isSelected)" />'+'<div class="checkbox__icon-checkmark"></div></label>'
+    ].join('\n'),
+    template1: [
       '<div class="checkbox"><input type="checkbox"',
         'ng-model="isSelected"',
         'ng-change="ctrl.select(node, isSelected)" />'+'<div class="checkbox__checkmark" /></div>'
@@ -113,17 +117,7 @@ angular.module('ivh.treeview').directive('ivhTreeviewNode', ['ivhTreeviewCompile
       '<div>',
         '<div>',
           '<span ivh-treeview-toggle="node">',
-            '<span class="ivh-treeview-twistie">',
-              '<span class="ivh-treeview-twistie-expanded">',
-                ivhTreeviewOptions().twistieExpandedTpl,
-              '</span>',
-              '<span class="ivh-treeview-twistie-collapsed">',
-                ivhTreeviewOptions().twistieCollapsedTpl,
-              '</span>',
-              '<span class="ivh-treeview-twistie-leaf">',
-                ivhTreeviewOptions().twistieLeafTpl,
-              '</span>',
-            '</span>',
+            '<span ivh-treeview-twistie></span>',
           '</span>',
           '<span ng-if="ctrl.useCheckboxes()"',
               'ivh-treeview-checkbox="node">',
@@ -180,6 +174,79 @@ angular.module('ivh.treeview').directive('ivhTreeviewToggle', [function() {
 
 
 /**
+ * Treeview twistie directive
+ *
+ * @private
+ * @package ivh.treeview
+ * @copyright 2014 iVantage Health Analytics, Inc.
+ */
+
+angular.module('ivh.treeview').directive('ivhTreeviewTwistie', ['$compile', 'ivhTreeviewOptions', function($compile, ivhTreeviewOptions) {
+  'use strict';
+
+  var globalOpts = ivhTreeviewOptions();
+
+  return {
+    restrict: 'A',
+    require: '^ivhTreeview',
+    template: [
+      '<span class="ivh-treeview-twistie">',
+        '<span class="ivh-treeview-twistie-collapsed">',
+          globalOpts.twistieCollapsedTpl,
+        '</span>',
+        '<span class="ivh-treeview-twistie-expanded">',
+          globalOpts.twistieExpandedTpl,
+        '</span>',
+        '<span class="ivh-treeview-twistie-leaf">',
+          globalOpts.twistieLeafTpl,
+        '</span>',
+      '</span>'
+    ].join('\n'),
+    link: function(scope, element, attrs, ctrl) {
+
+      if(!ctrl.hasLocalTwistieTpls) {
+        return;
+      }
+
+      var opts = ctrl.opts()
+        , $twistieContainers = element
+          .children().eq(0) // Template root
+          .children(); // The twistie spans
+      
+      angular.forEach([
+        // Should be in the same order as elements in template
+        'twistieCollapsedTpl', 
+        'twistieExpandedTpl',
+        'twistieLeafTpl'
+      ], function(tplKey, ix) {
+        var tpl = opts[tplKey]
+          , tplGlobal = globalOpts[tplKey];
+
+        // Do nothing if we don't have a new template
+        if(!tpl || tpl === tplGlobal) {
+          return;
+        }
+
+        // Super gross, the template must actually be an html string, we won't
+        // try too hard to enforce this, just don't shoot yourself in the foot
+        // too badly and everything will be alright.
+        if(tpl.substr(0,1) !== '<' || tpl.substr(-1,1) !== '>') {
+          tpl = '<span>' + tpl + '</span>';
+        }
+
+        var $el = $compile(tpl)(scope)
+          , $container = $twistieContainers.eq(ix);
+
+        // Clean out global template and append the new one
+        $container.html('').append($el);
+      });
+
+    }
+  };
+}]);
+
+
+/**
  * The `ivh-treeview` directive
  *
  * A filterable tree view with checkbox support.
@@ -216,6 +283,9 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
       expandedAttribute: '=ivhTreeviewExpandedAttribute',
       labelAttribute: '=ivhTreeviewLabelAttribute',
       selectedAttribute: '=ivhTreeviewSelectedAttribute',
+      twistieCollapsedTpl: '=ivhTreeviewTwistieCollapsedTpl',
+      twistieExpandedTpl: '=ivhTreeviewTwistieExpandedTpl',
+      twistieLeafTpl: '=ivhTreeviewTwistieLeafTpl',
       useCheckboxes: '=ivhTreeviewUseCheckboxes',
       validate: '=ivhTreeviewValidate',
       visibleAttribute: '=ivhTreeviewVisibleAttribute',
@@ -244,6 +314,9 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
         'expandedAttribute',
         'labelAttribute',
         'selectedAttribute',
+        'twistieCollapsedTpl',
+        'twistieExpandedTpl',
+        'twistieLeafTpl',
         'useCheckboxes',
         'validate',
         'visibleAttribute'
@@ -257,6 +330,18 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
       ctrl.opts = function() {
         return localOpts;
       };
+
+      // If we didn't provide twistie templates we'll be doing a fair bit of
+      // extra checks for no reason. Let's just inform down stream directives
+      // whether or not they need to worry about twistie non-global templates.
+      var userOpts = $scope.userOptions || {};
+      ctrl.hasLocalTwistieTpls = !!(
+        userOpts.twistieCollapsedTpl ||
+        userOpts.twistieExpandedTpl ||
+        userOpts.twistieLeafTpl ||
+        $scope.twistieCollapsedTpl ||
+        $scope.twistieExpandedTpl ||
+        $scope.twistieLeafTpl);
 
       ctrl.children = function(node) {
         var children = node[localOpts.childrenAttribute];
