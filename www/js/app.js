@@ -219,7 +219,7 @@
 		$scope.updateScreenSize = function() {
 			$scope.screenWidth = document.body.clientWidth;
 			$scope.screenHeight = document.body.clientHeight;
-			$scope.panelHeight = document.body.clientHeight-40;
+			$scope.panelHeight = document.body.clientHeight-35;
 			$scope.mapWidth = document.body.clientWidth;
 			$scope.mapHeight = document.body.clientHeight;
 			/*

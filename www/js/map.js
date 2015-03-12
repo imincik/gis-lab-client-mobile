@@ -294,7 +294,9 @@ webgis.createMap = function(config) {
 		}),
 		controls: ol.control.defaults({
 			attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-				collapsible: true
+				collapsible: true,
+				label: '©',
+				//label: goog.dom.createDom(goog.dom.TagName.I, 'fa fa-copyright', ''),
 			})
 		}),
 		renderer: ol.RendererType.CANVAS
