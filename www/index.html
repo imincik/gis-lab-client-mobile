@@ -108,18 +108,23 @@ if (!String.prototype.format) {
 <!--				</ons-scroller>-->
 <!--			</div>-->
 			<div class="map-toolbar map-toolbar-vertical">
-				<ons-scroller id="tbs" style="max-height: {{ 300 }}px;">
+				<ons-scroller style="max-height: {{ mapHeight }}px;">
 
 					<ons-button ng-repeat="tool in toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">
 						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>
 						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>
 					</ons-button>
-					<div class="scroll-top-indicator-bg" ng-scroll-indicator="top">
-						<ons-icon class="scroll-top-indicator" icon="ion-android-arrow-dropup" size="28px" fixed-width="true"></ons-icon>
-					</div>
-					<div class="scroll-bottom-indicator-bg" ng-scroll-indicator="bottom">
-						<ons-icon class="scroll-bottom-indicator" icon="ion-android-arrow-dropdown" size="28px" fixed-width="true"></ons-icon>
-					</div>
+
+					<gl-scroll-indicator gl-orientation="top" gl-update-on="mapHeight">
+						<div class="scroll-top-indicator-bg" >
+							<ons-icon class="scroll-top-indicator" icon="ion-android-arrow-dropup" size="28px" fixed-width="true"></ons-icon>
+						</div>
+					</gl-scroll-indicator>
+					<gl-scroll-indicator gl-orientation="bottom" gl-update-on="mapHeight">
+						<div class="scroll-bottom-indicator-bg" gl-scroll-indicator="bottom">
+							<ons-icon class="scroll-bottom-indicator" icon="ion-android-arrow-dropdown" size="28px" fixed-width="true"></ons-icon>
+						</div>
+					</gl-scroll-indicator>
 				</ons-scroller>
 			</div>
 		</ons-page>
