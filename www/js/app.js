@@ -29,9 +29,7 @@
 		});
 	}]);
 
-
-	app.controller('PanelController', function($scope, $timeout) {
-		//console.log('PanelController');
+	app.controller('LayersPanelController', function($scope, $timeout) {
 		$scope.ui.tabs.layers = 0;
 		$scope.baseLayers.treeOptions = {
 			expandToDepth: -1,
@@ -49,7 +47,6 @@
 			twistieLeafTpl: '<span class="{{ node.geom_type | lowercase }}-layer-icon"></span>',
 		};
 	});
-
 	app.controller('SettingsController', function($scope, WebGIS) {
 		console.log('SettingsController');
 		$scope.ui.tabs.server = 0;
@@ -76,12 +73,12 @@
 		$scope.project = {};
 		$scope.$storage = $localStorage;
 
-		$scope.toolbar = [
+		$scope.ui.toolbar = [
 			{
 				icon: 'ion-images'
 			}, {
 				icon: 'ion-social-buffer',
-				page: 'pages/panel.html',
+				page: 'pages/layers_panel.html',
 				persistent: true,
 			}, {
 				icon: 'ion-qr-scanner',
@@ -113,7 +110,7 @@
 			if (tool.page) {
 				if (!tool.activated) {
 					var switchTool = false;
-					$scope.toolbar.forEach(function(item) {
+					$scope.ui.toolbar.forEach(function(item) {
 						if (item.page && item.activated) {
 							item.activated = false;
 							switchTool = true;

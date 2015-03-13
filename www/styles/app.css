@@ -136,7 +136,7 @@
 	background-color: #ddd;
 }
 .tab-bar__button {
-	height: 32px;
+	height: 33px;
 	background-color: #ddd;
 }
 :checked + .tab-bar__button {
@@ -146,10 +146,10 @@
 	color: white;
 }
 .tab-bar {
-	height: 32px;
+	height: 33px;
 }
 .tab-bar__button {
-	border-right: 1px solid gray;
+	xborder-right: 1px solid gray;
 	color: #555;
 }
 .tab-bar__label {
