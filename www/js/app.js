@@ -32,7 +32,7 @@
 
 	app.controller('PanelController', function($scope, $timeout) {
 		//console.log('PanelController');
-		$scope.ui = {panel_tab: 0};
+		$scope.ui.tabs.layers = 0;
 		$scope.baseLayers.treeOptions = {
 			expandToDepth: -1,
 			useCheckboxes: false,
@@ -52,29 +52,29 @@
 
 	app.controller('SettingsController', function($scope, WebGIS) {
 		console.log('SettingsController');
+		$scope.ui.tabs.server = 0;
+		$scope.ui.tabs.project = 0;
+	});
+	app.controller('ProjectSettingsController', function($scope, WebGIS) {
 		WebGIS.userProjects($scope.$storage.serverUrl)
 				.success(function(data, status, headers, config) {
-					console.log(data);
-					if (angular.isArray(data) && data.length) {
-						$scope.myProjects.length = 0;
-						Array.prototype.push.apply($scope.myProjects, data);
+					if (angular.isArray(data)) {
+						$scope.project.myProjects = data;
 					}
 				})
 				.error(function(data, status, headers, config) {
 					console.log('error: '+status);
 				});
 	});
-
 	app.controller('AppController', function($scope, $localStorage, WebGIS) {
 		console.log("AppController");
-		$scope.settings = {
-			server_tab: 1,
-			project_tab: '1'
+		$scope.ui = {
+			tabs: {}
 		};
 		$scope.baseLayers = {selected: {}};
 		$scope.layers = {};
+		$scope.project = {};
 		$scope.$storage = $localStorage;
-		$scope.myProjects = [];
 
 		$scope.toolbar = [
 			{
@@ -140,7 +140,6 @@
 		ons.ready(function() {
 			console.log('ons ready');
 			$scope.updateScreenSize();
-			//return;
 			if ($scope.$storage.project) {
 				if ($scope.$storage.serverUrl && $scope.$storage.username) {
 					WebGIS.login($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password)
@@ -172,23 +171,13 @@
 		});
 
 		$scope.updateScreenSize = function() {
-			$scope.screenWidth = document.body.clientWidth;
-			$scope.screenHeight = document.body.clientHeight;
 			$scope.panelHeight = document.body.clientHeight-36;
 			$scope.mapWidth = document.body.clientWidth;
 			$scope.mapHeight = document.body.clientHeight;
-			/*
-			switch (window.orientation) {
-				case 0: // Portrait Mode
-					break;
-				case 90: // Landscape Mode
-					break;
-				default:
-			}*/
+
 		};
 
 		$scope.setBaseLayer = function(layername) {
-			console.log('AppController: setBaseLayer');
 			if (!$scope.olMap) return;
 			$scope.olMap.getLayers().forEach(function (layer) {
 				if (layer.get('type') === 'baselayer') {
@@ -205,15 +194,13 @@
 			$scope.setBaseLayer(layername);
 		});
 		$scope.layersVisibilityChanged = function(node) {
-			console.log('XXXX');
 			var visible_layers = [];
 			$scope.layers.list.forEach(function(layer_data) {
 				if (!layer_data.isGroup && layer_data.visible) {
 					visible_layers.push(layer_data.name);
 				}
 			});
-			//console.log(visible_layers);
-			$scope.olMap.getLayer("qgislayer").setLayers(visible_layers);
+			$scope.olMap.getLayer('qgislayer').setLayers(visible_layers);
 		};
 
 		$scope.loadProject = function(project) {
@@ -260,9 +247,9 @@
 								attributions[layer_data.name] = new ol.Attribution({html: attribution_html});
 							}
 						});
-						$scope.olMap.getLayer("qgislayer").setLayersAttributions(attributions);
+						$scope.olMap.getLayer('qgislayer').setLayersAttributions(attributions);
 						$scope.layersVisibilityChanged({});
-						var legends_urls = $scope.olMap.getLayer("qgislayer").getLegendUrls($scope.olMap.getView());
+						var legends_urls = $scope.olMap.getLayer('qgislayer').getLegendUrls($scope.olMap.getView());
 						$scope.layers.list.forEach(function(layer_data) {
 							layer_data.legendUrl = legends_urls[layer_data.name];
 						});

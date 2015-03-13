@@ -2,7 +2,7 @@
 	<div class="tab-bar tab-bar--top">
 
 		<label class="tab-bar__item">
-			<input type="radio" name="panel-tab-radio" value="0" ng-model="ui.panel_tab">
+			<input type="radio" name="layers-tab-radio" value="0" ng-model="ui.tabs.layers">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-android-map"></i>
 				<div class="tab-bar__label">Base layer</div>
@@ -10,26 +10,23 @@
 		</label>
 
 		<label class="tab-bar__item">
-			<input type="radio" name="panel-tab-radio" value="1" ng-model="ui.panel_tab">
+			<input type="radio" name="layers-tab-radio" value="1" ng-model="ui.tabs.layers">
 			<button class="tab-bar__button">
-<!--				<i class="tab-bar__icon ion-drag"></i>-->
 				<i class="tab-bar__icon ion-social-buffer"></i>
-<!--				<i class="tab-bar__icon ion-ios-photos"></i>-->
 				<div class="tab-bar__label">Layers</div>
 			</button>
 		</label>
 
 		<label class="tab-bar__item">
-			<input type="radio" name="panel-tab-radio" value="2" ng-model="ui.panel_tab">
+			<input type="radio" name="layers-tab-radio" value="2" ng-model="ui.tabs.layers">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-android-color-palette"></i>
-<!--				<i class="tab-bar__icon ion-ios-list"></i>-->
 				<div class="tab-bar__label">Legend</div>
 			</button>
 		</label>
 
 	</div>
-	<ng-carousel-tab-slider ng-tab-model="ui.panel_tab" ng-carousel-var="app.panel.carousel"></ng-carousel-tab-slider>
+	<ng-carousel-tab-slider ng-tab-model="ui.tabs.layers" ng-carousel-var="app.panel.carousel"></ng-carousel-tab-slider>
 	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px;">

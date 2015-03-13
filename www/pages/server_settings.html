@@ -9,19 +9,19 @@
 			<!-- segment control -->
 			<div class="button-bar" style="width:300px; margin:8px auto 0;">
 				<div class="button-bar__item">
-					<input type="radio" name="server-tab" value="1" ng-model="settings.server_tab">
+					<input type="radio" name="server-tab" value="0" ng-model="ui.tabs.server">
 					<div class="button-bar__button">Current</div>
 				</div>
 				<div class="button-bar__item">
-					<input type="radio" name="server-tab" value="2" ng-model="settings.server_tab">
+					<input type="radio" name="server-tab" value="1" ng-model="ui.tabs.server">
 					<div class="button-bar__button">History</div>
 				</div>
 			</div>
 
 		</div>
 	</div>
-	<ons-list ng-switch="settings.server_tab">
-		<ons-list ng-switch-when="1">
+	<ons-list ng-switch="ui.tabs.server">
+		<ons-list ng-switch-when="0">
 			<ons-list-item>
 				<ons-row>
 					<ons-col width="38px">
@@ -53,7 +53,7 @@
 				</ons-row>
 			</ons-list-item>
 		</ons-list>
-		<ons-list ng-switch-when="2">
+		<ons-list ng-switch-when="1">
 			<ons-list-item ng-repeat="project in $storage.serversHistory" modifier="chevron" ng-click="app.navigator.popPage();loadProject(project);">
 				{{ project }}
 			</ons-list-item>

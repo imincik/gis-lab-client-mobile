@@ -65,7 +65,7 @@ if (!String.prototype.format) {
 
 	<ons-template id="map_container.html">
 		<ons-page>
-			<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
+			<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;">
 				<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="panel_tab_container.html" max-slide-distance="261px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
 				</ons-sliding-menu>
 			</div>
@@ -79,20 +79,10 @@ if (!String.prototype.format) {
 	</ons-template>
 
 	<ons-template id="panel_tab_container.html">
-
 		<ons-tabbar var="app.panel.tabbar" animation="slide" hide-tabs="true">
 			<ons-tab ng-repeat="tool in toolbar | filter:{page:''}" page="{{ tool.page }}" ng-con-attr="{persistent: {{ tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
 			</ons-tab>
 		</ons-tabbar>
-
-<!--		<ons-tabbar var="app.panel.tabbar" animation="fade" hide-tabs="true">-->
-<!--			<ons-tab ng-repeat="tool in toolbar" ng-switch on="tool.persistent">-->
-<!--				<ons-tab ng-switch-when="true" page="{{ tool.page }}" persistent no-reload></ons-tab>-->
-<!--				<ons-tab ng-switch-default page="{{ tool.page }}" no-reload></ons-tab>-->
-<!--			</ons-tab>-->
-<!--		</ons-tabbar>-->
-
-
 	</ons-template>
 
 	<ons-template id="map.html">
@@ -200,7 +190,7 @@ if (!String.prototype.format) {
 	</ons-template>
 
 	<ons-template id="settings.html">
-		<ons-page>
+		<ons-page ng-controller="SettingsController">
 			<ons-toolbar fixed-style>
 				<div class="left"><ons-back-button>Back</ons-back-button></div>
 				<div class="center">Settings</div>

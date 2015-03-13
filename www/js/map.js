@@ -156,10 +156,10 @@ ol.layer.WebgisWmsLayer.prototype.getLegendUrls = function(view) {
 }
 
 
-ol.Map.prototype.getLayer = function (type) {
+ol.Map.prototype.getLayer = function (name) {
 	var layer;
 	this.getLayers().forEach(function (l) {
-		if (type == l.get('type')) {
+		if (name == l.get('name')) {
 			layer = l;
 		}
 	});
@@ -238,8 +238,8 @@ webgis.createBaseLayer = function(config) {
 		});
 	}
 	if (base_layer) {
-		base_layer.set("type", "baselayer");
-		base_layer.set("name", config.name);
+		base_layer.set('type', 'baselayer');
+		base_layer.set('name', config.name);
 	}
 	return base_layer;
 };
@@ -287,7 +287,8 @@ webgis.createMap = function(config) {
 				extent: config.project_extent,
 			});
 		}
-		overlays_layer.set("type", "qgislayer");
+		overlays_layer.set('type', 'qgislayer');
+		overlays_layer.set('name', 'qgislayer');
 	}
 	var layers = [];
 	var base_layers_configs = webgis.layersTreeToList({layers: config.base_layers}, true);
