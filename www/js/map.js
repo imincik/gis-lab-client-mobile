@@ -176,7 +176,7 @@ ol.View.prototype.getScale = function () {
 }
 
 
-webgis.layersTreeToList = function(layers_tree) {
+webgis.layersTreeToList = function(layers_tree, skip_groups) {
 	var list = [];
 	var visit_node = function(list, layer_data, depth) {
 		if (!depth) {
@@ -186,7 +186,7 @@ webgis.layersTreeToList = function(layers_tree) {
 		//layer_data.title += 'asdsfsfsd f sefeert ter';
 		layer_data.depth = depth;
 		if (layer_data.layers) {
-			if (layer_data.title) {
+			if (!skip_groups && layer_data.title) {
 				layer_data.isGroup = true;
 				list.push(layer_data);
 			}
@@ -207,6 +207,44 @@ webgis.layersTreeToList = function(layers_tree) {
 	visit_node(list, layers_tree);
 	return list;
 };
+
+webgis.createBaseLayer = function(config) {
+	var base_layer;
+	if (config.type === 'BLANK') {
+		base_layer = new ol.layer.Image({
+			extent: config.extent,
+			visible: config.visible
+		});
+	} else if (config.type === 'OSM') {
+		base_layer = new ol.layer.Tile({
+			source: new ol.source.OSM(),
+			extent: config.extent,
+			visible: config.visible
+		});
+	} else if (config.type === 'WMS') {
+		base_layer = new ol.layer.Image({
+			source: new ol.source.ImageWMS({
+				url: config.url,
+				resolutions: config.resolutions,
+				params: {
+					'LAYERS': config.wms_layers.join(','),
+					'FORMAT': config.format,
+					'TRANSPARENT': 'false'
+				},
+				serverType: ol.source.wms.ServerType.MAPSERVER,
+				//attributions: [new ol.Attribution({html: '<p>bla bla</p>'})]
+			}),
+			extent: config.extent
+		});
+	}
+	if (base_layer) {
+		base_layer.set("type", "baselayer");
+		base_layer.set("name", config.name);
+	}
+	return base_layer;
+};
+
+
 webgis.createMap = function(config) {
 	// overlay layers
 	if (config.layers) {
@@ -251,38 +289,19 @@ webgis.createMap = function(config) {
 		}
 		overlays_layer.set("type", "qgislayer");
 	}
-	config.base_layers
-	var base_layer = new ol.layer.Tile({
-		source: new ol.source.OSM(),
-		extent: config.project_extent,
+	var layers = [];
+	var base_layers_configs = webgis.layersTreeToList({layers: config.base_layers}, true);
+	base_layers_configs.forEach(function(baselayer_config) {
+		var base_layer = webgis.createBaseLayer(baselayer_config);
+		if (base_layer) {
+			layers.push(base_layer);
+		}
 	});
 
-	var layer_data = config.base_layers[0];
-	if (layer_data && layer_data.url) {
-		var base_wms_layer = new ol.layer.Image({
-			source: new ol.source.ImageWMS({
-				url: layer_data.url,
-				resolutions: layer_data.resolutions,
-				params: {
-					'LAYERS': layer_data.wms_layers.join(','),
-					'FORMAT': layer_data.format,
-					'TRANSPARENT': 'false'
-				},
-				serverType: ol.source.wms.ServerType.MAPSERVER,
-				//attributions: [new ol.Attribution({html: '<p>bla bla</p>'})]
-			}),
-			extent: layer_data.extent
-		});
-	}
-
-	base_layer.set("type", "baselayer");
+	layers.push(overlays_layer);
 	var map = new ol.Map({
 		target: config.target,
-		layers: [
-			base_layer,
-			//base_wms_layer,
-			overlays_layer
-		],
+		layers: layers,
 		view: new ol.View({
 			projection: new ol.proj.Projection({
 				code: config.projection.code,

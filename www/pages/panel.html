@@ -35,10 +35,8 @@
 			<ons-scroller style="height: {{ panelHeight }}px;">
 				<div class="baselayer-container">
 					<div
-						ivh-treeview="baseLayers"
-						ivh-treeview-change-handler="baseLayerChanged"
-						ivh-treeview-expand-to-depth="-1"
-						ivh-treeview-options="baseLayersTreeOptions">
+						ivh-treeview="baseLayers.tree"
+						ivh-treeview-options="baseLayers.treeOptions">
 					</div>
 				</div>
 			</ons-scroller>
@@ -48,10 +46,9 @@
 			<ons-scroller style="height: {{ panelHeight }}px;">
 				<div class="layers-container">
 					<div
-						ivh-treeview="layers"
+						ivh-treeview="layers.tree"
 						ivh-treeview-change-handler="layersVisibilityChanged"
-						ivh-treeview-expand-to-depth="-1"
-						ivh-treeview-options="layersTreeOptions"
+						ivh-treeview-options="layers.treeOptions"
 						>
 					</div>
 				</div>
@@ -61,7 +58,7 @@
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px;">
 				<div class="legend-container">
-					<img class="legend-item" ng-repeat="layer in layersList" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
+					<img class="legend-item" ng-repeat="layer in layers.list" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
 				</div>
 			</ons-scroller>
 		</ons-carousel-item>

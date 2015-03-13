@@ -10,14 +10,9 @@
 			labelAttribute: 'title',
 			childrenAttribute: 'layers',
 			selectedAttribute: 'visible',
-			useCheckboxes: true,
-			expandToDepth: 0,
 			indeterminateAttribute: '__indeterminate',
-			defaultSelectedState: true,
-			validate: true,
 			twistieExpandedTpl: '<i class="fa fa-minus-square"></i>',
 			twistieCollapsedTpl: '<i class="fa fa-plus-square"></i>',
-			//twistieLeafTpl: '<div class="{{ node.geom_type | lowercase }}-layer-icon"></div>',
 		});
 	});
 	app.config(['$httpProvider', function($httpProvider) {
@@ -34,35 +29,23 @@
 		});
 	}]);
 
-	app.controller('MapController', function($scope, $timeout) {
-		console.log('MapController');
-		$scope.setupScrollIndicator = function() {
-			console.log('setupScrollIndicator');
-			/*
-			$scope.$parent.$watch('mapHeight', function(value) {
-				console.log('mapHeight '+value);
-				$timeout(function() {
-					$scope.updateScrollIndicator();
-				}, 100);
-			})
-			$scope.updateScrollIndicator();
-			*/
-		};
-	});
 
 	app.controller('PanelController', function($scope, $timeout) {
 		//console.log('PanelController');
 		$scope.ui = {panel_tab: 0};
-		$scope.baseLayersTreeOptions = {
+		$scope.baseLayers.treeOptions = {
+			expandToDepth: -1,
 			useCheckboxes: false,
-			//labelAttribute: '',
-			twistieLeafTpl: '<label class="radio-button"><input type="radio" name="a"><div class="radio-button__icon-checkmark"></div></label>',
-			//twistieLeafTpl: '<span class="point-layer-icon"></span>',
-			//twistieLeafTpl: '<div><label class="radio-button"><input type="radio" name="a"><ons-icon class="radio-button__icon-checkmark" size="28px" fixed-width="true"></ons-icon></label></div>',
-			//twistieLeafTpl: '<div><label class="radio-button"><input type="radio" name="a"><ons-icon icon="ion-android-radio-button-on" size="28px" fixed-width="true"></ons-icon></label></div>',
+			twistieLeafTpl:
+				'<label class="radio-button">\
+					<input type="radio" name="baselayer-radio" value="{{ node.name }}" ng-model="node.selected.name"></input>\
+					<div class="radio-button__icon-checkmark"></div>\
+				</label>',
 		};
-		$scope.layersTreeOptions = {
+		$scope.layers.treeOptions = {
+			expandToDepth: -1,
 			useCheckboxes: true,
+			validate: true,
 			twistieLeafTpl: '<span class="{{ node.geom_type | lowercase }}-layer-icon"></span>',
 		};
 	});
@@ -83,12 +66,13 @@
 	});
 
 	app.controller('AppController', function($scope, $localStorage, WebGIS) {
-		$scope.mapInitialized = false;
 		console.log("AppController");
 		$scope.settings = {
 			server_tab: 1,
 			project_tab: '1'
 		};
+		$scope.baseLayers = {selected: {}};
+		$scope.layers = {};
 		$scope.$storage = $localStorage;
 		$scope.myProjects = [];
 
@@ -123,35 +107,6 @@
 				page: 'menu.html'
 			}
 		];
-		
-		$scope.xtoolTaped = function(tool) {
-			console.log(tool);
-			if (tool.page) {
-				if (!tool.activated) {
-					var switchTool = false;
-					$scope.toolbar.forEach(function(item) {
-						if (item.page && item.activated) {
-							item.activated = false;
-							switchTool = true;
-						}
-					});
-					if ($scope.app.panel.navigator.getCurrentPage().page != tool.page) {
-						var options = {animation: 'none'};
-						if ($scope.app.menu.isMenuOpened()) {
-							options.animation = 'slide';
-						}
-						$scope.app.panel.navigator.resetToPage(tool.page, options);
-					}
-					if (!switchTool) {
-						$scope.app.menu.openMenu({autoCloseDisabled: true});
-					}
-				} else {
-					$scope.app.menu.closeMenu();
-				}
-				//$scope.app.menu.toggleMenu();
-				tool.activated = !tool.activated;
-			}
-		}
 
 		$scope.toolTaped = function(tool) {
 			//console.log(tool);
@@ -219,7 +174,7 @@
 		$scope.updateScreenSize = function() {
 			$scope.screenWidth = document.body.clientWidth;
 			$scope.screenHeight = document.body.clientHeight;
-			$scope.panelHeight = document.body.clientHeight-35;
+			$scope.panelHeight = document.body.clientHeight-36;
 			$scope.mapWidth = document.body.clientWidth;
 			$scope.mapHeight = document.body.clientHeight;
 			/*
@@ -232,19 +187,27 @@
 			}*/
 		};
 
-		$scope.baseLayer = {title: 'Select base layer'};
-		$scope.setBaseLayer = function(layer) {
-			console.log('setBaseLayer');
-			console.log(layer);
-			$scope.baseLayer = layer;
+		$scope.setBaseLayer = function(layername) {
+			console.log('AppController: setBaseLayer');
+			if (!$scope.olMap) return;
+			$scope.olMap.getLayers().forEach(function (layer) {
+				if (layer.get('type') === 'baselayer') {
+					if (layer.getVisible() && layer.get('name') !== layername) {
+						layer.setVisible(false);
+					}
+					if (!layer.getVisible() && layer.get('name') === layername) {
+						layer.setVisible(true);
+					}
+				}
+			});
 		};
-
-		$scope.layers = {};
-		$scope.layersList = [];
-
+		$scope.$watch('baseLayers.selected.name', function(layername) {
+			$scope.setBaseLayer(layername);
+		});
 		$scope.layersVisibilityChanged = function(node) {
+			console.log('XXXX');
 			var visible_layers = [];
-			$scope.layersList.forEach(function(layer_data) {
+			$scope.layers.list.forEach(function(layer_data) {
 				if (!layer_data.isGroup && layer_data.visible) {
 					visible_layers.push(layer_data.name);
 				}
@@ -258,31 +221,10 @@
 			$scope.$storage.project = project;
 			WebGIS.project($scope.$storage.serverUrl, project)
 				.success(function(data, status, headers, config) {
-					var controls = [
-						new ol.control.ButtonControl({
-							className: 'webgis-button panel',
-							html: '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-navicon" style="font-size:20px;"></i></span>',
-							callback: function(e) {
-								$scope.$apply(function() {
-									$scope.app.menu.toggleMenu({autoCloseDisabled: true});
-								});
-							}
-						}),
-						new ol.control.ButtonControl({
-							className: 'webgis-button menu',
-							html: '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-navicon" style="font-size:20px;"></i></span>',
-							callback: function(e) {
-								$scope.$apply(function() {
-									$scope.app.menu2.toggleMenu();
-								});
-							}
-						})
-					];
 					var webgis = angular.module('webgis');
 					data.target = 'map';
 					var olMap = webgis.createMap(data);
 					if (olMap) {
-						$scope.mapInitialized = true;
 						if (!$scope.$storage.recentProjects) {
 							$scope.$storage.recentProjects = [data.project];
 						} else {
@@ -302,13 +244,11 @@
 							$scope.olMap.dispose();
 						}
 						$scope.olMap = olMap;
-						//$scope.olMap.addControl(controls[0]);
-						//$scope.olMap.addControl(controls[1]);
 
-						$scope.layers = data.layers;
-						$scope.layersList = webgis.layersTreeToList({layers: $scope.layers});
+						$scope.layers.tree = data.layers;
+						$scope.layers.list = webgis.layersTreeToList({layers: $scope.layers.tree});
 						var attributions = {};
-						$scope.layersList.forEach(function(layer_data) {
+						$scope.layers.list.forEach(function(layer_data) {
 							var attribution = layer_data.attribution;
 							if (attribution) {
 								var attribution_html;
@@ -323,7 +263,7 @@
 						$scope.olMap.getLayer("qgislayer").setLayersAttributions(attributions);
 						$scope.layersVisibilityChanged({});
 						var legends_urls = $scope.olMap.getLayer("qgislayer").getLegendUrls($scope.olMap.getView());
-						$scope.layersList.forEach(function(layer_data) {
+						$scope.layers.list.forEach(function(layer_data) {
 							layer_data.legendUrl = legends_urls[layer_data.name];
 						});
 
@@ -346,9 +286,15 @@
 							{title: 'Third'},
 							{title: 'Fourth'},
 						];
-						//$scope.baseLayers = test_base_layers;
-						$scope.baseLayers = data.base_layers;
-						$scope.baseLayersList = webgis.layersTreeToList({layers: $scope.baseLayers});
+						//$scope.baseLayers.tree = test_base_layers;
+						$scope.baseLayers.tree = data.base_layers;
+						$scope.baseLayers.list = webgis.layersTreeToList({layers: $scope.baseLayers.tree});
+						$scope.baseLayers.list.forEach(function(base_layer) {
+							base_layer.selected = $scope.baseLayers.selected;
+							if (base_layer.visible) {
+								$scope.baseLayers.selected.name = base_layer.name;
+							}
+						});
 
 						// Project info
 						$scope.project = data;

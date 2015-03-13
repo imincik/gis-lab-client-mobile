@@ -50,16 +50,11 @@ angular.module('ivh.treeview').directive('ivhTreeviewCheckbox', [function() {
         element.find('input').prop('indeterminate', newVal);
       });
     },
-    template: [
-      '<label class="checkbox"><input type="checkbox"',
-        'ng-model="isSelected"',
-        'ng-change="ctrl.select(node, isSelected)" />'+'<div class="checkbox__icon-checkmark"></div></label>'
-    ].join('\n'),
-    template1: [
-      '<div class="checkbox"><input type="checkbox"',
-        'ng-model="isSelected"',
-        'ng-change="ctrl.select(node, isSelected)" />'+'<div class="checkbox__checkmark" /></div>'
-    ].join('\n')
+    template:
+      '<label class="checkbox">\
+          <input type="checkbox" ng-model="isSelected" ng-change="ctrl.select(node, isSelected)" />\
+          <div class="checkbox__icon-checkmark"></div>\
+      </label>',
   };
 }]);
 
