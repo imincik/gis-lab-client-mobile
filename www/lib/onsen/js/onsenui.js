@@ -13104,7 +13104,51 @@ limitations under the License.
     return TabbarFadeAnimator;
   }]);
 
-  module.factory('TabbarView', ['$onsen', '$compile', 'TabbarAnimator', 'TabbarNoneAnimator', 'TabbarFadeAnimator', function($onsen, $compile, TabbarAnimator, TabbarNoneAnimator, TabbarFadeAnimator) {
+  module.factory('TabbarSlideAnimator', ['TabbarAnimator', function(TabbarAnimator) {
+
+    var TabbarSlideAnimator = TabbarAnimator.extend({
+      /**
+       * @param {jqLite} enterPage
+       * @param {jqLite} leavePage
+       */
+      apply: function(enterPage, leavePage, done) {
+        animit.runAll(
+          animit(enterPage[0])
+            .queue({
+              transform: 'translate3D(100%, 0, 0)',
+              opacity: 1
+            })
+            .queue({
+              transform: 'translate3D(0, 0, 0)',
+              opacity: 1
+            }, {
+              duration: 0.2,
+              timing: 'linear'
+            })
+            .resetStyle()
+            .queue(function(callback) {
+              done();
+              callback();
+            }),
+          animit(leavePage[0])
+            .queue({
+              transform: 'translate3D(0, 0, 0)',
+              opacity: 1
+            })
+            .queue({
+              transform: 'translate3D(-100%, 0, 0)',
+              opacity: 1
+            }, {
+              duration: 0.2,
+              timing: 'linear'
+            })
+        );
+      }
+    });
+    return TabbarSlideAnimator;
+  }]);
+
+  module.factory('TabbarView', ['$onsen', '$compile', 'TabbarAnimator', 'TabbarNoneAnimator', 'TabbarFadeAnimator', 'TabbarSlideAnimator', function($onsen, $compile, TabbarAnimator, TabbarNoneAnimator, TabbarFadeAnimator, TabbarSlideAnimator) {
     var TabbarView = Class.extend({
       _tabbarId: undefined,
 
@@ -13408,7 +13452,8 @@ limitations under the License.
     TabbarView._animatorDict = {
       'default': new TabbarNoneAnimator(),
       'none': new TabbarNoneAnimator(),
-      'fade': new TabbarFadeAnimator()
+      'fade': new TabbarFadeAnimator(),
+      'slide': new TabbarSlideAnimator(),
     };
 
     /**
