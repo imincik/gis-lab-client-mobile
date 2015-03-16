@@ -9,18 +9,18 @@
 			<!-- segment control -->
 			<div class="button-bar" style="width:300px; margin:8px auto 0;">
 				<div class="button-bar__item">
-					<input type="radio" name="server-tab" value="0" ng-model="ui.tabs.server">
+					<input type="radio" name="server-tab" value="0" ng-model="ui.settings_server_tab">
 					<div class="button-bar__button">Current</div>
 				</div>
 				<div class="button-bar__item">
-					<input type="radio" name="server-tab" value="1" ng-model="ui.tabs.server">
+					<input type="radio" name="server-tab" value="1" ng-model="ui.settings_server_tab">
 					<div class="button-bar__button">History</div>
 				</div>
 			</div>
 
 		</div>
 	</div>
-	<ons-list ng-switch="ui.tabs.server">
+	<ons-list ng-switch="ui.settings_server_tab">
 		<ons-list ng-switch-when="0">
 			<ons-list-item>
 				<ons-row>

@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('gl.ui')
 	.directive('glOrientation', function() {
 		return {
 			controller: function($scope) {}

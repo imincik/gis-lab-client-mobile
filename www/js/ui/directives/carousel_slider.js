@@ -1,28 +1,28 @@
-angular.module('app')
-	.directive('ngTabModel', function() {
+angular.module('gl.ui')
+	.directive('glTabModel', function() {
 		return {
 			controller: function($scope) {}
 		}
 	})
-	.directive('ngCarouselVar', function() {
+	.directive('glCarousel', function() {
 		return {
 			controller: function($scope) {}
 		}
 	})
-	.directive('ngCarouselTabSlider', function() {
+	.directive('glCarouselTabSlider', function() {
 		return {
 			restrict: 'E',
-			require: ['ngTabModel' ,'ngCarouselVar'],
+			require: ['glTabModel' ,'glCarousel'],
 			template: '<div class="carousel-slider-bg"><div class="carousel-slider"></div></div>',
 			replace: true,
 			scope: true,
 			transclude: false,
 			controller: ['$scope', '$timeout', '$parse', function($scope, $timeout, $parse) {
-				$scope.setupSlider = function(carousel, slider, model) {
-					
+				$scope.setupSlider = function(carousel, slider, model_name) {
 					var items_count = carousel._getCarouselItemCount();
-					var model_setter = $parse(model).assign;
-					$scope.$watch(model, function(value) {
+					var tab_getter = $parse(model_name);
+					var tab_setter = tab_getter.assign;
+					$scope.$watch(model_name, function(value) {
 						carousel.setActiveCarouselItemIndex(value);
 					});
 
@@ -38,7 +38,7 @@ angular.module('app')
 						-webkit-transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s".replace('{width}', slider_width);
 					carousel.on('postchange', function(e) {
 						$timeout(function() {
-							model_setter($scope, e.activeIndex);
+							tab_setter($scope, e.activeIndex);
 						}, 0);
 						var x = carousel._scroll/items_count;
 						var style = anim_template.format(x);
@@ -57,12 +57,13 @@ angular.module('app')
 						var style = anim_template.format(x);
 						slider.setAttribute("style", style);
 					});
+					carousel.setActiveCarouselItemIndex(tab_getter($scope));
 				}
 			}],
 			link: function(scope, iElement, iAttrs, ctrl) {
 				setImmediate(function() {
-					var carousel = scope.$eval(iAttrs.ngCarouselVar);
-					scope.setupSlider(carousel, iElement[0].children[0], iAttrs.ngTabModel);
+					var carousel = scope.$eval(iAttrs.glCarousel);
+					scope.setupSlider(carousel, iElement[0].children[0], iAttrs.glTabModel);
 				});
 			}
 	}});

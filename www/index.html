@@ -28,26 +28,41 @@
 
 	<script type="text/javascript">
 	// First, checks if it isn't implemented yet.
-if (!String.prototype.format) {
-  String.prototype.format = function() {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) { 
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : match
-      ;
-    });
-  };
-}
-</script>
+	if (!String.prototype.format) {
+		String.prototype.format = function() {
+			var args = arguments;
+			return this.replace(/{(\d+)}/g, function(match, number) {
+				return typeof args[number] != 'undefined'
+					? args[number]
+					: match
+				;
+			});
+		};
+	}
+	</script>
 
 	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="js/map.js"></script>
-	<script type="text/javascript" src="js/services.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
-	<script type="text/javascript" src="js/directives/carousel_slider.js"></script>
-	<script type="text/javascript" src="js/directives/scroll_indicator.js"></script>
-	<script type="text/javascript" src="js/directives/ng-con-attr.js"></script>
+
+	<script type="text/javascript" src="js/mobile/app.js"></script>
+	<script type="text/javascript" src="js/mobile/services.js"></script>
+	<script type="text/javascript" src="js/mobile/onsen-addons.js"></script>
+
+	<script type="text/javascript" src="js/map/module.js"></script>
+	<script type="text/javascript" src="js/map/services/map.js"></script>
+	<script type="text/javascript" src="js/map/services/project.js"></script>
+
+	<script type="text/javascript" src="js/ui/module.js"></script>
+	<script type="text/javascript" src="js/ui/directives/carousel_slider.js"></script>
+	<script type="text/javascript" src="js/ui/directives/scroll_indicator.js"></script>
+
+	<script type="text/javascript" src="js/utils/module.js"></script>
+	<script type="text/javascript" src="js/utils/directives/ng-con-attr.js"></script>
+
+	<script type="text/javascript" src="js/tools/module.js"></script>
+	<script type="text/javascript" src="js/tools/controllers/layers.js"></script>
+	<script type="text/javascript" src="js/tools/controllers/drawings.js"></script>
+
+	<script type="text/javascript" src="js/settings/controllers/project.js"></script>
 </head>
 
 <body ng-controller="AppController">
@@ -72,14 +87,14 @@ if (!String.prototype.format) {
 		</ons-page>
 	</ons-template>
 
-	<ons-template id="panel_container.html">
-		<ons-navigator var="app.panel.navigator" ng-controller="PanelController">
-		</ons-navigator>
-	</ons-template>
+<!--	<ons-template id="panel_container.html">-->
+<!--		<ons-navigator var="app.panel.navigator" ng-controller="PanelController">-->
+<!--		</ons-navigator>-->
+<!--	</ons-template>-->
 
 	<ons-template id="panel_tab_container.html">
-		<ons-tabbar var="app.panel.tabbar" animation="slide" hide-tabs="true">
-			<ons-tab ng-repeat="tool in ui.toolbar | filter:{page:''}" page="{{ tool.page }}" ng-con-attr="{persistent: {{ tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
+		<ons-tabbar var="app.panel.tabbar"  hide-tabs="true">
+			<ons-tab ng-repeat="tool in ui.toolbar | filter:{page:''}" page="{{ tool.page }}" gl-con-attr="{persistent: {{ tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
 			</ons-tab>
 		</ons-tabbar>
 	</ons-template>
@@ -120,24 +135,10 @@ if (!String.prototype.format) {
 	</ons-template>
 
 
-	<ons-template id="grid.html">
-		<ons-page>
-			<ons-toolbar fixed-style>
-				<div class="left"><ons-toolbar-button ng-click="app.navi.popPage('grid.html');"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
-				<div class="center">Grid</div>
-				<div class="right"></div>
-			</ons-toolbar>
-<!--			<div class="grid-container" style="height: {{ panelHeight }}px;">-->
-				<div ui-grid="gridOptions" ui-grid-edit class="features-grid" style="height: {{ panelHeight }}px;"></div>
-<!--			</div>-->
-		</ons-page>
-	</ons-template>
-
-
 	<ons-template id="menu.html">
 		<ons-page>
 			<ons-list>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('settings.html', { animation: 'fade' });">Settings</ons-list-item>
+				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('pages/settings/main.html', { animation: 'fade' });">Settings</ons-list-item>
 				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html', { animation: 'slide' });">About Project</ons-list-item>
 				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html', { animation: 'lift' });">About GIS.lab</ons-list-item>
 			</ons-list>
@@ -150,20 +151,20 @@ if (!String.prototype.format) {
 				<div class="center">Project information</div>
 			</ons-toolbar>
 			<ons-list>
-				<ons-list-header>Title</ons-list-header><ons-list-item ng-bind="project.root_title"></ons-list-item>
-				<ons-list-header>Author</ons-list-header><ons-list-item ng-bind="project.author"></ons-list-item>
-				<ons-list-header>E-mail</ons-list-header><ons-list-item ng-bind="project.email"></ons-list-item>
-				<ons-list-header>Phone</ons-list-header><ons-list-item ng-bind="project.phone"></ons-list-item>
-				<ons-list-header>Organization</ons-list-header><ons-list-item ng-bind="project.organization"></ons-list-item>
-				<ons-list-header>Abstract</ons-list-header><ons-list-item ng-bind="project.abstract"></ons-list-item>
+				<ons-list-header>Title</ons-list-header><ons-list-item ng-bind="project.config.root_title"></ons-list-item>
+				<ons-list-header>Author</ons-list-header><ons-list-item ng-bind="project.config.author"></ons-list-item>
+				<ons-list-header>E-mail</ons-list-header><ons-list-item ng-bind="project.config.email"></ons-list-item>
+				<ons-list-header>Phone</ons-list-header><ons-list-item ng-bind="project.config.phone"></ons-list-item>
+				<ons-list-header>Organization</ons-list-header><ons-list-item ng-bind="project.config.organization"></ons-list-item>
+				<ons-list-header>Abstract</ons-list-header><ons-list-item ng-bind="project.config.abstract"></ons-list-item>
 				<ons-list-header>Online resource</ons-list-header>
 				<ons-list-item>
-					<a target="_blank" href="{{ project.online_resource }}" ng-bind="project.online_resource"></a>
+					<a target="_blank" href="{{ project.config.online_resource }}" ng-bind="project.config.online_resource"></a>
 				</ons-list-item>
-				<ons-list-header>Fees</ons-list-header><ons-list-item ng-bind="project.fees"></ons-list-item>
-				<ons-list-header>Access constraints</ons-list-header><ons-list-item ng-bind="project.access_constrains"></ons-list-item>
+				<ons-list-header>Fees</ons-list-header><ons-list-item ng-bind="project.config.fees"></ons-list-item>
+				<ons-list-header>Access constraints</ons-list-header><ons-list-item ng-bind="project.config.access_constrains"></ons-list-item>
 				<ons-list-header>Keywords list</ons-list-header><ons-list-item>{{ project.keyword_list.join(', ') }}</ons-list-item>
-				<ons-list-header>Publish date</ons-list-header><ons-list-item ng-bind="project.publish_date"></ons-list-item>
+				<ons-list-header>Publish date</ons-list-header><ons-list-item ng-bind="project.config.publish_date"></ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>
@@ -174,34 +175,18 @@ if (!String.prototype.format) {
 				<div class="center">GIS.lab</div>
 			</ons-toolbar>
 			<ons-list>
-				<ons-list-header>GIS.lab ID</ons-list-header><ons-list-item ng-bind="project.gislab_unique_id"></ons-list-item>
-				<ons-list-header>Version</ons-list-header><ons-list-item ng-bind="project.gislab_version"></ons-list-item>
+				<ons-list-header>GIS.lab ID</ons-list-header><ons-list-item ng-bind="project.config.gislab_unique_id"></ons-list-item>
+				<ons-list-header>Version</ons-list-header><ons-list-item ng-bind="project.config.gislab_version"></ons-list-item>
 				<ons-list-header>Home page</ons-list-header>
 				<ons-list-item>
-					<a target="_blank" href="{{ project.gislab_homepage }}" ng-bind="project.gislab_homepage"></a>
+					<a target="_blank" href="{{ project.config.gislab_homepage }}" ng-bind="project.config.gislab_homepage"></a>
 				</ons-list-item>
 				<ons-list-header>Documentation</ons-list-header>
 				<ons-list-item>
-					<a target="_blank" href="javascript:void(0);" ng-bind="project.gislab_documentation" ng-click="openLink('fake');"></a>
+					<a target="_blank" href="javascript:void(0);" ng-bind="project.config.gislab_documentation" ng-click="openLink('fake');"></a>
 				</ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>
-
-	<ons-template id="settings.html">
-		<ons-page ng-controller="SettingsController">
-			<ons-toolbar fixed-style>
-				<div class="left"><ons-back-button>Back</ons-back-button></div>
-				<div class="center">Settings</div>
-			</ons-toolbar>
-			<ons-list>
-				<ons-list-header>Server/account</ons-list-header>
-				<ons-list-item modifier="chevron" ng-bind="$storage.serverUrl" ng-click="app.navigator.pushPage('pages/server_settings.html');"></ons-list-item>
-				<ons-list-header>Project</ons-list-header>
-				<ons-list-item modifier="chevron" ng-bind="$storage.project" ng-click="app.navigator.pushPage('pages/project_settings.html');"></ons-list-item>
-			</ons-list>
-		</ons-page>
-	</ons-template>
-
 </body>
 </html>

@@ -1,8 +1,7 @@
-<ons-page ng-controller="LayersPanelController">
+<ons-page ng-controller="LayersController">
 	<div class="tab-bar tab-bar--top">
-
 		<label class="tab-bar__item">
-			<input type="radio" name="layers-tab-radio" value="0" ng-model="ui.tabs.layers">
+			<input type="radio" name="layers-tab-radio" value="0" ng-model="ui.tools_layers_tab">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-android-map"></i>
 				<div class="tab-bar__label">Base layer</div>
@@ -10,7 +9,7 @@
 		</label>
 
 		<label class="tab-bar__item">
-			<input type="radio" name="layers-tab-radio" value="1" ng-model="ui.tabs.layers">
+			<input type="radio" name="layers-tab-radio" value="1" ng-model="ui.tools_layers_tab">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-social-buffer"></i>
 				<div class="tab-bar__label">Layers</div>
@@ -18,22 +17,29 @@
 		</label>
 
 		<label class="tab-bar__item">
-			<input type="radio" name="layers-tab-radio" value="2" ng-model="ui.tabs.layers">
+			<input type="radio" name="layers-tab-radio" value="2" ng-model="ui.tools_layers_tab">
 			<button class="tab-bar__button">
 				<i class="tab-bar__icon ion-android-color-palette"></i>
 				<div class="tab-bar__label">Legend</div>
 			</button>
 		</label>
-
 	</div>
-	<ng-carousel-tab-slider ng-tab-model="ui.tabs.layers" ng-carousel-var="app.panel.carousel"></ng-carousel-tab-slider>
+	<gl-carousel-tab-slider gl-tab-model="ui.tools_layers_tab" gl-carousel="app.panel.carousel"></gl-carousel-tab-slider>
+
 	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px;">
 				<div class="baselayer-container">
 					<div
 						ivh-treeview="baseLayers.tree"
-						ivh-treeview-options="baseLayers.treeOptions">
+						ivh-treeview-expand-to-depth="-1"
+						ivh-treeview-use-checkboxes="false"
+						ivh-treeview-twistie-leaf-tpl="'
+							<label class=&quot;radio-button&quot;>
+								<input type=&quot;radio&quot; name=&quot;baselayer-radio&quot; value=&quot;{{ node.name }}&quot; ng-model=&quot;node.selected.name&quot;></input>
+								<div class=&quot;radio-button__icon-checkmark&quot;></div>
+							</label>'"
+						>
 					</div>
 				</div>
 			</ons-scroller>
@@ -44,8 +50,11 @@
 				<div class="layers-container">
 					<div
 						ivh-treeview="layers.tree"
+						ivh-treeview-expand-to-depth="-1"
+						ivh-treeview-use-checkboxes="true"
+						ivh-treeview-validate="false"
 						ivh-treeview-change-handler="layersVisibilityChanged"
-						ivh-treeview-options="layers.treeOptions"
+						ivh-treeview-twistie-leaf-tpl="'<span class=&quot;{{ node.geom_type | lowercase }}-layer-icon&quot;></span>'"
 						>
 					</div>
 				</div>

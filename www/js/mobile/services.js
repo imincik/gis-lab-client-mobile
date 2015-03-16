@@ -1,5 +1,5 @@
-angular.module('services', [])
-	.factory('WebGIS', ['$http', function($http) {
+angular.module('app')
+	.factory('gislabMobileClient', ['$http', function($http) {
 		return {
 			login: function(server, username, password) {
 				/*
