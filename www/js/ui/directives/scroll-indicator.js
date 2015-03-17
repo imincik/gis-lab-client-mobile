@@ -1,10 +1,16 @@
-angular.module('gl.ui')
+(function() {
+	'use strict';
+
+	angular
+	.module('gl.ui')
 	.directive('glOrientation', function() {
 		return {
 			controller: function($scope) {}
 		}
 	})
-	.directive('glScrollIndicator', function() {
+	.directive('glScrollIndicator', glScrollIndicator);
+
+	function glScrollIndicator() {
 		return {
 			restrict: 'E',
 			template: '<ng-transclude></ng-transclude>',
@@ -65,4 +71,6 @@ angular.module('gl.ui')
 					}, 50);
 				}
 			}
-	}});
+		};
+	};
+})();

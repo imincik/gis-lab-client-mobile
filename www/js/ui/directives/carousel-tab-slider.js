@@ -1,4 +1,8 @@
-angular.module('gl.ui')
+(function() {
+	'use strict';
+
+	angular
+	.module('gl.ui')
 	.directive('glTabModel', function() {
 		return {
 			controller: function($scope) {}
@@ -9,7 +13,9 @@ angular.module('gl.ui')
 			controller: function($scope) {}
 		}
 	})
-	.directive('glCarouselTabSlider', function() {
+	.directive('glCarouselTabSlider', glCarouselTabSlider);
+
+	function glCarouselTabSlider() {
 		return {
 			restrict: 'E',
 			require: ['glTabModel' ,'glCarousel'],
@@ -66,4 +72,6 @@ angular.module('gl.ui')
 					scope.setupSlider(carousel, iElement[0].children[0], iAttrs.glTabModel);
 				});
 			}
-	}});
+		};
+	};
+})();
