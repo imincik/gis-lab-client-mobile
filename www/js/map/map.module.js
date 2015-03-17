@@ -8,39 +8,6 @@ goog.require('ol.layer.Tile');
 goog.require('ol.layer.Image');
 
 
-ol.control.ButtonControl = function(opt_options) {
-
-	var options = opt_options || {};
-
-	var anchor = document.createElement('div');
-	anchor.innerHTML = goog.isDef(options.html) ? options.html : '';
-	//anchor.innerHTML = '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-android-more" style="font-size:20px;"></i></span>';
-	//anchor.innerHTML = '<span class="toolbar-button--quiet navigation-bar__line-height"><i class="ion-navicon" style="font-size:20px;"></i></span>';
-
-	this.callback = opt_options.callback;
-	var this_ = this;
-	var onClick = function(e) {
-		// prevent #rotate-north anchor from getting appended to the url
-		e.preventDefault();
-		this_.callback(e);
-	};
-
-	anchor.addEventListener('click', onClick, false);
-	anchor.addEventListener('touchstart', onClick, false);
-
-	var element = anchor;
-	//var element = document.createElement('div');
-	element.className = goog.isDef(options.className) ? options.className : '';
-	//element.appendChild(anchor);
-
-	ol.control.Control.call(this, {
-		element: element,
-		target: options.target
-	});
-};
-ol.inherits(ol.control.ButtonControl, ol.control.Control);
-
-
 ol.layer.WebgisTmsLayer = function(opt_options) {
 	var options = goog.isDef(opt_options) ? opt_options : {};
 	goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
