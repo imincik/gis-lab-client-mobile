@@ -94,7 +94,7 @@
 
 	<ons-template id="panel_tab_container.html">
 		<ons-tabbar var="app.panel.tabbar"  hide-tabs="true">
-			<ons-tab ng-repeat="tool in ui.toolbar | filter:{page:''}" page="{{ tool.page }}" gl-con-attr="{persistent: {{ tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
+			<ons-tab ng-repeat="tool in ui.toolbar | filter:{page:''}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
 			</ons-tab>
 		</ons-tabbar>
 	</ons-template>
@@ -114,13 +114,13 @@
 			<div class="map-toolbar map-toolbar-vertical">
 				<ons-scroller style="max-height: {{ mapHeight }}px;">
 
-					<ons-button ng-repeat="tool in ui.toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">
-						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>
-						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>
+					<ons-button ng-repeat="tool in ::ui.toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">
+						<ons-icon ng-if="tool.icon" icon="{{ ::tool.icon }}" size="28px" fixed-width="true"></ons-icon>
+						<i ng-if="tool.faIcon" class="fa {{ ::tool.faIcon }}"></i>
 					</ons-button>
 
 					<gl-scroll-indicator gl-orientation="top" gl-update-on="mapHeight">
-						<div class="scroll-top-indicator-bg" >
+						<div class="scroll-top-indicator-bg">
 							<ons-icon class="scroll-top-indicator" icon="ion-android-arrow-dropup" size="28px" fixed-width="true"></ons-icon>
 						</div>
 					</gl-scroll-indicator>
@@ -151,20 +151,20 @@
 				<div class="center">Project information</div>
 			</ons-toolbar>
 			<ons-list>
-				<ons-list-header>Title</ons-list-header><ons-list-item ng-bind="project.config.root_title"></ons-list-item>
-				<ons-list-header>Author</ons-list-header><ons-list-item ng-bind="project.config.author"></ons-list-item>
-				<ons-list-header>E-mail</ons-list-header><ons-list-item ng-bind="project.config.email"></ons-list-item>
-				<ons-list-header>Phone</ons-list-header><ons-list-item ng-bind="project.config.phone"></ons-list-item>
-				<ons-list-header>Organization</ons-list-header><ons-list-item ng-bind="project.config.organization"></ons-list-item>
-				<ons-list-header>Abstract</ons-list-header><ons-list-item ng-bind="project.config.abstract"></ons-list-item>
+				<ons-list-header>Title</ons-list-header><ons-list-item ng-bind="::project.config.root_title"></ons-list-item>
+				<ons-list-header>Author</ons-list-header><ons-list-item ng-bind="::project.config.author"></ons-list-item>
+				<ons-list-header>E-mail</ons-list-header><ons-list-item ng-bind="::project.config.email"></ons-list-item>
+				<ons-list-header>Phone</ons-list-header><ons-list-item ng-bind="::project.config.phone"></ons-list-item>
+				<ons-list-header>Organization</ons-list-header><ons-list-item ng-bind="::project.config.organization"></ons-list-item>
+				<ons-list-header>Abstract</ons-list-header><ons-list-item ng-bind="::project.config.abstract"></ons-list-item>
 				<ons-list-header>Online resource</ons-list-header>
 				<ons-list-item>
-					<a target="_blank" href="{{ project.config.online_resource }}" ng-bind="project.config.online_resource"></a>
+					<a target="_blank" ng-href="{{ ::project.config.online_resource }}" ng-bind="::project.config.online_resource"></a>
 				</ons-list-item>
-				<ons-list-header>Fees</ons-list-header><ons-list-item ng-bind="project.config.fees"></ons-list-item>
-				<ons-list-header>Access constraints</ons-list-header><ons-list-item ng-bind="project.config.access_constrains"></ons-list-item>
-				<ons-list-header>Keywords list</ons-list-header><ons-list-item>{{ project.keyword_list.join(', ') }}</ons-list-item>
-				<ons-list-header>Publish date</ons-list-header><ons-list-item ng-bind="project.config.publish_date"></ons-list-item>
+				<ons-list-header>Fees</ons-list-header><ons-list-item ng-bind="::project.config.fees"></ons-list-item>
+				<ons-list-header>Access constraints</ons-list-header><ons-list-item ng-bind="::project.config.access_constrains"></ons-list-item>
+				<ons-list-header>Keywords list</ons-list-header><ons-list-item>{{ ::project.keyword_list.join(', ') }}</ons-list-item>
+				<ons-list-header>Publish date</ons-list-header><ons-list-item ng-bind="::project.config.publish_date"></ons-list-item>
 			</ons-list>
 		</ons-page>
 	</ons-template>
@@ -175,15 +175,15 @@
 				<div class="center">GIS.lab</div>
 			</ons-toolbar>
 			<ons-list>
-				<ons-list-header>GIS.lab ID</ons-list-header><ons-list-item ng-bind="project.config.gislab_unique_id"></ons-list-item>
-				<ons-list-header>Version</ons-list-header><ons-list-item ng-bind="project.config.gislab_version"></ons-list-item>
+				<ons-list-header>GIS.lab ID</ons-list-header><ons-list-item ng-bind="::project.config.gislab_unique_id"></ons-list-item>
+				<ons-list-header>Version</ons-list-header><ons-list-item ng-bind="::project.config.gislab_version"></ons-list-item>
 				<ons-list-header>Home page</ons-list-header>
 				<ons-list-item>
-					<a target="_blank" href="{{ project.config.gislab_homepage }}" ng-bind="project.config.gislab_homepage"></a>
+					<a target="_blank" ng-href="{{ ::project.config.gislab_homepage }}" ng-bind="::project.config.gislab_homepage"></a>
 				</ons-list-item>
 				<ons-list-header>Documentation</ons-list-header>
 				<ons-list-item>
-					<a target="_blank" href="javascript:void(0);" ng-bind="project.config.gislab_documentation" ng-click="openLink('fake');"></a>
+					<a target="_blank" ng-href="{{ ::project.config.gislab_documentation }}" ng-bind="::project.config.gislab_documentation" ng-click="openLink('fake');"></a>
 				</ons-list-item>
 			</ons-list>
 		</ons-page>
