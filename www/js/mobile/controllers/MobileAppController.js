@@ -1,4 +1,3 @@
-//scope = angular.element($('[ng-controller=MobileAppController]')).scope()
 (function() {
 	'use strict';
 
@@ -184,8 +183,8 @@
 			window.addEventListener('orientationchange', function() {
 				$scope.updateScreenSize();
 				$scope.$apply();
-				if (project.map) {
-					project.map.updateSize();
+				if (projectProvider.map) {
+					projectProvider.map.updateSize();
 				}
 			});
 			document.addEventListener("pause", onPause, false);
