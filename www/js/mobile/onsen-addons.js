@@ -36,6 +36,7 @@ module.factory('TabbarSlideAnimator', ['TabbarAnimator', 'TabbarView', function(
 						duration: 0.2,
 						timing: 'linear'
 					})
+					.resetStyle()
 			);
 		}
 	});
