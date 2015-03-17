@@ -50,6 +50,7 @@ angular.module('gl.ui')
 			link: function(scope, element, attrs, ctrl) {
 				var scroller = element.parent().parent()[0];
 				var indicator = element[0];
+				indicator.setAttribute('style', 'opacity: 0;');
 				scope.setupIndicator(scroller, indicator, attrs.glOrientation);
 				if (attrs.glUpdateOn) {
 					scope.$parent.$watch(attrs.glUpdateOn, function(value) {

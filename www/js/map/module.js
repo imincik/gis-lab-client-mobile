@@ -1,2 +1,1 @@
-var module = angular.module('gl.map', []);
-
+angular.module('gl.map', []);
