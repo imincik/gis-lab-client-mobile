@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="app">
+<html lang="en" ng-app="gl.mobile">
 <head>
 	<meta charset="utf-8">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,10 +43,11 @@
 
 	<script type="text/javascript" src="cordova.js"></script>
 
-	<script type="text/javascript" src="js/mobile/app.js"></script>
+	<script type="text/javascript" src="js/mobile/mobile.module.js"></script>
+	<script type="text/javascript" src="js/mobile/controllers/MobileAppController.js"></script>
+	<script type="text/javascript" src="js/mobile/controllers/ProjectSettingsController.js"></script>
 	<script type="text/javascript" src="js/mobile/services/gislab-mobile-client.js"></script>
 	<script type="text/javascript" src="js/mobile/services/tabbar-slide-animator.js"></script>
-	<script type="text/javascript" src="js/mobile/controllers/ProjectSettingsController.js"></script>
 
 	<script type="text/javascript" src="js/map/map.module.js"></script>
 	<script type="text/javascript" src="js/map/services/map-builder.js"></script>
@@ -65,7 +66,7 @@
 	<script type="text/javascript" src="js/map-tools/drawings/DrawingsController.js"></script>
 </head>
 
-<body ng-controller="AppController">
+<body ng-controller="MobileAppController">
 	<ons-navigator var="app.navigator" page="map_container.html">
 	</ons-navigator>
 

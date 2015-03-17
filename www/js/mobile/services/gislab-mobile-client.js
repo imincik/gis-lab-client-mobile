@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('app')
+		.module('gl.mobile')
 		.factory('gislabMobileClient', ['$http', gislabMobileClient]);
 
 	function gislabMobileClient($http) {

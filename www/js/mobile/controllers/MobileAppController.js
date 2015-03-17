@@ -1,25 +1,13 @@
-//scope = angular.element($('[ng-controller=AppController]')).scope()
-
+//scope = angular.element($('[ng-controller=MobileAppController]')).scope()
 (function() {
 	'use strict';
 
-	var app = angular.module('app', ['onsen', 'ngTouch', 'ngStorage', 'gl.ui', 'gl.utils', 'gl.map', 'gl.layersControl', 'gl.drawings']);
-	app.config(['$httpProvider', function($httpProvider) {
-		// Intercept POST requests, convert to standard form encoding
-		$httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8";
-		$httpProvider.defaults.transformRequest.unshift(function (data) {
-			var key, result = [];
-			for (key in data) {
-				if (data.hasOwnProperty(key)) {
-					result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
-				}
-			}
-			return result.join("&");
-		});
-	}]);
+	angular
+		.module('gl.mobile')
+		.controller('MobileAppController', MobileAppController);
 
-	app.controller('AppController', function($scope, $localStorage, gislabMobileClient, projectProvider, mapBuilder, TabbarView, TabbarSlideAnimator) {
-		console.log("AppController");
+	function MobileAppController($scope, $localStorage, gislabMobileClient, projectProvider, mapBuilder, TabbarView, TabbarSlideAnimator) {
+		console.log("MobileAppController");
 		TabbarView.registerAnimator('slide', new TabbarSlideAnimator());
 		$scope.baseLayers = {selected: {}};
 		$scope.$storage = $localStorage;
@@ -239,5 +227,5 @@
 		}
 		console.log('register deviceready');
 		document.addEventListener("deviceready", onDeviceReady, false);
-	});
+	};
 })();

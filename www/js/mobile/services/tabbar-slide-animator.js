@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('onsen')
+		.module('gl.mobile')
 		.factory('TabbarSlideAnimator', ['TabbarAnimator', 'TabbarView', TabbarSlideAnimator]);
 
 	function TabbarSlideAnimator(TabbarAnimator, TabbarView) {
