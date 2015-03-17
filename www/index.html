@@ -58,9 +58,10 @@
 	<script type="text/javascript" src="js/utils/module.js"></script>
 	<script type="text/javascript" src="js/utils/directives/ng-con-attr.js"></script>
 
-	<script type="text/javascript" src="js/tools/module.js"></script>
-	<script type="text/javascript" src="js/tools/controllers/layers.js"></script>
-	<script type="text/javascript" src="js/tools/controllers/drawings.js"></script>
+	<script type="text/javascript" src="js/map-tools/layers-control/layers-control.module.js"></script>
+	<script type="text/javascript" src="js/map-tools/layers-control/LayersController.js"></script>
+	<script type="text/javascript" src="js/map-tools/drawings/drawings.module.js"></script>
+	<script type="text/javascript" src="js/map-tools/drawings/DrawingsController.js"></script>
 
 	<script type="text/javascript" src="js/settings/controllers/project.js"></script>
 </head>
@@ -86,11 +87,6 @@
 			</div>
 		</ons-page>
 	</ons-template>
-
-<!--	<ons-template id="panel_container.html">-->
-<!--		<ons-navigator var="app.panel.navigator" ng-controller="PanelController">-->
-<!--		</ons-navigator>-->
-<!--	</ons-template>-->
 
 	<ons-template id="panel_tab_container.html">
 		<ons-tabbar var="app.panel.tabbar"  hide-tabs="true">

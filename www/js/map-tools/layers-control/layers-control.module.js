@@ -1,4 +1,5 @@
-angular.module('gl.tools', ['gl.map', 'ivh.treeview', 'ui.grid', 'ui.grid.edit'])
+angular
+	.module('gl.layersControl', ['gl.map', 'ivh.treeview'])
 	.config(function(ivhTreeviewOptionsProvider) {
 		ivhTreeviewOptionsProvider.set({
 			idAttribute: 'id',

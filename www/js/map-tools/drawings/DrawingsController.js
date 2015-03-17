@@ -1,5 +1,11 @@
-angular.module('gl.tools')
-	.controller('DrawingsController', function($scope, $timeout) {
+(function() {
+	'use strict';
+
+	angular
+		.module('gl.drawings')
+		.controller('DrawingsController', DrawingsController);
+
+	function DrawingsController($scope, $timeout) {
 		$scope.gridOptions = {  };
 		$scope.gridOptions.columnDefs = [
 			{ name: 'firstName', enableCellEdit: true, width: '30%' },
@@ -14,4 +20,5 @@ angular.module('gl.tools')
 				"lastName": "Satriani"
 			}
 		];
-	});
+	};
+})();

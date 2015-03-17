@@ -1,8 +1,11 @@
 (function() {
-	'use strict;';
-	var module = angular.module('gl.tools');
+	'use strict';
 
-	module.controller('LayersController', function($scope, webgisProject, mapBuilder) {
+	angular
+		.module('gl.layersControl')
+		.controller('LayersController', LayersController);
+
+	function LayersController($scope, webgisProject, mapBuilder) {
 		console.log('LayersController');
 		$scope.layers = {};
 		$scope.setBaseLayer = function(layername) {
@@ -66,5 +69,5 @@
 				$scope.baseLayers.selected.name = base_layer.name;
 			}
 		});
-	});
+	};
 })();

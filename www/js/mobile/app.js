@@ -3,7 +3,7 @@
 (function() {
 	'use strict';
 
-	var app = angular.module('app', ['onsen', 'ngTouch', 'ngStorage', 'gl.map', 'gl.tools', 'gl.ui', 'gl.utils']);
+	var app = angular.module('app', ['onsen', 'ngTouch', 'ngStorage', 'gl.ui', 'gl.utils', 'gl.map', 'gl.layersControl', 'gl.drawings']);
 	app.config(['$httpProvider', function($httpProvider) {
 		// Intercept POST requests, convert to standard form encoding
 		$httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8";
