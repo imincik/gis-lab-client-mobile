@@ -1,5 +1,11 @@
-angular.module('app')
-	.factory('gislabMobileClient', ['$http', function($http) {
+(function() {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('gislabMobileClient', ['$http', gislabMobileClient]);
+
+	function gislabMobileClient($http) {
 		return {
 			login: function(server, username, password) {
 				/*
@@ -33,4 +39,5 @@ angular.module('app')
 				});
 			}
 		};
-	}]);
+	};
+})();
