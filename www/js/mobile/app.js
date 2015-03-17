@@ -18,11 +18,10 @@
 		});
 	}]);
 
-	app.controller('AppController', function($scope, $localStorage, gislabMobileClient, webgisProject, mapBuilder, TabbarView, TabbarSlideAnimator) {
+	app.controller('AppController', function($scope, $localStorage, gislabMobileClient, projectProvider, mapBuilder, TabbarView, TabbarSlideAnimator) {
 		console.log("AppController");
 		TabbarView.registerAnimator('slide', new TabbarSlideAnimator());
 		$scope.baseLayers = {selected: {}};
-		$scope.project = {};
 		$scope.$storage = $localStorage;
 
 		$scope.ui = {
@@ -41,7 +40,7 @@
 				icon: 'ion-qr-scanner',
 				toggle: false,
 				callback: function() {
-					webgisProject.map.getView().fitExtent($scope.project.config.project_extent, webgisProject.map.getSize());
+					projectProvider.map.getView().fitExtent(projectProvider.config.project_extent, projectProvider.map.getSize());
 				}
 			}, {
 				icon: 'ion-location',
@@ -95,8 +94,8 @@
 		ons.ready(function() {
 			console.log('ons ready');
 			$scope.app.navigator.on('postpop', function(evt) {
-				if (evt.leavePage.page === 'pages/settings/main.html' && webgisProject.map) {
-					webgisProject.map.updateSize();
+				if (evt.leavePage.page === 'pages/settings/main.html' && projectProvider.map) {
+					projectProvider.map.updateSize();
 				}
 			});
 
@@ -130,10 +129,10 @@
 			$scope.mapHeight = document.body.clientHeight;
 		};
 
-		$scope.loadProject = function(project) {
-			console.log('loadProject '+project);
-			$scope.$storage.project = project;
-			
+		$scope.loadProject = function(projectName) {
+			console.log('loadProject '+projectName);
+			$scope.$storage.project = projectName;
+
 			$scope.app.menu.setMenuPage('panel_tab_container.html');
 			if ($scope.app.panel.tabbar._scope) {
 				setImmediate(function() {
@@ -141,7 +140,7 @@
 				});
 			}
 			$scope.app.menu.setMainPage('map.html');
-			gislabMobileClient.project($scope.$storage.serverUrl, project)
+			gislabMobileClient.project($scope.$storage.serverUrl, projectName)
 				.success(function(data, status, headers, config) {
 					data.target = 'map';
 					var olMap = mapBuilder.createMap(data);
@@ -161,13 +160,13 @@
 							}*/
 							$scope.$storage.recentProjects.splice(0, 0, data.project);
 						}
-						if (webgisProject.map) {
-							webgisProject.map.dispose();
+						if (projectProvider.map) {
+							projectProvider.map.dispose();
 						}
-						webgisProject.map = olMap;
-						webgisProject.config = data;
+						projectProvider.map = olMap;
+						projectProvider.config = data;
 						// Project info
-						$scope.project.config = data;
+						$scope.project = data;
 					}
 				})
 				.error(function(data, status, headers, config) {
@@ -197,8 +196,8 @@
 			window.addEventListener('orientationchange', function() {
 				$scope.updateScreenSize();
 				$scope.$apply();
-				if (webgisProject.map) {
-					webgisProject.map.updateSize();
+				if (project.map) {
+					project.map.updateSize();
 				}
 			});
 			document.addEventListener("pause", onPause, false);

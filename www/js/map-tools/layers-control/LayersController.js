@@ -5,13 +5,13 @@
 		.module('gl.layersControl')
 		.controller('LayersController', LayersController);
 
-	function LayersController($scope, webgisProject, mapBuilder) {
-		console.log('LayersController');
+	function LayersController($scope, projectProvider, mapBuilder) {
+		//console.log('LayersController');
 		$scope.layers = {};
 		$scope.setBaseLayer = function(layername) {
-			if (!webgisProject.map)
+			if (!projectProvider.map)
 				return;
-			webgisProject.map.getLayers().forEach(function (layer) {
+			projectProvider.map.getLayers().forEach(function (layer) {
 				if (layer.get('type') === 'baselayer') {
 					if (layer.getVisible() && layer.get('name') !== layername) {
 						layer.setVisible(false);
@@ -32,12 +32,12 @@
 					visible_layers.push(layer_data.name);
 				}
 			});
-			webgisProject.map.getLayer('qgislayer').setLayers(visible_layers);
+			projectProvider.map.getLayer('qgislayer').setLayers(visible_layers);
 		};
 
-		$scope.layers.tree = webgisProject.config.layers;
+		$scope.layers.tree = projectProvider.config.layers;
 		$scope.layers.list = mapBuilder.layersTreeToList({layers: $scope.layers.tree});
-		var legends_urls = webgisProject.map.getLayer('qgislayer').getLegendUrls(webgisProject.map.getView());
+		var legends_urls = projectProvider.map.getLayer('qgislayer').getLegendUrls(projectProvider.map.getView());
 		$scope.layers.list.forEach(function(layer_data) {
 			layer_data.legendUrl = legends_urls[layer_data.name];
 		});
@@ -61,7 +61,7 @@
 			{title: 'Fourth'},
 		];
 		//$scope.baseLayers.tree = test_base_layers;
-		$scope.baseLayers.tree = webgisProject.config.base_layers;
+		$scope.baseLayers.tree = projectProvider.config.base_layers;
 		$scope.baseLayers.list = mapBuilder.layersTreeToList({layers: $scope.baseLayers.tree});
 		$scope.baseLayers.list.forEach(function(base_layer) {
 			base_layer.selected = $scope.baseLayers.selected;
