@@ -138,7 +138,7 @@
 					}
 				});
 				overlays_layer.setLayersAttributions(attributions);
-				overlays_layer.setLayers(visible_layers);
+				overlays_layer.setVisibleLayers(visible_layers);
 			}
 			return overlays_layer;
 		};

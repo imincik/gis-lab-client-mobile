@@ -11,14 +11,17 @@ goog.require('ol.layer.Image');
 ol.layer.WebgisTmsLayer = function(opt_options) {
 	var options = goog.isDef(opt_options) ? opt_options : {};
 	goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
-	this.setLayers(goog.isDef(options.layers) ? options.layers : []);
+	this.setVisibleLayers(goog.isDef(options.visible_layers) ? options.visible_layers : []);
 	this.tilesUrl = goog.isDef(options.tilesUrl) ? options.tilesUrl : '';
 	this.legendUrl = goog.isDef(options.legendUrl) ? options.legendUrl : '';
 	this.project = goog.isDef(options.project) ? options.project : '';
 };
 goog.inherits(ol.layer.WebgisTmsLayer, ol.layer.Tile);
 
-ol.layer.WebgisTmsLayer.prototype.setLayers = function(layers) {
+ol.layer.WebgisTmsLayer.prototype.setVisibleLayers = function(layers) {
+	if (layers == this.getSource().layers) {
+		return;
+	}
 	// TODO sort layers
 	var layers_names = [].concat(layers).reverse().join(",");
 	this.getSource().layers = layers;
@@ -46,6 +49,10 @@ ol.layer.WebgisTmsLayer.prototype.setLayers = function(layers) {
 		this.getSource().setAttributions(attributions);
 	}
 	this.changed();
+};
+
+ol.layer.WebgisTmsLayer.prototype.getVisibleLayers = function() {
+	return this.getSource().layers;
 };
 
 ol.layer.WebgisTmsLayer.prototype.getLegendUrls = function(view) {
@@ -87,13 +94,20 @@ ol.layer.WebgisTmsLayer.prototype.setLayersAttributions = function(attributions)
 ol.layer.WebgisWmsLayer = function(opt_options) {
 	var options = goog.isDef(opt_options) ? opt_options : {};
 	goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
-	this.setLayers(goog.isDef(options.layers) ? options.layers : []);
+	this.setVisibleLayers(goog.isDef(options.visible_layers) ? options.visible_layers : []);
 };
 goog.inherits(ol.layer.WebgisWmsLayer, ol.layer.Image);
-ol.layer.WebgisWmsLayer.prototype.setLayers = function(layers) {
+ol.layer.WebgisWmsLayer.prototype.setVisibleLayers = function(layers) {
+	if (layers == this.getSource().layers) {
+		return;
+	}
 	var layers_names = [].concat(layers).reverse().join(",");
 	this.getSource().layers = layers;
 	this.getSource().updateParams({LAYERS: layers_names});
+};
+
+ol.layer.WebgisWmsLayer.prototype.getVisibleLayers = function() {
+	return this.getSource().layers;
 };
 
 ol.layer.WebgisWmsLayer.prototype.getLegendUrls = function(view) {

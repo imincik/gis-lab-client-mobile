@@ -5,7 +5,7 @@
 		.module('gl.mobile')
 		.controller('MobileAppController', MobileAppController);
 
-	function MobileAppController($scope, $localStorage, gislabMobileClient, projectProvider, mapBuilder, TabbarView, TabbarSlideAnimator) {
+	function MobileAppController($scope, $localStorage, gislabMobileClient, projectProvider, layersControl, TabbarView, TabbarSlideAnimator) {
 		console.log("MobileAppController");
 		TabbarView.registerAnimator('slide', new TabbarSlideAnimator());
 		$scope.baseLayers = {selected: {}};
@@ -23,6 +23,10 @@
 				icon: 'ion-social-buffer',
 				page: 'pages/tools/layers.html',
 				persistent: true,
+				activate: function() {
+					console.log('layers activated');
+					layersControl.activate();
+				}
 			}, {
 				icon: 'ion-qr-scanner',
 				toggle: false,
@@ -60,6 +64,9 @@
 						}
 					});
 					var animation = $scope.app.menu.isMenuOpened()? 'slide' : 'none';
+					if (tool.activate) {
+						tool.activate();
+					}
 					$scope.app.panel.tabbar.setActiveTab(tool._tab_index, {animation: animation});
 					if (!switchTool) {
 						$scope.app.menu.openMenu({autoCloseDisabled: true});
@@ -76,12 +83,12 @@
 			} else {
 				tool.activated = !tool.activated;
 			}
-		}
+		};
 
 		ons.ready(function() {
 			console.log('ons ready');
 			$scope.app.navigator.on('postpop', function(evt) {
-				if (evt.leavePage.page === 'pages/settings/main.html' && projectProvider.map) {
+				if (evt.leavePage.page === 'pages/settings/main.html' && projectProvider.map && projectProvider.map.getSize()[0] === 0) {
 					projectProvider.map.updateSize();
 				}
 			});
@@ -120,18 +127,19 @@
 			console.log('loadProject '+projectName);
 			$scope.$storage.project = projectName;
 
-			$scope.app.menu.setMenuPage('panel_tab_container.html');
+			//$scope.app.menu.setMenuPage('panel_tab_container.html');
+			/*
 			if ($scope.app.panel.tabbar._scope) {
 				setImmediate(function() {
 					$scope.app.panel.tabbar.setActiveTab($scope.ui.toolbar[$scope.ui.toolbar.length-1]._tab_index);
 				});
-			}
-			$scope.app.menu.setMainPage('map.html');
+			}*/
+			//$scope.app.menu.setMainPage('map.html');
 			gislabMobileClient.project($scope.$storage.serverUrl, projectName)
 				.success(function(data, status, headers, config) {
 					data.target = 'map';
-					var olMap = mapBuilder.createMap(data);
-					if (olMap) {
+					projectProvider.load(data);
+					if (projectProvider.map) {
 						if (!$scope.$storage.recentProjects) {
 							$scope.$storage.recentProjects = [data.project];
 						} else {
@@ -147,13 +155,8 @@
 							}*/
 							$scope.$storage.recentProjects.splice(0, 0, data.project);
 						}
-						if (projectProvider.map) {
-							projectProvider.map.dispose();
-						}
-						projectProvider.map = olMap;
-						projectProvider.config = data;
 						// Project info
-						$scope.project = data;
+						$scope.project = projectProvider.config;
 					}
 				})
 				.error(function(data, status, headers, config) {

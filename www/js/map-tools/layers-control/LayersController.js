@@ -7,7 +7,7 @@
 
 	function LayersController($scope, projectProvider, mapBuilder) {
 		//console.log('LayersController');
-		$scope.layers = {};
+		$scope.selectedBaseLayer = {};
 		$scope.setBaseLayer = function(layername) {
 			if (!projectProvider.map)
 				return;
@@ -22,7 +22,7 @@
 				}
 			});
 		};
-		$scope.$watch('baseLayers.selected.name', function(layername) {
+		$scope.$watch('selectedBaseLayer.name', function(layername) {
 			$scope.setBaseLayer(layername);
 		});
 		$scope.layersVisibilityChanged = function(node) {
@@ -32,11 +32,10 @@
 					visible_layers.push(layer_data.name);
 				}
 			});
-			projectProvider.map.getLayer('qgislayer').setLayers(visible_layers);
+			projectProvider.map.getLayer('qgislayer').setVisibleLayers(visible_layers);
 		};
 
-		$scope.layers.tree = projectProvider.config.layers;
-		$scope.layers.list = mapBuilder.layersTreeToList({layers: $scope.layers.tree});
+		$scope.layers = projectProvider.layers;
 		var legends_urls = projectProvider.map.getLayer('qgislayer').getLegendUrls(projectProvider.map.getView());
 		$scope.layers.list.forEach(function(layer_data) {
 			layer_data.legendUrl = legends_urls[layer_data.name];
@@ -60,13 +59,12 @@
 			{title: 'Third'},
 			{title: 'Fourth'},
 		];
+		$scope.baseLayers = projectProvider.baseLayers;
 		//$scope.baseLayers.tree = test_base_layers;
-		$scope.baseLayers.tree = projectProvider.config.base_layers;
-		$scope.baseLayers.list = mapBuilder.layersTreeToList({layers: $scope.baseLayers.tree});
 		$scope.baseLayers.list.forEach(function(base_layer) {
-			base_layer.selected = $scope.baseLayers.selected;
+			base_layer.selected = $scope.selectedBaseLayer;
 			if (base_layer.visible) {
-				$scope.baseLayers.selected.name = base_layer.name;
+				$scope.selectedBaseLayer.name = base_layer.name;
 			}
 		});
 	};
