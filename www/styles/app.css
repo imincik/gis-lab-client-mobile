@@ -93,7 +93,7 @@
 }
 .map-toolbar ons-button.activated {
 	xbackground-color: rgba(250, 20, 20, 0.4);
-	background-color: #7abfff;
+	background-color: #d40000;
 }
 
 .map-toolbar input {
@@ -172,7 +172,8 @@
 .carousel-slider {
 	height: 3px;
 	xbackground-color: white;
-	background-color: #7abfff;
+	xbackground-color: #7abfff;
+	background-color: #d40000;
 	transition: all 0.3s cubic-bezier(0.1, 0.7, 0.1, 1) 0s;
 }
 
@@ -464,4 +465,95 @@ xx.webgis-button {
 	pointer-events: none;
 	font-size: 25px;
 	line-height: 25px!important;
+}
+
+.main-panel .navigation-bar {
+	height: 36px;
+	background-color: #ddd;
+	border-bottom: 2px solid #bbb;
+}
+.main-panel .navigation-bar__item, .main-panel .navigation-bar__left, .main-panel .navigation-bar__right, .main-panel .navigation-bar__center {
+	height: 36px;
+}
+.main-panel ons-toolbar ~ .page__content {
+	top: 36px;
+}
+
+.main-panel .navigation-bar__title, .main-panel .navigation-bar__line-height {
+	line-height: 36px;
+}
+
+.list__item header {
+	line-height: 32px;
+}
+
+.topics .list-item-desc {
+	font-size: 13px;
+	color: #666;
+}
+
+.topics .list-item-title {
+	font-size: 15px;
+	line-height: 1.2em;
+}
+
+.topics .list__item {
+	min-height: 0px;
+	padding-left: 0px;
+}
+
+.list__item.item-accordion {
+	line-height: 20px;
+	padding: 0 6px 0 10px;
+	border-bottom: 1px solid #ddd;
+	transition: 0.1s all linear;
+	xtransition: all 0.1s cubic-bezier(0.42,0,0.58,1) 0s;
+}
+.item-accordion label {
+	font-weight: bold;
+	display: block;
+}
+.item-accordion label::before {
+	max-height: 8px;
+	display: block;
+	content: "\00a0"
+}
+
+.list__item.item-accordion.ng-hide, .list__item.item-accordion.ng-hide.label {
+	line-height: 0px!important;
+	opacity: 0.01;
+}
+
+.item-accordion.ng-hide-add,
+.item-accordion.ng-hide-remove {
+	display: block !important;
+}
+
+.topics .list-item-title::before {
+	color: #aaa;
+	content: "\f107";
+	font-family: FontAwesome;
+	font-size: 28px;
+	font-style: normal;
+	font-weight: normal;
+	height: 28px;
+	line-height: 28px;
+	position: absolute;
+	left: 5px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	pointer-events: none;
+	display: inline-block;
+}
+
+.topics .list-item-title.expanded::before {
+	content: "\f106";
+}
+
+.topics .expanded .list__item--tappable {
+	background-color: #eee;
+}
+.topics .expanded .list__item--tappable:active {
+	background-color: #d9d9d9;
 }

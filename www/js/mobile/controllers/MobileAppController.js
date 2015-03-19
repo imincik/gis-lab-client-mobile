@@ -5,7 +5,7 @@
 		.module('gl.mobile')
 		.controller('MobileAppController', MobileAppController);
 
-	function MobileAppController($scope, $localStorage, gislabMobileClient, projectProvider, layersControl, TabbarView, TabbarSlideAnimator) {
+	function MobileAppController($scope, $localStorage, gislabMobileClient, projectProvider, layersControl, locationService, TabbarView, TabbarSlideAnimator) {
 		console.log("MobileAppController");
 		TabbarView.registerAnimator('slide', new TabbarSlideAnimator());
 		$scope.baseLayers = {selected: {}};
@@ -18,7 +18,9 @@
 		};
 		$scope.ui.toolbar = [
 			{
-				icon: 'ion-images'
+				icon: 'ion-images',
+				page: 'pages/tools/topics.html',
+				persistent: true,
 			}, {
 				icon: 'ion-social-buffer',
 				page: 'pages/tools/layers.html',
@@ -31,11 +33,39 @@
 				icon: 'ion-qr-scanner',
 				toggle: false,
 				callback: function() {
+					var map = projectProvider.map;
+					var pan = ol.animation.pan({
+						duration: 300,
+						source: map.getView().getCenter()
+					});
+					var zoom = ol.animation.zoom({
+						duration: 300,
+						resolution: map.getView().getResolution()
+					});
+					map.beforeRender(pan, zoom);
 					projectProvider.map.getView().fitExtent(projectProvider.config.project_extent, projectProvider.map.getSize());
 				}
 			}, {
 				icon: 'ion-location',
-				toggle: true,
+				//toggle: true,
+				toggle: false,
+				callback: function() {
+					console.log(this);
+					if (this.icon === 'ion-android-locate') {
+						this.activated = false;
+						this.icon = 'ion-location';
+						locationService.deactivate(projectProvider.map);
+					} else {
+						if (!this.activated) {
+							this.activated = true;
+							locationService.setAutoPan(false);
+							locationService.activate(projectProvider.map);
+						} else {
+							this.icon = 'ion-android-locate';
+							locationService.setAutoPan(true);
+						}
+					}
+				}
 			}, {
 				icon: 'ion-search'
 			}, {
@@ -87,6 +117,12 @@
 
 		ons.ready(function() {
 			console.log('ons ready');
+			setImmediate(function() {
+				console.log($scope.app.menu);
+				$scope.app.menu.on('preclose', function() {
+					console.log('close menu');
+				});
+			});
 			$scope.app.navigator.on('postpop', function(evt) {
 				if (evt.leavePage.page === 'pages/settings/main.html' && projectProvider.map && projectProvider.map.getSize()[0] === 0) {
 					projectProvider.map.updateSize();
@@ -165,8 +201,6 @@
 		};
 
 
-		$scope.watchID = null;
-
 		// device APIs are available
 		function onDeviceReady() {
 			setTimeout(function() {
@@ -200,32 +234,11 @@
 					"But Why?!"
 				);*/
 			}, false);
-			
-			// Throw an error if no update is received every 30 seconds
-			function successHandler(position) {
-				//console.log(position);
-				$scope.position = position;
-				$scope.position.text = position.coords.latitude+', '+position.coords.longitude;
-				$scope.$apply();
-			}
-			function errorHandler(error) {
-				console.log(error);
-				$scope.error = error;
-				$scope.$apply();
-			}
-			var options = {
-				timeout: 20000,
-				enableHighAccuracy: true
-			};
-			//navigator.geolocation.getCurrentPosition(successHandler, errorHandler, options);
-			//$scope.watchID = navigator.geolocation.watchPosition(successHandler, errorHandler, options);
+
 		};
 		function onPause() {
 			console.log("--------PAUSE--------");
-			if ($scope.watchID) {
-				console.log("--------stopping GPS--------");
-				navigator.geolocation.clearWatch($scope.watchID);
-			}
+
 		}
 		console.log('register deviceready');
 		document.addEventListener("deviceready", onDeviceReady, false);

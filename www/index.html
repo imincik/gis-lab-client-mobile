@@ -16,6 +16,7 @@
 
 	<script src="lib/onsen/js/angular/angular.js"></script>
 	<script src="lib/onsen/js/angular/angular-touch.js"></script>
+	<script src="lib/onsen/js/angular/angular-animate.js"></script>
 	<script src="lib/onsen/js/onsenui.js"></script>
 	<script src="lib/ui-grid/ui-grid.js"></script>
 	<script src="lib/ivh-treeview/ivh-treeview.js"></script>
@@ -65,6 +66,10 @@
 	<script type="text/javascript" src="js/map-tools/layers-control/LayersController.js"></script>
 	<script type="text/javascript" src="js/map-tools/drawings/drawings.module.js"></script>
 	<script type="text/javascript" src="js/map-tools/drawings/DrawingsController.js"></script>
+	<script type="text/javascript" src="js/map-tools/topics/topics.module.js"></script>
+	<script type="text/javascript" src="js/map-tools/topics/TopicsController.js"></script>
+	<script type="text/javascript" src="js/map-tools/location/location.module.js"></script>
+	<script type="text/javascript" src="js/map-tools/location/location-service.js"></script>
 </head>
 
 <body ng-controller="MobileAppController">
@@ -90,10 +95,15 @@
 	</ons-template>
 
 	<ons-template id="panel_tab_container.html">
-		<ons-tabbar var="app.panel.tabbar"  hide-tabs="true">
-			<ons-tab ng-repeat="tool in ui.toolbar | filter:{page:''}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
+		<ons-tabbar var="app.panel.tabbar" class="main-panel" hide-tabs="true">
+<!--			<ons-tab page="empty.html" active="true"></ons-tab>-->
+			<ons-tab ng-repeat="tool in ::ui.toolbar | filter:{page:''}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index" no-reload>
 			</ons-tab>
 		</ons-tabbar>
+	</ons-template>
+
+	<ons-template id="empty.html">
+		<ons-page></ons-page>
 	</ons-template>
 
 	<ons-template id="map.html">
@@ -112,8 +122,8 @@
 				<ons-scroller style="max-height: {{ mapHeight }}px;">
 
 					<ons-button ng-repeat="tool in ::ui.toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">
-						<ons-icon ng-if="tool.icon" icon="{{ ::tool.icon }}" size="28px" fixed-width="true"></ons-icon>
-						<i ng-if="tool.faIcon" class="fa {{ ::tool.faIcon }}"></i>
+						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>
+						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>
 					</ons-button>
 
 					<gl-scroll-indicator gl-orientation="top" gl-update-on="mapHeight">
