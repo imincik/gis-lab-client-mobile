@@ -547,7 +547,7 @@ xx.webgis-button {
 	display: inline-block;
 }
 
-.topics .list-item-title.expanded::before {
+.topics .expanded .list-item-title::before {
 	content: "\f106";
 }
 
