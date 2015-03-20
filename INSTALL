@@ -1,0 +1,76 @@
+====================================
+ Android build installation script:
+====================================
+
+
+
+Java environment
+================
+
+sudo apt-get install openjdk-7-jdk
+
+
+
+Android SDK
+===========
+
+For 64bit OS only (to make adb work):
+-------------------------------------
+sudo apt-get install libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386 ia32-libs
+
+
+
+wget http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz
+tar zxvf android-sdk_r24.1.2-linux.tgz
+
+
+export ANDROID_HOME="/home/vagrant/android-sdk/android-sdk-linux"
+export ANDROID_HOME=/<installation location>/android-sdk-linux
+export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+# Install:
+# * Android SDK Platform-tools, revision 22 (option 2)
+# * Android SDK Build-tools, revision 22 (option 3)
+# * SDK Platform Android 5.0.1, API 21, revision 2 (option 22)
+
+# To show list of available packages: android list sdk --all
+
+android update sdk --no-ui --all --filter 2,3,22
+
+
+
+
+Install NPM package manager, Node.js, cordova
+=============================================
+
+sudo apt-get install npm
+
+# due to https://github.com/npm/npm/issues/2119
+# use http instead of https
+
+npm config set registry http://registry.npmjs.org/
+
+# Update Node.js to 0.10.32
+
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n 0.10.32
+
+sudo npm install -g cordova
+sudo npm install -g cordova@4.2.0
+
+
+Install Ant
+===========
+
+sudo apt-get install ant
+
+
+Build project
+=============
+
+cd <project-dir>
+
+cordova platform add android
+
+cordova build android
