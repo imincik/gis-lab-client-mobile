@@ -1,1 +1,1 @@
-angular.module('gl.ui', []);
+angular.module('gl.ui', ['ngAnimate']);

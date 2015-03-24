@@ -201,6 +201,7 @@ span.ivh-treeview-node-label {
 span.ivh-treeview-toggle {
 	display: table-cell;
 	vertical-align:middle;
+	padding: 0 5px 0 5px;
 }
 
 span[ivh-treeview-checkbox="node"] {
@@ -248,9 +249,14 @@ span[ivh-treeview-checkbox="node"] {
 }
 
 ul.ivh-treeview {
-	padding-left: 5px;
+	padding-left: 0px!important;
 	margin: 0;
 }
+.ivh-treeview ul.ivh-treeview li {
+	padding-left: 20px;
+	margin: 0;
+}
+
 ul.ivh-treeview.ng-scope {
 	padding-left: 20px;
 }
@@ -272,7 +278,6 @@ img.legend-item {
 	margin-top: 1px;
 	margin-bottom: 1px;
 	line-height: 1;
-	padding-left: 5px;
 }
 
 
@@ -487,7 +492,7 @@ xx.webgis-button {
 	line-height: 32px;
 }
 
-.topics .list-item-desc {
+.list-item-detail {
 	font-size: 13px;
 	color: #666;
 }
@@ -497,18 +502,37 @@ xx.webgis-button {
 	line-height: 1.2em;
 }
 
+
 .topics .list__item {
 	min-height: 0px;
 	padding-left: 0px;
 }
 
 .list__item.item-accordion {
-	line-height: 20px;
-	padding: 0 6px 0 10px;
-	border-bottom: 1px solid #ddd;
-	transition: 0.1s all linear;
-	xtransition: all 0.1s cubic-bezier(0.42,0,0.58,1) 0s;
+	padding: 0 3px 0 5px;
 }
+
+.item-accordion {
+	display: block!important;
+	overflow: hidden;
+	line-height: 20px;
+	padding: 0 3px 0 5px;
+	transition: 0.4s all ease-in-out;
+	opacity:1;
+}
+
+.item-accordion.ng-hide {
+	opacity: 0;
+	height: 0px!important;
+	display: none!important;
+}
+.item-accordion.ng-hide-add, .item-accordion.ng-hide-remove {
+	/* this needs to be here to make it visible during the animation
+	since the .ng-hide class is already on the element rendering
+	it as hidden. */
+	display: block!important;
+}
+
 .item-accordion label {
 	font-weight: bold;
 	display: block;
@@ -518,19 +542,20 @@ xx.webgis-button {
 	display: block;
 	content: "\00a0"
 }
-
-.list__item.item-accordion.ng-hide, .list__item.item-accordion.ng-hide.label {
-	line-height: 0px!important;
-	opacity: 0.01;
+.item-accordion:last-child {
+	border-bottom: 1px solid #ddd;
 }
 
-.item-accordion.ng-hide-add,
-.item-accordion.ng-hide-remove {
-	display: block !important;
+.topics .expanded .list__item--tappable {
+	background-color: #eee;
 }
 
-.topics .list-item-title::before {
-	color: #aaa;
+.topics .expanded .list__item--tappable:active {
+	background-color: #d9d9d9;
+}
+
+.topics .toggle-btn::before {
+	color: #ddd;
 	content: "\f107";
 	font-family: FontAwesome;
 	font-size: 28px;
@@ -547,13 +572,56 @@ xx.webgis-button {
 	display: inline-block;
 }
 
-.topics .expanded .list-item-title::before {
+.topics .expanded .toggle-btn::before {
 	content: "\f106";
 }
 
-.topics .expanded .list__item--tappable {
-	background-color: #eee;
+ul.ivh-treeview, ul.ivh-treeview li {
+	min-height: 0px!important;
+	display: block!important;
+	overflow: hidden;
 }
-.topics .expanded .list__item--tappable:active {
-	background-color: #d9d9d9;
+
+ul.ivh-treeview {
+	transition:0s linear all;
+	height: auto;
+	opacity: 1;
+}
+
+ul.ivh-treeview.height-anim-add-active, ul.ivh-treeview.height-anim-remove {
+	transition: 0.4s all ease-in-out;
+}
+
+li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim {
+	opacity: 0;
+	height: 0px!important;
+	display: none!important;
+}
+
+li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim-add, li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim-remove {
+	/* this needs to be here to make it visible during the animation
+	since the .ng-hide class is already on the element rendering
+	it as hidden. */
+	display: block!important;
+}
+
+.info-button {
+	display: inline-block!important;
+	width: 1px;;
+	color: #ddd;
+	font-family: FontAwesome;
+	font-size: 24px;
+	font-style: normal;
+	font-weight: normal;
+	height: 28px;
+	line-height: 24px;
+	position: relative;
+	float: left;
+	left: -18px;
+}
+.info-button::before {
+	content: "\f107";
+}
+.info-button.expanded::before {
+	content: "\f106";
 }

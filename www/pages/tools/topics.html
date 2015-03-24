@@ -7,24 +7,28 @@
 		</div>
 	</ons-toolbar>
 	<ons-scroller style="height: {{ panelHeight }}px;">
-		<ons-list class="topics">
+		<ons-list class="topics" >
 			<div ng-repeat="topic in ::topics" ng-class="{expanded: isDetailShown(topic)}">
 				<ons-list-item modifier="tappable">
 					<ons-row>
-						<ons-col width="30px" ng-click="toggleTopicDetail(topic)">
+						<ons-col width="30px" style="z-index: 1;">
+							<div style="width: 50px;" ng-click="toggleTopicDetail(topic)" class="toggle-btn">&nbsp;</div>
 						</ons-col>
-						<ons-col ng-click="loadTopic(topic)">
+						<ons-col ng-click="loadTopic(topic)" style="z-index: 2;">
 							<span class="list-item-title" >{{ ::topic.title }}</span>
 						</ons-col>
 					</ons-row>
 				</ons-list-item>
-				<ons-list-item class="list-item-desc item-accordion" ng-show="isDetailShown(topic)">
-					<label>Abstract:</label>
-					<span>{{ ::topic.abstract }}</span>
-					<label>Visible layers:</label>
-					<span>{{ ::topic.visible_overlays.join(', ') }}</span>
+				<ons-list-item class="list-item-detail item-accordion" ng-show="isDetailShown(topic)" gl-fixed-height>
+					<div>
+						<label>Abstract:</label>
+						<span>{{ ::topic.abstract }}</span>
+						<label>Visible layers:</label>
+						<span>{{ ::topic.visible_overlays.join(', ') }}</span>
+					</div>
 				</ons-list-item>
 			</div>
 		</ons-list>
+
 	</ons-scroller>
 </ons-page>
