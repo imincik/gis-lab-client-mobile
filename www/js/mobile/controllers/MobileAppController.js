@@ -13,8 +13,9 @@
 
 		$scope.ui = {
 			tools_layers_tab: 0,
+			tools_settings_tab: 0,
 			settings_server_tab: 0,
-			settings_project_tab: 0
+			settings_project_tab: 0,
 		};
 		$scope.ui.toolbar = [
 			{
@@ -78,7 +79,7 @@
 				persistent: true,
 			}, {
 				icon: 'ion-gear-b',
-				page: 'menu.html'
+				page: 'pages/settings/settings.html'
 			}
 		];
 

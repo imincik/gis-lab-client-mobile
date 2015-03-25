@@ -1,0 +1,61 @@
+<ons-page >
+	<div class="tab-bar tab-bar--top">
+		<label class="tab-bar__item">
+			<input type="radio" name="settings-tab-radio" value="0" ng-model="ui.tools_settings_tab">
+			<button class="tab-bar__button">
+				<i class="tab-bar__icon ion-android-options"></i>
+				<div class="tab-bar__label">Settings</div>
+			</button>
+		</label>
+
+		<label class="tab-bar__item">
+			<input type="radio" name="settings-tab-radio" value="1" ng-model="ui.tools_settings_tab">
+			<button class="tab-bar__button">
+				<i class="tab-bar__icon ion-information-circled"></i>
+				<div class="tab-bar__label">About</div>
+			</button>
+		</label>
+	</div>
+	<gl-carousel-tab-slider gl-tab-model="ui.tools_settings_tab" gl-carousel="app.settings.carousel"></gl-carousel-tab-slider>
+
+	<ons-carousel var="app.settings.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
+		<ons-carousel-item class="xsettings">
+			<ons-scroller style="height: {{ panelHeight }}px;">
+<!--				<ons-list>-->
+<!--					<ons-list-header>Server/Account</ons-list-header>-->
+<!--					<ons-list-item modifier="chevron"  ng-click="app.navigator.pushPage('pages/settings/server.html');">-->
+<!--						<div class="item-content" ng-bind="$storage.serverUrl"></div>-->
+<!--					</ons-list-item>-->
+<!--					<ons-list-header>Project</ons-list-header>-->
+<!--					<ons-list-item modifier="chevron" ng-bind="$storage.project" ng-click="app.navigator.pushPage('pages/settings/project.html');">-->
+<!--					</ons-list-item>-->
+<!--				</ons-list>-->
+				<ons-list>
+					<ons-list-item modifier="chevron"  ng-click="app.navigator.pushPage('pages/settings/server.html');">
+					Server/Account
+					</ons-list-item>
+					<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('pages/settings/project.html');">
+					Project
+					</ons-list-item>
+				</ons-list>
+			</ons-scroller>
+		</ons-carousel-item>
+
+		<ons-carousel-item>
+			<ons-navigator var="app.navigator.about">
+				<ons-scroller style="height: {{ panelHeight }}px;">
+					<ons-list>
+						<ons-list-item modifier="chevron" ng-click="app.navigator.about.pushPage('pages/settings/about_project.html', { animation: 'slide' });">
+						Project
+						</ons-list-item>
+						<ons-list-item modifier="chevron" ng-click="app.navigator.about.pushPage('pages/settings/about_gislab.html', { animation: 'slide' });">
+						GIS.lab
+						</ons-list-item>
+					</ons-list>
+				</ons-scroller>
+			</ons-navigator>
+
+		</ons-carousel-item>
+
+	</ons-carousel>
+</ons-page>

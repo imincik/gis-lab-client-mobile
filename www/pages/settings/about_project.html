@@ -1,0 +1,52 @@
+<ons-page class="about">
+	<ons-toolbar fixed-style>
+		<div class="left"><ons-back-button></ons-back-button></div>
+		<div class="center">About Project</div>
+	</ons-toolbar>
+	<ons-list>
+		<ons-list-item>
+			<label>Title:</label>
+			<span ng-bind="::project.root_title"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Author:</label>
+			<span ng-bind="::project.author"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>E-mail:</label>
+			<span ng-bind="::project.email"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Phone:</label>
+			<span ng-bind="::project.phone"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Organization:</label>
+			<span ng-bind="::project.organization"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Abstract:</label>
+			<span ng-bind="::project.abstract"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Online resource:</label>
+			<a target="_blank" ng-href="{{ ::project.online_resource }}">icon</a>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Fees:</label>
+			<span ng-bind="::project.fees"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Access constraints:</label>
+			<span ng-bind="::project.access_constrains"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Keywords list:</label>
+			<span>{{ ::project.keyword_list.join(', ') }}</span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Publish date:</label>
+			<span ng-bind="::publish_date"></span>
+		</ons-list-item>
+	</ons-list>
+</ons-page>

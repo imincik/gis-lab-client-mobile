@@ -194,10 +194,17 @@
 .left {
 	text-align: left;
 }
-span.ivh-treeview-node-label {
+
+.ivh-treeview-node-label {
 	font-size: 15px!important;
+	font-weight: bold;
+}
+
+.ivh-treeview-node-leaf span.ivh-treeview-node-label {
+	font-weight: normal;
 	padding-left: 5px;
 }
+
 span.ivh-treeview-toggle {
 	display: table-cell;
 	vertical-align:middle;
@@ -252,13 +259,24 @@ ul.ivh-treeview {
 	padding-left: 0px!important;
 	margin: 0;
 }
-.ivh-treeview ul.ivh-treeview li {
-	padding-left: 20px;
+ul.ivh-treeview ul.ivh-treeview li {
+	xpadding-left: 10px;
 	margin: 0;
+}
+ul.ivh-treeview ul.ivh-treeview li {
+	padding-left: 10px;
+}
+ul.ivh-treeview ul.ivh-treeview li .ivh-treeview-twistie-expanded,
+ul.ivh-treeview ul.ivh-treeview li .ivh-treeview-twistie-collapsed {
+	xpadding-left: 10px;
+}
+
+ul.ivh-treeview li.ivh-treeview-node-leaf .ivh-treeview-twistie-leaf {
+	xpadding-left: 10px!important;
 }
 
 ul.ivh-treeview.ng-scope {
-	padding-left: 20px;
+	xpadding-left: 20px;
 }
 
 div.page__content {
@@ -412,10 +430,10 @@ xx.webgis-button {
 .radio-button__icon-checkmark::before, .checkbox__icon-checkmark::before {
 	width: 28px;
 	height: 28px;
-	content: "\f3a6";
 	text-align: center;
 	display: inline-block;
-	font-family: "Ionicons";
+	font-family: "FontAwesome";
+/*	font-family: "Ionicons";*/
 	font-style: normal;
 	font-variant: normal;
 	font-weight: normal;
@@ -423,14 +441,26 @@ xx.webgis-button {
 	text-rendering: auto;
 	text-transform: none;
 }
+.radio-button__icon-checkmark::before {
+	content: "\f10c";
+/*	content: "\f3a6";*/
+}
+.checkbox__icon-checkmark::before {
+	content: "\f096";
+/*	content: "\f372";*/
+}
+
 .radio-button > input[type="radio"]:checked + .radio-button__icon-checkmark::before {
-	content: "\f3a7";
+	content: "\f192";
+/*	content: "\f3a7";*/
 }
 .checkbox > input[type="checkbox"]:checked + .checkbox__icon-checkmark::before {
-	content: "\f120";
+	content: "\f046";
+/*	content: "\f373";*/
 }
 .checkbox > input[type="checkbox"]:indeterminate + .checkbox__icon-checkmark::before {
-	content: "\f275";
+	content: "\f147";
+/*	content: "\f371";*/
 }
 
 .scroll-top-indicator-bg {
@@ -535,13 +565,14 @@ xx.webgis-button {
 
 .item-accordion label {
 	font-weight: bold;
-	display: block;
+	display: inline-block;
 }
 .item-accordion label::before {
 	max-height: 8px;
 	display: block;
 	content: "\00a0"
 }
+
 .item-accordion:last-child {
 	border-bottom: 1px solid #ddd;
 }
@@ -555,7 +586,7 @@ xx.webgis-button {
 }
 
 .topics .toggle-btn::before {
-	color: #ddd;
+	color: #ccc;
 	content: "\f107";
 	font-family: FontAwesome;
 	font-size: 28px;
@@ -607,8 +638,8 @@ li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim-add, li.ivh-treeview-
 
 .info-button {
 	display: inline-block!important;
-	width: 1px;;
-	color: #ddd;
+	width: 4px;
+	color: #ccc;
 	font-family: FontAwesome;
 	font-size: 24px;
 	font-style: normal;
@@ -617,7 +648,7 @@ li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim-add, li.ivh-treeview-
 	line-height: 24px;
 	position: relative;
 	float: left;
-	left: -18px;
+	left: -12px;
 }
 .info-button::before {
 	content: "\f107";

@@ -1,0 +1,24 @@
+<ons-page class="about">
+	<ons-toolbar fixed-style>
+		<div class="left"><ons-back-button></ons-back-button></div>
+		<div class="center">About GIS.lab</div>
+	</ons-toolbar>
+	<ons-list>
+		<ons-list-item>
+			<label>GIS.lab ID:</label>
+			<span ng-bind="::project.gislab_unique_id"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Version:</label>
+			<span ng-bind="::project.gislab_version"></span>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Home page:</label>
+			<a target="_blank" ng-href="{{ ::project.gislab_homepage }}">icon</a>
+		</ons-list-item>
+		<ons-list-item>
+			<label>Documentation:</label>
+			<a target="_blank" ng-href="{{ ::project.gislab_documentation }}">icon</a>
+		</ons-list-item>
+	</ons-list>
+</ons-page>

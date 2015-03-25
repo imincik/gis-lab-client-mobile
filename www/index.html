@@ -12,7 +12,8 @@
 	<link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">
 	<link rel="stylesheet" href="lib/ui-grid/ui-grid.css">
 	<link rel="stylesheet" href="lib/ivh-treeview/ivh-treeview.css">
-	<link rel="stylesheet" href="styles/app.css"/>
+	<link rel="stylesheet" href="styles/gislab/mobile.css"/>
+	<link rel="stylesheet" href="styles/gislab/settings.css"/>
 
 	<script src="lib/onsen/js/angular/angular.js"></script>
 	<script src="lib/onsen/js/angular/angular-touch.js"></script>
@@ -139,61 +140,6 @@
 					</gl-scroll-indicator>
 				</ons-scroller>
 			</div>
-		</ons-page>
-	</ons-template>
-
-
-	<ons-template id="menu.html">
-		<ons-page>
-			<ons-list>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('pages/settings/main.html', { animation: 'slide' });">Settings</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_project.html', { animation: 'slide' });">About Project</ons-list-item>
-				<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('about_gislab.html', { animation: 'slide' });">About GIS.lab</ons-list-item>
-			</ons-list>
-		</ons-page>
-	</ons-template>
-	<ons-template id="about_project.html">
-		<ons-page>
-			<ons-toolbar fixed-style>
-				<div class="left"><ons-back-button>Back</ons-back-button></div>
-				<div class="center">Project information</div>
-			</ons-toolbar>
-			<ons-list>
-				<ons-list-header>Title</ons-list-header><ons-list-item ng-bind="::project.root_title"></ons-list-item>
-				<ons-list-header>Author</ons-list-header><ons-list-item ng-bind="::project.author"></ons-list-item>
-				<ons-list-header>E-mail</ons-list-header><ons-list-item ng-bind="::project.email"></ons-list-item>
-				<ons-list-header>Phone</ons-list-header><ons-list-item ng-bind="::project.phone"></ons-list-item>
-				<ons-list-header>Organization</ons-list-header><ons-list-item ng-bind="::project.organization"></ons-list-item>
-				<ons-list-header>Abstract</ons-list-header><ons-list-item ng-bind="::project.abstract"></ons-list-item>
-				<ons-list-header>Online resource</ons-list-header>
-				<ons-list-item>
-					<a target="_blank" ng-href="{{ ::project.online_resource }}" ng-bind="::project.online_resource"></a>
-				</ons-list-item>
-				<ons-list-header>Fees</ons-list-header><ons-list-item ng-bind="::project.fees"></ons-list-item>
-				<ons-list-header>Access constraints</ons-list-header><ons-list-item ng-bind="::project.access_constrains"></ons-list-item>
-				<ons-list-header>Keywords list</ons-list-header><ons-list-item>{{ ::project.keyword_list.join(', ') }}</ons-list-item>
-				<ons-list-header>Publish date</ons-list-header><ons-list-item ng-bind="::project.publish_date"></ons-list-item>
-			</ons-list>
-		</ons-page>
-	</ons-template>
-	<ons-template id="about_gislab.html">
-		<ons-page>
-			<ons-toolbar fixed-style>
-				<div class="left"><ons-back-button>Back</ons-back-button></div>
-				<div class="center">GIS.lab</div>
-			</ons-toolbar>
-			<ons-list>
-				<ons-list-header>GIS.lab ID</ons-list-header><ons-list-item ng-bind="::project.gislab_unique_id"></ons-list-item>
-				<ons-list-header>Version</ons-list-header><ons-list-item ng-bind="::project.gislab_version"></ons-list-item>
-				<ons-list-header>Home page</ons-list-header>
-				<ons-list-item>
-					<a target="_blank" ng-href="{{ ::project.gislab_homepage }}" ng-bind="::project.gislab_homepage"></a>
-				</ons-list-item>
-				<ons-list-header>Documentation</ons-list-header>
-				<ons-list-item>
-					<a target="_blank" ng-href="{{ ::project.gislab_documentation }}" ng-bind="::project.gislab_documentation" ng-click="openLink('fake');"></a>
-				</ons-list-item>
-			</ons-list>
 		</ons-page>
 	</ons-template>
 </body>
