@@ -1,0 +1,112 @@
+
+.gl-tree {
+	font-size: 15px;
+	color: gray;
+}
+.gl-tree .node-label {
+	display: inline-block;
+	xwidth: 100%;
+}
+
+.gl-tree .list__item.group {
+	font-weight: bold;
+	background-color: #eee;
+	color: #555;
+}
+
+.gl-tree .list-item-detail {
+	font-size: 13.5px;
+	border-bottom: 1px solid #ddd;
+}
+
+.gl-tree label {
+	font-weight: bold;
+}
+
+.gl-tree .list__item.leaf::before {
+	color: #ddd;
+	content: "\f107";
+	font-family: FontAwesome;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: normal;
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.gl-tree input[type="checkbox"] {
+	width: 36px;
+	height: 36px;
+	copacity: 0.5;
+}
+
+.gl-tree .toggle-button::before {
+	content: "\f0fe"
+}
+
+.gl-tree .toggle-button.expanded::before {
+	content: "\f146"
+}
+
+.gl-tree .indent {
+	display:inline-block;
+}
+.gl-tree .list__item[depth="2"] .indent {
+	width: 15px;
+}
+.gl-tree .list__item[depth="3"] .indent {
+	width: 30px;
+}
+.gl-tree .list__item[depth="4"] .indent {
+	width: 45px;
+}
+
+.gl-tree .list__item {
+	padding-left: 2px;
+}
+
+.gl-tree .list__item:last-child {
+	border-bottom: 1px solid #ddd;
+}
+.gl-tree .fa {
+	color: gray;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+label.checkbox, label.radio-button {
+	vertical-align: middle;
+	line-height: 28px;
+	color: gray;
+}
+
+/* animations */
+
+.group-content {
+	min-height: 0px!important;
+	display: block!important;
+	overflow: hidden;
+	transition:0s linear all;
+	opacity: 1;
+}
+.group-content.height-anim {
+	opacity: 0;
+	height: 0px!important;
+	display: none!important;
+}
+
+.group-content.height-anim-add, .group-content.height-anim-remove {
+	/* this needs to be here to make it visible during the animation
+	since the .ng-hide class is already on the element rendering
+	it as hidden. */
+	display: block!important;
+}
+
+.group-content.height-anim-add-active, .group-content.height-anim-remove {
+	transition: 0.4s all ease-in-out;
+}

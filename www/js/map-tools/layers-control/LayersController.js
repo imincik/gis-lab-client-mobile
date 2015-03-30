@@ -7,7 +7,6 @@
 
 	function LayersController($scope, projectProvider, mapBuilder) {
 		//console.log('LayersController');
-		$scope.selectedBaseLayer = {};
 		$scope.setBaseLayer = function(layername) {
 			if (!projectProvider.map)
 				return;
@@ -22,9 +21,6 @@
 				}
 			});
 		};
-		$scope.$watch('selectedBaseLayer.name', function(layername) {
-			$scope.setBaseLayer(layername);
-		});
 		$scope.layersVisibilityChanged = function(node) {
 			var visible_layers = [];
 			$scope.layers.list.forEach(function(layer_data) {
@@ -44,27 +40,44 @@
 			{
 				title: 'Group',
 				layers: [
-					{title: 'Subitem1'},
-					{title: 'Subitem2'},
+					{title: 'S1'},
+					{title: 'S2'},
 					{
 						title: 'Subgroup',
 						layers: [
-							{title: 'Subsubitem1'},
-							{title: 'Subsubitem2'},
+							{title: 'SS1'},
+							{
+								title: 'Subsub-group',
+								layers: [
+									{title: 'SSS1'},
+									{title: 'SSS2'}
+								]
+							},
 							{title: 'Subsubitem3'},
+							{
+								title: 'Subsub-group',
+								layers: [
+									{title: 'SSS3'},
+									{title: 'SSS4'},
+									{title: 'SSS5', visible: true},
+									{title: 'SSS6'}
+								]
+							},
 						]
 					}
 				]
 			},
-			{title: 'Third'},
-			{title: 'Fourth'},
+			{title: 'I1'},
+			{title: 'I2'},
 		];
 		$scope.baseLayers = projectProvider.baseLayers;
 		//$scope.baseLayers.tree = test_base_layers;
+
+		var selectedBaseLayer = {}
 		$scope.baseLayers.list.forEach(function(base_layer) {
-			base_layer.selected = $scope.selectedBaseLayer;
+			base_layer.selected = selectedBaseLayer;
 			if (base_layer.visible) {
-				$scope.selectedBaseLayer.name = base_layer.name;
+				selectedBaseLayer.name = base_layer.name;
 			}
 		});
 	};

@@ -3,9 +3,9 @@
 
 	angular
 		.module('gl.layersControl')
-		.factory('layersControl', ['projectProvider', 'ivhTreeviewMgr', layersControl]);
+		.factory('layersControl', ['projectProvider', layersControl]);
 
-	function layersControl(projectProvider, ivhTreeviewMgr) {
+	function layersControl(projectProvider) {
 		function LayersControl() {};
 
 		LayersControl.prototype.load = function(config) {
@@ -34,8 +34,8 @@
 				}
 			});
 			if (needs_update) {
-				ivhTreeviewMgr.deselectAll(projectProvider.layers.tree);
-				ivhTreeviewMgr.selectEach(projectProvider.layers.tree, visible_layers_nodes);
+				//ivhTreeviewMgr.deselectAll(projectProvider.layers.tree);
+				//ivhTreeviewMgr.selectEach(projectProvider.layers.tree, visible_layers_nodes);
 			}
 		};
 		return new LayersControl();

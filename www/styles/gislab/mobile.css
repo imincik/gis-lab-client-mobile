@@ -195,27 +195,6 @@
 	text-align: left;
 }
 
-.ivh-treeview-node-label {
-	font-size: 15px!important;
-	font-weight: bold;
-}
-
-.ivh-treeview-node-leaf span.ivh-treeview-node-label {
-	font-weight: normal;
-	padding-left: 5px;
-}
-
-span.ivh-treeview-toggle {
-	display: table-cell;
-	vertical-align:middle;
-	padding: 0 5px 0 5px;
-}
-
-span[ivh-treeview-checkbox="node"] {
-	display: table-cell;
-	vertical-align: middle;
-}
-
 .my-grid {
 	width: 100%;
 	height: 150px;
@@ -251,34 +230,6 @@ span[ivh-treeview-checkbox="node"] {
 	width: 25px;
 }
 
-.ivh-treeview ul, ul.ivh-treeview {
-	list-style-type: none;
-}
-
-ul.ivh-treeview {
-	padding-left: 0px!important;
-	margin: 0;
-}
-ul.ivh-treeview ul.ivh-treeview li {
-	xpadding-left: 10px;
-	margin: 0;
-}
-ul.ivh-treeview ul.ivh-treeview li {
-	padding-left: 10px;
-}
-ul.ivh-treeview ul.ivh-treeview li .ivh-treeview-twistie-expanded,
-ul.ivh-treeview ul.ivh-treeview li .ivh-treeview-twistie-collapsed {
-	xpadding-left: 10px;
-}
-
-ul.ivh-treeview li.ivh-treeview-node-leaf .ivh-treeview-twistie-leaf {
-	xpadding-left: 10px!important;
-}
-
-ul.ivh-treeview.ng-scope {
-	xpadding-left: 20px;
-}
-
 div.page__content {
 	overflow: hidden; position: relative;
 }
@@ -305,34 +256,6 @@ img.legend-item {
 	margin: 10px;
 }
 
-.depth-2 {
-	padding-left: 15px;
-	xwidth: 90%;
-}
-.depth-3 {
-	padding-left: 30px;
-	xwidth: 90%;
-}
-
-
-.ivh-treeview-twistie-leaf {
-	line-height: 1;
-	display: table-cell;
-	vertical-align: middle;
-}
-.ivh-treeview-twistie-expanded, .ivh-treeview-twistie-collapsed {
-	vertical-align: middle;
-}
-
-.ivh-treeview-twistie {
-	height: 40px;
-	display: table-cell;
-	vertical-align: middle;
-}
-
-.ivh-treeview-twistie, span[ivh-treeview-checkbox="node"] {
-	color: gray;
-}
 
 .point-layer-icon, .point-layer-icon-queryable, .line-layer-icon, .line-layer-icon-queryable, .polygon-layer-icon, .polygon-layer-icon-queryable, .raster-layer-icon {
 	background-image: url('../images/layer-geometry.png')!important;
@@ -573,7 +496,7 @@ xx.webgis-button {
 	content: "\00a0"
 }
 
-.item-accordion:last-child {
+ons-list-item.item-accordion:last-child {
 	border-bottom: 1px solid #ddd;
 }
 
@@ -604,55 +527,5 @@ xx.webgis-button {
 }
 
 .topics .expanded .toggle-btn::before {
-	content: "\f106";
-}
-
-ul.ivh-treeview, ul.ivh-treeview li {
-	min-height: 0px!important;
-	display: block!important;
-	overflow: hidden;
-}
-
-ul.ivh-treeview {
-	transition:0s linear all;
-	height: auto;
-	opacity: 1;
-}
-
-ul.ivh-treeview.height-anim-add-active, ul.ivh-treeview.height-anim-remove {
-	transition: 0.4s all ease-in-out;
-}
-
-li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim {
-	opacity: 0;
-	height: 0px!important;
-	display: none!important;
-}
-
-li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim-add, li.ivh-treeview-node-collapsed ul.ivh-treeview.height-anim-remove {
-	/* this needs to be here to make it visible during the animation
-	since the .ng-hide class is already on the element rendering
-	it as hidden. */
-	display: block!important;
-}
-
-.info-button {
-	display: inline-block!important;
-	width: 4px;
-	color: #ccc;
-	font-family: FontAwesome;
-	font-size: 24px;
-	font-style: normal;
-	font-weight: normal;
-	height: 28px;
-	line-height: 24px;
-	position: relative;
-	float: left;
-	left: -12px;
-}
-.info-button::before {
-	content: "\f107";
-}
-.info-button.expanded::before {
 	content: "\f106";
 }

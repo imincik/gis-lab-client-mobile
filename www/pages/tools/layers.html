@@ -29,35 +29,83 @@
 	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px;">
-				<div class="baselayer-container">
-					<div
-						ivh-treeview="baseLayers.tree"
-						ivh-treeview-expand-to-depth="-1"
-						ivh-treeview-use-checkboxes="false"
-						ivh-treeview-twistie-leaf-tpl="'
-							<label class=&quot;radio-button&quot;>
-								<input type=&quot;radio&quot; name=&quot;baselayer-radio&quot; value=&quot;{{ node.name }}&quot; ng-model=&quot;node.selected.name&quot;></input>
-								<div class=&quot;radio-button__icon-checkmark&quot;></div>
-							</label>'"
-						>
+				<ons-list class="baselayer-container gl-tree"
+					gl-tree-view="baseLayers.tree"
+					gl-tree-label-attribute="title"
+					gl-tree-children-attribute="layers"
+					gl-tree-selected-attribute="visible"
+					gl-tree-view-change-handler="setBaseLayer(node.name)">
+
+					<div gl-tree-group-template>
+						<ons-list-item class="group" modifier="tapable" depth="{{ ::treeDepth }}" ng-click="isExpanded=!isExpanded">
+							<span class="indent"></span>
+							<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
+							{{ node.title }}
+						</ons-list-item>
+						<div class="group-content" ng-show="isExpanded" gl-height-animation>
+							<div ng-repeat="child in node.layers" gl-tree-node="child"></div>
+						</div>
 					</div>
-				</div>
+
+					<div gl-tree-leaf-template>
+						<ons-list-item modifier="chevron" class="leaf" depth="{{ ::treeDepth }}">
+							<span class="indent"></span>
+							<label class="radio-button">
+								<input type="radio" name="baselayer-radio" ng-model="node.selected.name" value="{{ ::node.name }}" ng-change="nodeSelected(node)"/>
+								<div class="radio-button__icon-checkmark"></div>
+							</label>
+							{{ node.title }}
+						</ons-list-item>
+					</div>
+
+					<div ng-repeat="n in root" gl-tree-node="n"></div>
+				</ons-list>
 			</ons-scroller>
 		</ons-carousel-item>
 
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px;">
-				<div class="layers-container">
-					<div
-						ivh-treeview="layers.tree"
-						ivh-treeview-expand-to-depth="-1"
-						ivh-treeview-use-checkboxes="true"
-						ivh-treeview-validate="false"
-						ivh-treeview-change-handler="layersVisibilityChanged"
-						ivh-treeview-twistie-leaf-tpl="'<span class=&quot;{{ node.geom_type | lowercase }}-layer-icon&quot;></span>'"
-						>
-					</div>
-				</div>
+				<ons-list class="layers-container gl-tree"
+					gl-check-tree-view="layers.tree"
+					gl-tree-label-attribute="title"
+					gl-tree-children-attribute="layers"
+					gl-tree-selected-attribute="visible"
+					gl-tree-view-change-handler="layersVisibilityChanged()">
+
+						<div gl-tree-group-template>
+							<ons-list-item class="group" modifier="tappable" depth="{{ ::treeDepth }}" gl-click="isExpanded=!isExpanded">
+								<span class="indent"></span>
+								<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
+								<label class="checkbox" gl-click="$event.stopPropagation();">
+									<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
+									<div class="checkbox__icon-checkmark"></div>
+								</label>
+								<div class="node-label">{{ node.title }}</div>
+							</ons-list-item>
+							<div class="group-content" ng-show="isExpanded" gl-height-animation>
+								<div ng-repeat="child in node.layers" gl-check-tree-node="child"></div>
+							</div>
+						</div>
+
+						<div gl-tree-leaf-template>
+							<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" gl-click="toggleAccordion(node)">
+								<span class="indent"></span>
+								<label class="checkbox" gl-click="$event.stopPropagation();">
+									<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
+									<div class="checkbox__icon-checkmark"></div>
+								</label>
+								{{ node.title }}
+							</ons-list-item>
+							<div class="list-item-detail item-accordion" ng-show="isAccordionShown(node)" gl-fixed-height>
+								<label>Abstract:</label><span>{{ node.metadata.abstract }}</span>
+								<label>Title:</label><span>{{ node.metadata.title }}</span>
+							</div>
+						</div>
+
+						<div ng-controller="AccordionController">
+							<div ng-repeat="n in root" gl-check-tree-node="n"></div>
+						</div>
+				</ons-list>
 			</ons-scroller>
 		</ons-carousel-item>
 
