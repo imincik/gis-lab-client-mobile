@@ -5,8 +5,13 @@
 		.module('gl.layersControl')
 		.controller('LayersController', LayersController);
 
-	function LayersController($scope, projectProvider, mapBuilder) {
-		//console.log('LayersController');
+	function LayersController($scope, projectProvider, mapBuilder, layersControl) {
+		$scope.topics = projectProvider.config.topics;
+		$scope.loadTopic = function(topic) {
+			projectProvider.map.getLayer('qgislayer').setVisibleLayers(topic.visible_overlays);
+			layersControl.syncWithMap(projectProvider.map, projectProvider.layers);
+		}
+
 		$scope.setBaseLayer = function(layername) {
 			if (!projectProvider.map)
 				return;
@@ -32,10 +37,6 @@
 		};
 
 		$scope.layers = projectProvider.layers;
-		var legends_urls = projectProvider.map.getLayer('qgislayer').getLegendUrls(projectProvider.map.getView());
-		$scope.layers.list.forEach(function(layer_data) {
-			layer_data.legendUrl = legends_urls[layer_data.name];
-		});
 		var test_base_layers = [
 			{
 				title: 'Group',

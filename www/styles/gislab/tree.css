@@ -8,6 +8,10 @@
 	xwidth: 100%;
 }
 
+.gl-tree .list__item {
+	padding-right: 0px;
+}
+
 .gl-tree .list__item.group {
 	font-weight: bold;
 	background-color: #eee;
@@ -23,7 +27,13 @@
 	font-weight: bold;
 }
 
-.gl-tree .list__item.leaf::before {
+.gl-tree .expand-button {
+	width: 50px;
+	display: inline-block;
+	float: right;
+}
+
+.gl-tree .expand-button::before {
 	color: #ddd;
 	content: "\f107";
 	font-family: FontAwesome;

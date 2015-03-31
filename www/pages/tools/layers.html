@@ -3,30 +3,57 @@
 		<label class="tab-bar__item">
 			<input type="radio" name="layers-tab-radio" value="0" ng-model="ui.tools_layers_tab">
 			<button class="tab-bar__button">
-				<i class="tab-bar__icon ion-android-map"></i>
-				<div class="tab-bar__label">Base layer</div>
+				<i class="tab-bar__icon ion-images"></i>
+				<div class="tab-bar__label">Topics</div>
 			</button>
 		</label>
 
 		<label class="tab-bar__item">
 			<input type="radio" name="layers-tab-radio" value="1" ng-model="ui.tools_layers_tab">
 			<button class="tab-bar__button">
-				<i class="tab-bar__icon ion-social-buffer"></i>
-				<div class="tab-bar__label">Layers</div>
+				<i class="tab-bar__icon ion-android-map"></i>
+				<div class="tab-bar__label">Base layer</div>
 			</button>
 		</label>
 
 		<label class="tab-bar__item">
 			<input type="radio" name="layers-tab-radio" value="2" ng-model="ui.tools_layers_tab">
 			<button class="tab-bar__button">
-				<i class="tab-bar__icon ion-android-color-palette"></i>
-				<div class="tab-bar__label">Legend</div>
+				<i class="tab-bar__icon ion-social-buffer"></i>
+				<div class="tab-bar__label">Layers</div>
 			</button>
 		</label>
 	</div>
 	<gl-carousel-tab-slider gl-tab-model="ui.tools_layers_tab" gl-carousel="app.panel.carousel"></gl-carousel-tab-slider>
 
 	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
+		<ons-carousel-item>
+			<ons-scroller style="height: {{ panelHeight }}px;">
+				<ons-list class="topics" ng-controller="AccordionController">
+					<div ng-repeat="topic in ::topics">
+						<ons-list-item modifier="tappable" ng-class="{expanded: isAccordionShown(topic)}">
+							<ons-row>
+								<ons-col ng-click="loadTopic(topic)">
+									<span class="list-item-title" >{{ ::topic.title }}</span>
+								</ons-col>
+								<ons-col width="30px">
+									<div ng-click="toggleAccordion(topic)" class="toggle-btn">&nbsp;</div>
+								</ons-col>
+							</ons-row>
+						</ons-list-item>
+						<ons-list-item class="list-item-detail item-accordion" ng-show="isAccordionShown(topic)" gl-fixed-height>
+							<div>
+								<label>Abstract:</label>
+								<span>{{ ::topic.abstract }}</span><br />
+								<label>Visible layers:</label>
+								<span>{{ ::topic.visible_overlays.join(', ') }}</span>
+							</div>
+						</ons-list-item>
+					</div>
+				</ons-list>
+			</ons-scroller>
+		</ons-carousel-item>
+
 		<ons-carousel-item>
 			<ons-scroller style="height: {{ panelHeight }}px;">
 				<ons-list class="baselayer-container gl-tree"
@@ -37,7 +64,7 @@
 					gl-tree-view-change-handler="setBaseLayer(node.name)">
 
 					<div gl-tree-group-template>
-						<ons-list-item class="group" modifier="tapable" depth="{{ ::treeDepth }}" ng-click="isExpanded=!isExpanded">
+						<ons-list-item class="group" modifier="tappable" depth="{{ ::treeDepth }}" ng-click="isExpanded=!isExpanded">
 							<span class="indent"></span>
 							<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
 							{{ node.title }}
@@ -48,7 +75,7 @@
 					</div>
 
 					<div gl-tree-leaf-template>
-						<ons-list-item modifier="chevron" class="leaf" depth="{{ ::treeDepth }}">
+						<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}">
 							<span class="indent"></span>
 							<label class="radio-button">
 								<input type="radio" name="baselayer-radio" ng-model="node.selected.name" value="{{ ::node.name }}" ng-change="nodeSelected(node)"/>
@@ -88,16 +115,17 @@
 						</div>
 
 						<div gl-tree-leaf-template>
-							<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" gl-click="toggleAccordion(node)">
+							<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(child)}">
 								<span class="indent"></span>
 								<label class="checkbox" gl-click="$event.stopPropagation();">
 									<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
 									<div class="checkbox__icon-checkmark"></div>
 								</label>
-								{{ node.title }}
+								<span class="title">{{ node.title }}</span>
+								<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
 							</ons-list-item>
 							<div class="list-item-detail item-accordion" ng-show="isAccordionShown(node)" gl-fixed-height>
-								<label>Abstract:</label><span>{{ node.metadata.abstract }}</span>
+								<label>Abstract:</label><span>{{ node.metadata.abstract }}</span><br />
 								<label>Title:</label><span>{{ node.metadata.title }}</span>
 							</div>
 						</div>
@@ -106,14 +134,6 @@
 							<div ng-repeat="n in root" gl-check-tree-node="n"></div>
 						</div>
 				</ons-list>
-			</ons-scroller>
-		</ons-carousel-item>
-
-		<ons-carousel-item>
-			<ons-scroller style="height: {{ panelHeight }}px;">
-				<div class="legend-container">
-					<img class="legend-item" ng-repeat="layer in layers.list" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
-				</div>
 			</ons-scroller>
 		</ons-carousel-item>
 	</ons-carousel>

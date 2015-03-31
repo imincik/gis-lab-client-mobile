@@ -19,17 +19,17 @@
 		};
 		$scope.ui.toolbar = [
 			{
-				icon: 'ion-images',
-				page: 'pages/tools/topics.html',
-				persistent: true,
-			}, {
 				icon: 'ion-social-buffer',
 				page: 'pages/tools/layers.html',
 				persistent: true,
 				activate: function() {
 					console.log('layers activated');
-					layersControl.activate();
+					layersControl.syncWithMap(projectProvider.map, projectProvider.layers);
 				}
+			}, {
+				icon: 'ion-android-color-palette',
+				page: 'pages/tools/legend.html',
+				persistent: true,
 			}, {
 				icon: 'ion-qr-scanner',
 				toggle: false,
