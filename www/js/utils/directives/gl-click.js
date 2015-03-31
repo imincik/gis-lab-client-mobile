@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('gl.utils', [])
+		.module('gl.utils')
 		.directive('glClick', glClick);
 
 	function glClick($parse) {
