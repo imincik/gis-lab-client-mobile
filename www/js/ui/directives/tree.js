@@ -51,7 +51,7 @@
 				transclude(scope, function(clone) {
 					iElem.append(clone);
 				});
-				scope.updateGroupsVisibility();
+				scope.updateGroupsCheckState();
 			},
 			controller: ['$scope', '$timeout', function($scope, $timeout) {
 				$scope.treeDepth = 0;
@@ -69,7 +69,6 @@
 						}
 						child[$scope.selectAttribute] = isSelected;
 					});
-					node._indeterminate = false; //$scope.setGroupCheckState(node, isSelected);
 				};
 				$scope.nodeSelected = function(node, isSelected) {
 					if ($scope.isGroup(node)) {
@@ -92,17 +91,7 @@
 					return allChecked? true : allUnchecked? false : null;
 				};
 				$scope.setGroupCheckState = function(node, isSelected) {
-					if (isSelected === null) { // indeterminate
-						if (!node._indeterminate) {
-							angular.element(node._element.children()[0]).find('input').prop('indeterminate', true);
-							node._indeterminate = true;
-						}
-					} else {
-						if (node._indeterminate) {
-							angular.element(node._element.children()[0]).find('input').prop('indeterminate', false);
-							node._indeterminate = false;
-						}
-					}
+					node._checkboxElement.prop('indeterminate', isSelected === null);
 					node[$scope.selectAttribute] = isSelected;
 				}
 				$scope.updateParentCheckState = function(node) {
@@ -112,7 +101,7 @@
 						$scope.setGroupCheckState(n, $scope.groupCheckState(n));
 					}
 				};
-				$scope.updateGroupsVisibility = function() {
+				$scope.updateGroupsCheckState = function() {
 					$timeout(function() {
 						var fn = function(layers) {
 							layers.forEach(function(node) {
@@ -125,7 +114,8 @@
 						}
 						fn($scope.root);
 					});
-				}
+				};
+				$scope.root.updateGroupsCheckState = $scope.updateGroupsCheckState;
 			}]
 		}
 	}
@@ -173,13 +163,15 @@
 					pre: function(scope, iElem, iAttrs) {
 						scope.node = scope.$eval(iAttrs.glCheckTreeNode);
 						scope.treeDepth = scope.treeDepth+1;
-						scope.node._element = iElem;
 						scope.isExpanded = true;
 						scope.node._parent = scope.$parent.node;
-						if (!scope.isGroup(scope.node) && typeof scope.node[scope.selectAttribute] === 'undefined') {
+						if (!scope.isGroup(scope.node) && !angular.isDefined(scope.node[scope.selectAttribute])) {
 							scope.node[$scope.selectAttribute] = false;
 						}
 						scope.buildHtml();
+					},
+					post: function(scope, iElem, iAttrs) {
+						scope.node._checkboxElement = angular.element(iElem.children()[0]).find('input');
 					}
 				};
 			}
