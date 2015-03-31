@@ -256,9 +256,13 @@ img.legend-item {
 	margin: 10px;
 }
 
+.layer-metadata-icon {
+	vertical-align: middle;
+	margin-left: 10px;
+}
 
 .point-layer-icon, .point-layer-icon-queryable, .line-layer-icon, .line-layer-icon-queryable, .polygon-layer-icon, .polygon-layer-icon-queryable, .raster-layer-icon {
-	background-image: url('../images/layer-geometry.png')!important;
+	background-image: url('../../images/layer-geometry.png')!important;
 	background: no-repeat;
 	width: 18px;
 	height: 18px;
@@ -471,20 +475,22 @@ xx.webgis-button {
 	overflow: hidden;
 	line-height: 20px;
 	padding: 0 3px 0 5px;
-	transition: 0.4s all ease-in-out;
-	opacity:1;
+	transition: 0s linear all;
+	opacity: 1;
 }
 
 .item-accordion.ng-hide {
 	opacity: 0;
-	height: 0px!important;
+	height: 0!important;
 	display: none!important;
 }
-.item-accordion.ng-hide-add, .item-accordion.ng-hide-remove {
+
+.item-accordion.ng-hide-add-active, .item-accordion.ng-hide-remove {
 	/* this needs to be here to make it visible during the animation
 	since the .ng-hide class is already on the element rendering
 	it as hidden. */
 	display: block!important;
+	transition: 0.4s all ease-in-out;
 }
 
 .item-accordion label {
@@ -497,8 +503,9 @@ xx.webgis-button {
 	content: "\00a0"
 }
 
-ons-list-item.item-accordion:last-child {
-	border-bottom: 1px solid #ddd;
+ons-list-item.list__item:first-child:last-child,
+ons-list-item.list__item:last-child {
+	border-bottom: 1px solid #ddd!important;
 }
 
 .list__item--tappable.expanded {
@@ -507,6 +514,13 @@ ons-list-item.item-accordion:last-child {
 
 .list__item--tappable.expanded:active {
 	background-color: #d9d9d9;
+}
+
+.topic-visible-layers {
+	padding-left: 10px;
+}
+.topic-visible-layers label {
+	line-height: 6px;
 }
 
 .topics .toggle-btn {

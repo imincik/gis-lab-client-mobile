@@ -5,8 +5,52 @@
 		.module('gl.layersControl')
 		.controller('LayersController', LayersController);
 
-	function LayersController($scope, projectProvider, mapBuilder, layersControl) {
+	function LayersController($scope, $timeout, $sce, projectProvider, mapBuilder, layersControl) {
 		$scope.topics = projectProvider.config.topics;
+
+		function visibleLayersHtml(layersTreeModel, topic) {
+			var text = '';
+			var indent = '';
+			var visit_node = function(layerModel) {
+				if (layerModel.layers) {
+					indent += '&nbsp;&nbsp;';
+					var children_content = [];
+					layerModel.layers.forEach(function(childModel) {
+						var child_content = visit_node(childModel);
+						if (child_content) {
+							children_content.push(child_content);
+						}
+					});
+					indent = indent.slice(12);
+					if (children_content.length > 0) {
+						return indent+'<label class="layer-group">'+layerModel.title+'</label><br />'+children_content.join('');
+					}
+				} else if (topic.visible_overlays.indexOf(layerModel.name) != -1) {
+					return '<span>'+indent+'- '+layerModel.title+'</span><br />';
+				}
+			};
+			var html = [];
+			layersTreeModel.forEach(function(layerModel) {
+				html.push(visit_node(layerModel));
+			});
+			return $sce.trustAsHtml(html.join('\n'));
+		}
+
+		$scope.topicDetail = function(topic, fn) {
+			if (!topic.detail) {
+				//console.log('topicDetail: '+topic.title);
+				topic.detail = {
+					abstract: topic.abstract,
+					visibleLayers: visibleLayersHtml(projectProvider.layers.tree, topic)
+				}
+				$timeout(function() {
+					fn(topic);
+				}, 15);
+			} else {
+				fn(topic);
+			}
+		}
+
 		$scope.loadTopic = function(topic) {
 			projectProvider.map.getLayer('qgislayer').setVisibleLayers(topic.visible_overlays);
 			layersControl.syncWithMap(projectProvider.map, projectProvider.layers);
@@ -37,6 +81,17 @@
 		};
 
 		$scope.layers = projectProvider.layers;
+		$scope.layers.list.forEach(function(layer_data) {
+			if (!layer_data.isGroup) {
+				if (!angular.isDefined(layer_data.visibility_scale_max)) {
+					layer_data.visibility_scale_max = 'TODO';
+				}
+				if (!angular.isDefined(layer_data.visibility_scale_min)) {
+					layer_data.visibility_scale_min = 'TODO';
+				}
+			}
+		});
+
 		var test_base_layers = [
 			{
 				title: 'Group',
@@ -74,6 +129,7 @@
 		$scope.baseLayers = projectProvider.baseLayers;
 		//$scope.baseLayers.tree = test_base_layers;
 
+		/* share the same reference to selected base layer in every node of tree model */
 		var selectedBaseLayer = {}
 		$scope.baseLayers.list.forEach(function(base_layer) {
 			base_layer.selected = selectedBaseLayer;

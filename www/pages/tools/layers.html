@@ -37,16 +37,19 @@
 									<span class="list-item-title" >{{ ::topic.title }}</span>
 								</ons-col>
 								<ons-col width="30px">
-									<div ng-click="toggleAccordion(topic)" class="toggle-btn">&nbsp;</div>
+									<div ng-click="topicDetail(topic, toggleAccordion);" class="toggle-btn">&nbsp;</div>
 								</ons-col>
 							</ons-row>
 						</ons-list-item>
-						<ons-list-item class="list-item-detail item-accordion" ng-show="isAccordionShown(topic)" gl-fixed-height>
+						<ons-list-item class="list-item-detail item-accordion" ng-if="topic.detail" ng-show="isAccordionShown(topic)" gl-fixed-height>
 							<div>
 								<label>Abstract:</label>
-								<span>{{ ::topic.abstract }}</span><br />
+								<span>{{ ::topic.detail.abstract }}</span><br />
 								<label>Visible layers:</label>
-								<span>{{ ::topic.visible_overlays.join(', ') }}</span>
+								<div class="topic-visible-layers">
+<!--								<span>{{ ::topic.visible_overlays.join(', ') }}</span>-->
+									<span ng-bind-html="::topic.detail.visibleLayers"></span>
+								</div>
 							</div>
 						</ons-list-item>
 					</div>
@@ -107,7 +110,7 @@
 									<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
 									<div class="checkbox__icon-checkmark"></div>
 								</label>
-								<div class="node-label">{{ node.title }}</div>
+								<div class="node-label">{{ ::node.title }}</div>
 							</ons-list-item>
 							<div class="group-content" ng-show="isExpanded" gl-height-animation>
 								<div ng-repeat="child in node.layers" gl-check-tree-node="child"></div>
@@ -117,16 +120,26 @@
 						<div gl-tree-leaf-template>
 							<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(child)}">
 								<span class="indent"></span>
-								<label class="checkbox" gl-click="$event.stopPropagation();">
+								<label class="checkbox">
 									<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
 									<div class="checkbox__icon-checkmark"></div>
 								</label>
-								<span class="title">{{ node.title }}</span>
+								<span class="title">{{ ::node.title }}</span>
 								<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
 							</ons-list-item>
 							<div class="list-item-detail item-accordion" ng-show="isAccordionShown(node)" gl-fixed-height>
-								<label>Abstract:</label><span>{{ node.metadata.abstract }}</span><br />
-								<label>Title:</label><span>{{ node.metadata.title }}</span>
+								<label>Geometry:</label><span class="layer-metadata-icon {{::node.geom_type | lowercase}}-layer-icon"></span><br />
+								<label>Identification:</label>
+<!--									<span> {{ ::node.queryable? 'Yes' : 'No' }}</span>-->
+									<i class="layer-metadata-icon fa" ng-class="node.queryable? 'fa-check' : 'fa-minus'"></i>
+								<br />
+								<label>Abstract:</label><span> {{ ::node.metadata.abstract }}</span><br />
+								<label>Keywords list:</label><span> {{ ::node.metadata.keyword_list }}</span><br />
+								<label>Maximal scale:</label><span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
+								<label>Minimal scale:</label><span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
+								<label>Labels:</label>
+<!--									<span> {{ ::node.queryable? 'Yes' : 'No' }}</span>-->
+									<i class="layer-metadata-icon fa" ng-class="node.labels? 'fa-check' : 'fa-minus'"></i>
 							</div>
 						</div>
 
