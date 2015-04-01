@@ -52,7 +52,7 @@
 		}
 
 		$scope.loadTopic = function(topic) {
-			projectProvider.map.getLayer('qgislayer').setVisibleLayers(topic.visible_overlays);
+			projectProvider.map.getLayer('qgislayer').getSource().setVisibleLayers(topic.visible_overlays);
 			layersControl.syncWithMap(projectProvider.map, projectProvider.layers);
 		}
 
@@ -77,7 +77,7 @@
 					visible_layers.push(layer_data.name);
 				}
 			});
-			projectProvider.map.getLayer('qgislayer').setVisibleLayers(visible_layers);
+			projectProvider.map.getLayer('qgislayer').getSource().setVisibleLayers(visible_layers);
 		};
 
 		$scope.layers = projectProvider.layers;

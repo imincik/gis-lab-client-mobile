@@ -79,50 +79,11 @@
 		MapBuilder.prototype.createProjectLayer = function(config) {
 			var overlays_layer;
 			if (config.layers) {
-				if (config.mapcache_url) {
-					overlays_layer = new ol.layer.WebgisTmsLayer({
-						project: config.project,
-						tilesUrl: config.mapcache_url,
-						legendUrl: config.legend_url,
-						source: new ol.source.TileImage({
-							tileGrid: new ol.tilegrid.TileGrid ({
-								origin: ol.extent.getBottomLeft(config.project_extent),
-								resolutions: config.tile_resolutions,
-								tileSize: 256
-							}),
-							tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-								var z = tileCoord[0];
-								var x = tileCoord[1];
-								var y = tileCoord[2];
-								var url = this.tileUrlTemplate
-									.replace('{z}', z.toString())
-									.replace('{x}', x.toString())
-									.replace('{y}', y.toString());
-								return url;
-							},
-							//tilePixelRatio: 1.325
-						}),
-						extent: config.project_extent,
-					});
-				} else {
-					overlays_layer = new ol.layer.WebgisWmsLayer({
-						source: new ol.source.ImageWMS({
-							url: config.ows_url,
-							params: {
-								'PROJECT': config.project,
-								'FORMAT': 'image/png',
-							},
-							serverType: ol.source.wms.ServerType.QGIS
-						}),
-						extent: config.project_extent,
-					});
-				}
-				overlays_layer.set('type', 'qgislayer');
-				overlays_layer.set('name', 'qgislayer');
 				var layers_data = this.layersTreeToList({layers: config.layers}, true);
 				var visible_layers = [];
 				var attributions = {};
 				layers_data.forEach(function(layer_config) {
+					//console.log(layer_config);
 					if (layer_config.visible) {
 						visible_layers.push(layer_config.name);
 					}
@@ -137,8 +98,40 @@
 						attributions[layer_config.name] = new ol.Attribution({html: attribution_html});
 					}
 				});
-				overlays_layer.setLayersAttributions(attributions);
-				overlays_layer.setVisibleLayers(visible_layers);
+
+				if (config.mapcache_url) {
+					overlays_layer = new ol.layer.Tile({
+						source: new ol.source.WebgisTileImage({
+							project: config.project,
+							tilesUrl: config.mapcache_url,
+							legendUrl: config.legend_url,
+							tileGrid: new ol.tilegrid.TileGrid ({
+								origin: ol.extent.getBottomLeft(config.project_extent),
+								resolutions: config.tile_resolutions,
+								tileSize: 256
+							}),
+							visibleLayers: visible_layers,
+							layersAttributions: attributions,
+							//tilePixelRatio: 1.325
+						}),
+						extent: config.project_extent,
+					});
+				} else {
+					overlays_layer = new ol.layer.Image({
+						source: new ol.source.WebgisImageWMS({
+							url: config.ows_url,
+							visibleLayers: visible_layers,
+							layersAttributions: attributions,
+							params: {
+								'FORMAT': 'image/png',
+							},
+							serverType: ol.source.wms.ServerType.QGIS
+						}),
+						extent: config.project_extent,
+					});
+				}
+				overlays_layer.set('type', 'qgislayer');
+				overlays_layer.set('name', 'qgislayer');
 			}
 			return overlays_layer;
 		};

@@ -9,10 +9,11 @@
 		function LayersControl() {};
 
 		LayersControl.prototype.syncWithMap = function(map, layersModel) {
-			var visible_layers = map.getLayer('qgislayer').getVisibleLayers();
+			var visible_layers = map.getLayer('qgislayer').getSource().getVisibleLayers();
 			var needs_update = false;
 			var visible_layers_nodes = [];
 			layersModel.list.forEach(function(layer_model) {
+				//console.log(layer_model);
 				var visible = visible_layers.indexOf(layer_model.name) != -1;
 				if (visible) {
 					visible_layers_nodes.push(layer_model);

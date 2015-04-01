@@ -1,39 +1,68 @@
 angular.module('gl.map', []);
 
-goog.provide('ol.control.ButtonControl');
-goog.provide('ol.layer.WebgisTmsLayer');
-goog.provide('ol.layer.WebgisWmsLayer');
-goog.require('ol.control.Control');
-goog.require('ol.layer.Tile');
-goog.require('ol.layer.Image');
+goog.require('ol.source.TileImage');
+goog.require('ol.source.ImageWMS');
+goog.provide('ol.source.WebgisTileImage');
+goog.provide('ol.source.WebgisImageWMS');
 
 
-ol.layer.WebgisTmsLayer = function(opt_options) {
+ol.source.WebgisTileImage = function(opt_options) {
 	var options = goog.isDef(opt_options) ? opt_options : {};
 	goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
-	this.setVisibleLayers(goog.isDef(options.visible_layers) ? options.visible_layers : []);
+	this.layers = (goog.isDef(options.layers) ? options.layers : []);
 	this.tilesUrl = goog.isDef(options.tilesUrl) ? options.tilesUrl : '';
-	this.legendUrl = goog.isDef(options.legendUrl) ? options.legendUrl : '';
 	this.project = goog.isDef(options.project) ? options.project : '';
-};
-goog.inherits(ol.layer.WebgisTmsLayer, ol.layer.Tile);
+	this.layersAttributions = goog.isDef(options.layersAttributions) ? options.layersAttributions : {};
+	this.tileUrlFunction = this._tileUrlFunction;
 
-ol.layer.WebgisTmsLayer.prototype.setVisibleLayers = function(layers) {
-	if (layers == this.getSource().layers) {
+	// create legend url tempalte
+	if (goog.isDef(options.legendUrl)) {
+		var base_params = {
+			'SERVICE': 'WMS',
+			'VERSION': '1.1.1',
+			'REQUEST': 'GetLegendGraphic',
+			'EXCEPTIONS': 'application/vnd.ogc.se_xml',
+			'FORMAT': 'image/png',
+			'SYMBOLHEIGHT': '4',
+			'SYMBOLWIDTH': '6',
+			'LAYERFONTSIZE': '10',
+			'LAYERFONTBOLD': 'true',
+			'ITEMFONTSIZE': '11',
+			'ICONLABELSPACE': '6',
+			'PROJECT': this.project,
+		}
+		this.legendUrlTemplate = options.legendUrl + '{hash}/{zoom}.png';
+		this.legendUrlTemplate = goog.uri.utils.appendParamsFromMap(this.legendUrlTemplate, base_params);
+	}
+	this.setVisibleLayers(goog.isDef(options.visibleLayers) ? options.visibleLayers : []);
+};
+goog.inherits(ol.source.WebgisTileImage, ol.source.TileImage);
+
+ol.source.WebgisTileImage.prototype._tileUrlFunction = function(tileCoord, pixelRatio, projection) {
+	var z = tileCoord[0];
+	var x = tileCoord[1];
+	var y = tileCoord[2];
+	var url = this.tileUrlTemplate
+		.replace('{z}', z.toString())
+		.replace('{x}', x.toString())
+		.replace('{y}', y.toString());
+	return url;
+};
+
+ol.source.WebgisTileImage.prototype.setVisibleLayers = function(layers) {
+	if (layers == this.visibleLayers) {
 		return;
 	}
 	// TODO sort layers
+	// TODO change visibility when no visible layers set
 	var layers_names = [].concat(layers).reverse().join(",");
-	this.getSource().layers = layers;
-	//this.getSource().layersString = layers_names;
-	//this.getSource().layersHash = CryptoJS.MD5(layers_names).toString();
-	var url_template = "{mapcache_url}{hash}/{z}/{x}/{y}.png?PROJECT={project}&LAYERS={layers}"
+	this.visibleLayers = layers;
+	this.tileUrlTemplate = "{mapcache_url}{hash}/{z}/{x}/{y}.png?PROJECT={project}&LAYERS={layers}"
 			.replace('{mapcache_url}', this.tilesUrl)
 			.replace('{hash}', CryptoJS.MD5(layers_names).toString())
 			.replace('{project}', this.project)
 			.replace('{layers}', layers_names);
-	this.getSource().tileUrlTemplate = url_template;
-	this.getSource().tileCache.clear();
+	this.tileCache.clear();
 
 	// update attributions
 	if (this.layersAttributions) {
@@ -46,73 +75,34 @@ ol.layer.WebgisTmsLayer.prototype.setVisibleLayers = function(layers) {
 				attributions_html.push(attribution.getHTML());
 			}
 		}, this);
-		this.getSource().setAttributions(attributions);
+		this.setAttributions(attributions);
 	}
 	this.changed();
 };
 
-ol.layer.WebgisTmsLayer.prototype.getVisibleLayers = function() {
-	return this.getSource().layers;
+ol.source.WebgisTileImage.prototype.getVisibleLayers = function() {
+	return this.visibleLayers;
 };
 
-ol.layer.WebgisTmsLayer.prototype.getLegendUrls = function(view) {
-	var layers_names = this.getSource().layers;
-	var base_legend_url = this.legendUrl;
-	var tile_grid = this.getSource().getTileGrid();
+ol.source.WebgisTileImage.prototype.getLegendUrl = function(layername, view) {
+	var tile_grid = this.getTileGrid();
 	var zoom_level = tile_grid.getZForResolution(view.getResolution());
-	var base_params = {
-		'SERVICE': 'WMS',
-		'VERSION': '1.1.1',
-		'REQUEST': 'GetLegendGraphic',
-		'EXCEPTIONS': 'application/vnd.ogc.se_xml',
-		'FORMAT': 'image/png',
-		'SYMBOLHEIGHT': '4',
-		'SYMBOLWIDTH': '6',
-		'LAYERFONTSIZE': '10',
-		'LAYERFONTBOLD': 'true',
-		'ITEMFONTSIZE': '11',
-		'ICONLABELSPACE': '6',
-		'SCALE': Math.round(view.getScale()).toString(),
-		'PROJECT': this.project,
-	}
-	var url_template = this.legendUrl + '{hash}/{zoom}.png'.replace('{zoom}', Number(zoom_level).toString());
-	url_template = goog.uri.utils.appendParamsFromMap(url_template, base_params);
-	var legends_urls = {};
-	layers_names.forEach(function (layer_name) {
-		var layer_hash = CryptoJS.MD5(layer_name).toString();
-		var url = url_template.replace('{hash}', layer_hash);
-		url = goog.uri.utils.appendParamsFromMap(url, {'LAYER': layer_name});
-		legends_urls[layer_name] = url;
+	var legendUrl = this.legendUrlTemplate
+		.replace('{hash}', CryptoJS.MD5(layername).toString())
+		.replace('{zoom}', Number(zoom_level).toString());
+	legendUrl = goog.uri.utils.appendParamsFromMap(legendUrl, {
+		'LAYER': layername,
+		'SCALE': Math.round(view.getScale()).toString()
 	});
-	return legends_urls;
+	return legendUrl;
 };
 
-ol.layer.WebgisTmsLayer.prototype.setLayersAttributions = function(attributions) {
-	this.layersAttributions = attributions;
-}
 
-ol.layer.WebgisWmsLayer = function(opt_options) {
+ol.source.WebgisImageWMS = function(opt_options) {
 	var options = goog.isDef(opt_options) ? opt_options : {};
 	goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
-	this.setVisibleLayers(goog.isDef(options.visible_layers) ? options.visible_layers : []);
-};
-goog.inherits(ol.layer.WebgisWmsLayer, ol.layer.Image);
-ol.layer.WebgisWmsLayer.prototype.setVisibleLayers = function(layers) {
-	if (layers == this.getSource().layers) {
-		return;
-	}
-	var layers_names = [].concat(layers).reverse().join(",");
-	this.getSource().layers = layers;
-	this.getSource().updateParams({LAYERS: layers_names});
-};
-
-ol.layer.WebgisWmsLayer.prototype.getVisibleLayers = function() {
-	return this.getSource().layers;
-};
-
-ol.layer.WebgisWmsLayer.prototype.getLegendUrls = function(view) {
-	var layers_names = this.getSource().layers;
-	var params = {
+	this.layersAttributions = goog.isDef(options.layersAttributions) ? options.layersAttributions : {};
+	var legendUrlParams = {
 		'SERVICE': 'WMS',
 		'VERSION': '1.1.1',
 		'REQUEST': 'GetLegendGraphic',
@@ -124,16 +114,44 @@ ol.layer.WebgisWmsLayer.prototype.getLegendUrls = function(view) {
 		'LAYERFONTBOLD': 'true',
 		'ITEMFONTSIZE': '11',
 		'ICONLABELSPACE': '6',
-		'SCALE': Math.round(view.getScale()).toString()
 	}
-	var ows_url = this.getSource().getUrl();
-	var legends_urls = {};
-	layers_names.forEach(function (layer_name) {
-		params['LAYER'] = layer_name;
-		var url = goog.uri.utils.appendParamsFromMap(ows_url, params);
-		legends_urls[layer_name] = url;
+	this.legendUrlTemplate = goog.uri.utils.appendParamsFromMap(options.url, legendUrlParams);
+	this.setVisibleLayers(goog.isDef(options.visibleLayers) ? options.visibleLayers : []);
+};
+goog.inherits(ol.source.WebgisImageWMS, ol.source.ImageWMS);
+
+ol.source.WebgisImageWMS.prototype.setVisibleLayers = function(layers) {
+	if (layers == this.visibleLayers) {
+		return;
+	}
+	this.visibleLayers = layers;
+	var layers_names = [].concat(layers).reverse().join(",");
+	// update attributions
+	if (this.layersAttributions) {
+		var attributions = [];
+		var attributions_html = [];
+		layers.forEach(function(layername) {
+			var attribution = this.layersAttributions[layername];
+			if (attribution && attributions_html.indexOf(attribution.getHTML()) == -1) {
+				attributions.push(attribution);
+				attributions_html.push(attribution.getHTML());
+			}
+		}, this);
+		this.setAttributions(attributions);
+	}
+	this.updateParams({LAYERS: layers_names});
+};
+
+ol.source.WebgisImageWMS.prototype.getVisibleLayers = function() {
+	return this.visibleLayers;
+};
+
+ol.source.WebgisImageWMS.prototype.getLegendUrl = function(layername, view) {
+	var legendUrl = goog.uri.utils.appendParamsFromMap(this.legendUrlTemplate, {
+		LAYER: layername,
+		SCALE: Math.round(view.getScale()).toString()
 	});
-	return legends_urls;
+	return legendUrl;
 };
 
 

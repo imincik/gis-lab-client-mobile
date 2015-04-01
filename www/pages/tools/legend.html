@@ -8,7 +8,7 @@
 	</ons-toolbar>
 	<ons-scroller style="height: {{ panelHeight }}px;">
 		<div class="legend-container">
-			<img class="legend-item" ng-repeat="layer in layers.list" ng-if="layer.visible && !layer.isGroup" ng-src="{{ layer.legendUrl }}" />
+			<img class="legend-item" ng-repeat="layer in ::layers.list" ng-if="layer.visible" ng-src="{{ layer.legendUrl }}" />
 		</div>
 	</ons-scroller>
 </ons-page>
