@@ -369,7 +369,7 @@ xx.webgis-button {
 	text-transform: none;
 }
 .radio-button__icon-checkmark::before {
-	content: "\f10c";
+	content: "\f096";
 /*	content: "\f3a6";*/
 }
 .checkbox__icon-checkmark::before {
@@ -378,7 +378,7 @@ xx.webgis-button {
 }
 
 .radio-button > input[type="radio"]:checked + .radio-button__icon-checkmark::before {
-	content: "\f192";
+	content: "\f0c8";
 /*	content: "\f3a7";*/
 }
 .checkbox > input[type="checkbox"]:checked + .checkbox__icon-checkmark::before {
@@ -466,8 +466,12 @@ xx.webgis-button {
 	padding-right: 0px;
 }
 
-.list__item.item-accordion {
+.list__item.item-accordion.list-item-detail {
 	padding: 0 3px 0 5px;
+}
+
+.list__item.item-accordion.list-item-detail label {
+	line-height: 15px;
 }
 
 .item-accordion {

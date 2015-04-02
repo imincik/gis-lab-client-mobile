@@ -33,7 +33,11 @@
 					<div ng-repeat="topic in ::topics">
 						<ons-list-item modifier="tappable" ng-class="{expanded: isAccordionShown(topic)}">
 							<ons-row>
-								<ons-col ng-click="loadTopic(topic)">
+								<ons-col>
+									<label class="radio-button">
+										<input type="radio" name="topics-radio" ng-model="selectedTopic.index" value="{{ ::$index }}" ng-change="loadTopic(topic)"/>
+										<div class="radio-button__icon-checkmark"></div>
+									</label>
 									<span class="list-item-title" >{{ ::topic.title }}</span>
 								</ons-col>
 								<ons-col width="30px">
@@ -50,6 +54,7 @@
 <!--								<span>{{ ::topic.visible_overlays.join(', ') }}</span>-->
 									<span ng-bind-html="::topic.detail.visibleLayers"></span>
 								</div>
+								<div style="height: 8px;"/>
 							</div>
 						</ons-list-item>
 					</div>
@@ -78,17 +83,26 @@
 					</div>
 
 					<div gl-tree-leaf-template>
-						<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}">
+						<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
 							<span class="indent"></span>
 							<label class="radio-button">
 								<input type="radio" name="baselayer-radio" ng-model="node.selected.name" value="{{ ::node.name }}" ng-change="nodeSelected(node)"/>
 								<div class="radio-button__icon-checkmark"></div>
 							</label>
 							{{ node.title }}
+							<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
+						</ons-list-item>
+						<ons-list-item class="list-item-detail item-accordion" ng-show="isAccordionShown(node)" gl-fixed-height>
+							<label>Abstract:</label><span> {{ ::node.metadata.abstract }}</span><br />
+							<label>Keywords list:</label><span> {{ ::node.metadata.keyword_list }}</span><br />
+							<label>Maximal scale:</label><span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
+							<label>Minimal scale:</label><span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
+							<div style="height: 8px;"/>
 						</ons-list-item>
 					</div>
-
-					<div ng-repeat="n in root" gl-tree-node="n"></div>
+					<div ng-controller="AccordionController">
+						<div ng-repeat="n in root" gl-tree-node="n"></div>
+					</div>
 				</ons-list>
 			</ons-scroller>
 		</ons-carousel-item>
@@ -113,12 +127,12 @@
 								<div class="node-label">{{ ::node.title }}</div>
 							</ons-list-item>
 							<div class="group-content" ng-show="isExpanded" gl-height-animation>
-								<div ng-repeat="child in node.layers" gl-check-tree-node="child"></div>
+								<div ng-repeat="n in node.layers" gl-check-tree-node="n"></div>
 							</div>
 						</div>
 
 						<div gl-tree-leaf-template>
-							<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(child)}">
+							<ons-list-item modifier="tappable" class="leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
 								<span class="indent"></span>
 								<label class="checkbox">
 									<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
@@ -127,7 +141,7 @@
 								<span class="title">{{ ::node.title }}</span>
 								<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
 							</ons-list-item>
-							<div class="list-item-detail item-accordion" ng-show="isAccordionShown(node)" gl-fixed-height>
+							<ons-list-item class="list-item-detail item-accordion" ng-show="isAccordionShown(node)" gl-fixed-height>
 								<label>Geometry:</label><span class="layer-metadata-icon {{::node.geom_type | lowercase}}-layer-icon"></span><br />
 								<label>Identification:</label>
 <!--									<span> {{ ::node.queryable? 'Yes' : 'No' }}</span>-->
@@ -137,10 +151,9 @@
 								<label>Keywords list:</label><span> {{ ::node.metadata.keyword_list }}</span><br />
 								<label>Maximal scale:</label><span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
 								<label>Minimal scale:</label><span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
-								<label>Labels:</label>
-<!--									<span> {{ ::node.queryable? 'Yes' : 'No' }}</span>-->
-									<i class="layer-metadata-icon fa" ng-class="node.labels? 'fa-check' : 'fa-minus'"></i>
-							</div>
+								<label>Labels:</label><i class="layer-metadata-icon fa" ng-class="node.labels? 'fa-check' : 'fa-minus'"></i>
+								<div style="height: 8px;"/>
+							</ons-list-item>
 						</div>
 
 						<div ng-controller="AccordionController">

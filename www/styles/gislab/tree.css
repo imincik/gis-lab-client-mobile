@@ -10,6 +10,7 @@
 
 .gl-tree .list__item {
 	padding-right: 0px;
+	min-height: 0px;
 }
 
 .gl-tree .list__item.group {
@@ -18,9 +19,10 @@
 	color: #555;
 }
 
-.gl-tree .list-item-detail {
+.gl-tree .list__item.list-item-detail {
 	font-size: 13.5px;
-	border-bottom: 1px solid #ddd;
+	padding-left: 5px;
+	padding-right: 4px;
 }
 
 .gl-tree label {
@@ -49,10 +51,8 @@
 	transform: translateY(-50%);
 }
 
-.gl-tree input[type="checkbox"] {
-	width: 36px;
-	height: 36px;
-	copacity: 0.5;
+.gl-tree .expanded .expand-button::before {
+	content: "\f106";
 }
 
 .gl-tree .toggle-button::before {
@@ -101,7 +101,7 @@ label.checkbox, label.radio-button {
 	min-height: 0px!important;
 	display: block!important;
 	overflow: hidden;
-	transition:0s linear all;
+	transition: 0s linear all;
 	opacity: 1;
 }
 .group-content.height-anim {

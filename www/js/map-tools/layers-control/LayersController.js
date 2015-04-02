@@ -7,6 +7,7 @@
 
 	function LayersController($scope, $timeout, $sce, projectProvider, mapBuilder, layersControl) {
 		$scope.topics = projectProvider.config.topics;
+		$scope.selectedTopic = {};
 
 		function visibleLayersHtml(layersTreeModel, topic) {
 			var text = '';
@@ -71,6 +72,7 @@
 			});
 		};
 		$scope.layersVisibilityChanged = function(node) {
+			$scope.selectedTopic.index = null;
 			var visible_layers = [];
 			$scope.layers.list.forEach(function(layer_data) {
 				if (!layer_data.isGroup && layer_data.visible) {
