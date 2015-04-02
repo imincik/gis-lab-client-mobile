@@ -1,6 +1,7 @@
 .settings .list__item {
 	line-height: 22px!important;
 	padding: 5px;
+	transition: 0s linear all;
 }
 .settings .list__item .item-content {
 	top: 50%;
@@ -9,16 +10,6 @@
 	xdisplay:table-cell;
 	xvertical-align: center;
 	xheight: 100%;
-}
-.about .toolbar-button--quiet i {
-	height: 36px!important;
-	font-size: 30px!important;
-	color: #555;
-}
-.about .toolbar-button--quiet i::before {
-	line-height: 20px!important;
-	height: 36px!important;
-	vertical-align: middle;
 }
 
 .about label {
@@ -34,5 +25,32 @@
 }
 .about .navigation-bar {
 	background-color: #f7f7f7;
+	border: none;
+}
+
+.tab-panel.navigation-bar {
+	height: 36px;
+	background-color: transparent;
 	border-bottom: 1px solid #ddd;
+}
+.tab-panel .navigation-bar__item, .tab-panel .navigation-bar__center {
+	height: 36px;
+}
+
+.tab-panel .button-bar {
+	margin: 4px auto 0!important;
+}
+
+.button-bar__item.active > .button-bar__button, *:checked + .button-bar__button {
+	background-color: rgba(212, 0, 0, 0.77);
+	color: #fff;
+}
+
+.button-bar__button {
+	color: rgba(212, 0, 0, 0.77);
+	border-color: rgba(212, 0, 0, 0.77)!important;
+}
+
+.button-bar__button:active, *:active + .button-bar__button {
+	background-color: rgba(212, 0, 0, 0.12);
 }

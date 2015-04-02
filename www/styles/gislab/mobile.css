@@ -133,11 +133,11 @@
 
 .tab-bar--top {
 	border: none;
-	background-color: #ddd;
+	background-color: #dfdfdf;
 }
 .tab-bar__button {
 	height: 33px;
-	background-color: #ddd;
+	xbackground-color: #ddd;
 }
 :checked + .tab-bar__button {
 	background-color: gray;
@@ -153,7 +153,9 @@
 	color: #555;
 }
 .tab-bar__label {
-	font-size: 12px!important;
+	xfont-size: 12px!important;
+	font-size: 14px!important;
+	line-height: 32px!important;
 }
 .tab-bar__icon {
 	width: 100%;
@@ -367,6 +369,7 @@ xx.webgis-button {
 	font-size: 28px;
 	text-rendering: auto;
 	text-transform: none;
+	padding: 5px 0 5px 0;
 }
 .radio-button__icon-checkmark::before {
 	content: "\f096";
@@ -429,20 +432,31 @@ xx.webgis-button {
 	line-height: 25px!important;
 }
 
-.main-panel .navigation-bar {
+.navigation-bar {
 	height: 36px;
 	background-color: #ddd;
 	border-bottom: 2px solid #bbb;
 }
-.main-panel .navigation-bar__item, .main-panel .navigation-bar__left, .main-panel .navigation-bar__right, .main-panel .navigation-bar__center {
+.navigation-bar__item, .navigation-bar__left, .navigation-bar__right, .navigation-bar__center {
 	height: 36px;
 }
-.main-panel ons-toolbar ~ .page__content {
+ons-toolbar ~ .page__content {
 	top: 36px;
 }
 
-.main-panel .navigation-bar__title, .main-panel .navigation-bar__line-height {
+.navigation-bar__title, .navigation-bar__line-height {
 	line-height: 36px;
+}
+
+.toolbar-button--quiet i {
+	height: 36px!important;
+	font-size: 30px!important;
+	color: #555;
+}
+.toolbar-button--quiet i::before {
+	line-height: 20px!important;
+	height: 36px!important;
+	vertical-align: middle!important;
 }
 
 .list__item header {
