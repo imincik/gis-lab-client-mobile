@@ -28,7 +28,7 @@
 
 	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight }}px" swipeable auto-scroll>
 		<ons-carousel-item>
-			<ons-scroller style="height: {{ panelHeight }}px;">
+			<ons-scroller style="height: {{ panelHeight }}px;" ng-if="::topics">
 				<ons-list class="topics" ng-controller="AccordionController">
 					<div ng-repeat="topic in ::topics">
 						<ons-list-item modifier="tappable" ng-class="{expanded: isAccordionShown(topic)}">
@@ -36,7 +36,10 @@
 								<ons-col>
 									<label class="radio-button">
 										<input type="radio" name="topics-radio" ng-model="selectedTopic.index" value="{{ ::$index }}" ng-change="loadTopic(topic)"/>
-										<div class="radio-button__icon-checkmark"></div>
+<!--										<div class="radio-button__icon-checkmark"></div>-->
+										<div class="radio-button__icon-checkmark">
+											<div class="radio-button__icon-checkmark-fill"></div>
+										</div>
 									</label>
 									<span class="list-item-title" >{{ ::topic.title }}</span>
 								</ons-col>
@@ -60,6 +63,9 @@
 					</div>
 				</ons-list>
 			</ons-scroller>
+			<div class="empty-tab" ng-if="::!topics">
+				<span>Empty panel</span>
+			</div>
 		</ons-carousel-item>
 
 		<ons-carousel-item>
@@ -87,7 +93,9 @@
 							<span class="indent"></span>
 							<label class="radio-button">
 								<input type="radio" name="baselayer-radio" ng-model="node.selected.name" value="{{ ::node.name }}" ng-change="nodeSelected(node)"/>
-								<div class="radio-button__icon-checkmark"></div>
+								<div class="radio-button__icon-checkmark">
+									<div class="radio-button__icon-checkmark-fill"></div>
+								</div>
 							</label>
 							{{ node.title }}
 							<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
@@ -108,7 +116,7 @@
 		</ons-carousel-item>
 
 		<ons-carousel-item>
-			<ons-scroller style="height: {{ panelHeight }}px;">
+			<ons-scroller style="height: {{ panelHeight }}px;" ng-if="::layers.tree">
 				<ons-list class="layers-container gl-tree"
 					gl-check-tree-view="layers.tree"
 					gl-tree-label-attribute="title"
@@ -161,6 +169,9 @@
 						</div>
 				</ons-list>
 			</ons-scroller>
+			<div class="empty-tab" ng-if="::!layers.tree">
+				<span>Empty panel</span>
+			</div>
 		</ons-carousel-item>
 	</ons-carousel>
 </ons-page>

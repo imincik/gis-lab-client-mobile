@@ -24,31 +24,34 @@
 		<ons-list ng-switch-when="0">
 			<ons-list-item>
 				<ons-row>
-					<ons-col width="38px">
-						<ons-icon icon="ion-earth" size="28px" fixed-width="true" style="color: gray"></ons-icon>
+					<ons-col width="36px" style="color: gray">
+						<ons-icon icon="ion-earth" size="24px" fixed-width="true"></ons-icon>
+					</ons-col>
+					<ons-col width="40px" style="color: gray">
+						<div class="right"><span>http://</span></div>
 					</ons-col>
 					<ons-col>
-						<input type="text" class="text-input text-input--transparent" placeholder="URL" ng-model="$storage.serverUrl">
+						<span><input type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl" /></span>
 					</ons-col>
 				</ons-row>
 			</ons-list-item>
 			<ons-list-item>
 				<ons-row>
-					<ons-col width="38px">
-						<ons-icon icon="ion-person" size="28px" fixed-width="true" style="color: gray"></ons-icon>
+					<ons-col width="36px">
+						<ons-icon icon="ion-person" size="24px" fixed-width="true" style="color: gray"></ons-icon>
 					</ons-col>
 					<ons-col>
-						<input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
+						<span /><input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
 					</ons-col>
 				</ons-row>
 			</ons-list-item>
 			<ons-list-item>
 				<ons-row>
-					<ons-col width="38px">
-						<ons-icon icon="ion-locked" size="28px" fixed-width="true" style="color: gray"></ons-icon>
+					<ons-col width="36px">
+						<ons-icon icon="ion-locked" size="24px" fixed-width="true" style="color: gray"></ons-icon>
 					</ons-col>
 					<ons-col>
-						<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
+						<span /><input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
 					</ons-col>
 				</ons-row>
 			</ons-list-item>

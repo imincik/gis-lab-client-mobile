@@ -85,6 +85,10 @@
 .ol-control button:hover {
 	background-color: rgba(150, 150, 150, 0.8)!important;
 }
+.ol-scale-line {
+	background-color: rgba(150, 150, 150, 0.8)!important;
+}
+
 .map-toolbar ons-button {
 	background-color: rgba(100, 100, 100, 0.8);
 }
@@ -182,15 +186,6 @@
 .menu-button {
 	float: right;
 	margin: 4px !important;
-}
-
-.server-settings .list__item {
-	padding: 0 4px;
-}
-.settings input {
-	width: 100%;
-	height: 100%;
-	vertical-align: middle;
 }
 
 .left {
@@ -370,27 +365,40 @@ xx.webgis-button {
 	text-rendering: auto;
 	text-transform: none;
 	padding: 5px 0 5px 0;
+	z-index: 1;
+}
+
+.radio-button__icon-checkmark-fill::before {
+	width: 14px;
+	height: 14px;
+	text-align: center;
+	display: block;
+	font-family: "FontAwesome";
+	font-size: 14px;
+	padding: 5px 0 5px 0;
+}
+
+.radio-button__icon-checkmark-fill {
+	position: absolute;
+	left: 7px;
+	top: -1px;
+	z-index: 3;
+}
+.radio-button > input[type="radio"]:checked + .radio-button__icon-checkmark .radio-button__icon-checkmark-fill::before {
+	content: "\f0c8";
 }
 .radio-button__icon-checkmark::before {
 	content: "\f096";
-/*	content: "\f3a6";*/
-}
-.checkbox__icon-checkmark::before {
-	content: "\f096";
-/*	content: "\f372";*/
 }
 
-.radio-button > input[type="radio"]:checked + .radio-button__icon-checkmark::before {
-	content: "\f0c8";
-/*	content: "\f3a7";*/
+.checkbox__icon-checkmark::before {
+	content: "\f096";
 }
 .checkbox > input[type="checkbox"]:checked + .checkbox__icon-checkmark::before {
 	content: "\f046";
-/*	content: "\f373";*/
 }
 .checkbox > input[type="checkbox"]:indeterminate + .checkbox__icon-checkmark::before {
 	content: "\f147";
-/*	content: "\f371";*/
 }
 
 .scroll-top-indicator-bg {
@@ -567,4 +575,73 @@ ons-list-item.list__item:last-child {
 
 .topics .expanded .toggle-btn::before {
 	content: "\f106";
+}
+
+ons-carousel.wizard-carousel {
+	height: 100%;
+}
+
+.wizard-carousel ons-bottom-toolbar {
+	border-bottom-left-radius: 15px!important;
+	border-bottom-right-radius: 15px!important;
+}
+
+ons-carousel.wizard-carousel {
+	width: 90%;
+	height: 80%;
+	left: 5%;
+	top: 10%;
+	position: absolute;
+	border-radius: 15px;
+	background-color: #eee;
+}
+
+.wizard-window {
+	color: #444;
+	height: 90%;
+}
+div.wizzard-control {
+	bottom: 0;
+	position: absolute;
+	width: 100%;
+}
+
+
+.wizard-carousel {
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+ons-bottom-toolbar ons-toolbar-button.left {
+	float: left;
+}
+ons-bottom-toolbar ons-toolbar-button.right {
+	float: right;
+}
+ons-bottom-toolbar ons-toolbar-button span {
+	font-size: 20px!important;
+}
+ons-bottom-toolbar .navigation-bar__line-height {
+	line-height: 40px;
+}
+ons-bottom-toolbar .ons-icon--ion {
+	padding-left: 10px;
+	padding-right: 10px;
+	line-height: 22px!important;
+	vertical-align: middle;
+}
+
+.empty-tab {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.empty-tab span {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	color: #999;
+}
+
+.modal.startup-wizard {
+	z-index: 10000;
 }

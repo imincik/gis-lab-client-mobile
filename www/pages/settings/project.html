@@ -3,36 +3,34 @@
 		<div class="left"><ons-back-button></ons-back-button></div>
 		<div class="center">Project</div>
 	</ons-toolbar>
-	<div class="tab-panel navigation-bar">
-		<div class="navigation-bar__center">
-
-			<!-- segment control -->
-			<div class="button-bar" style="width:300px; margin:8px auto 0;">
-				<div class="button-bar__item">
-					<input type="radio" name="project-tab" value="0" ng-model="ui.settings_project_tab">
-					<div class="button-bar__button">Recent</div>
-				</div>
-				<div class="button-bar__item">
-					<input type="radio" name="project-tab" value="1" ng-model="ui.settings_project_tab">
-					<div class="button-bar__button">My projects</div>
-				</div>
-				<div class="button-bar__item">
-					<input type="radio" name="project-tab" value="2" ng-model="ui.settings_project_tab">
-					<div class="button-bar__button">Enter</div>
-				</div>
-			</div>
-
+	<ons-list ng-controller="AccordionController" class="gl-tree">
+		<ons-list-item>
+			<ons-row>
+				<ons-col width="36px">
+					<ons-icon icon="ion-edit" size="24px" fixed-width="true" style="color: gray"></ons-icon>
+				</ons-col>
+				<ons-col>
+					<span /><input type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project">
+				</ons-col>
+			</ons-row>
+		</ons-list-item>
+		<ons-list-item class="group" gl-click="toggleAccordion('recent')">
+			<i class="fa toggle-button" ng-class="{expanded: isAccordionShown('recent')}"></i>
+			<div class="node-label">Recent projects</div>
+		</ons-list-item>
+		<div class="group-content" ng-show="isAccordionShown('recent')" gl-height-animation>
+			<ons-list-item ng-repeat="project in $storage.recentProjects" modifier="tappable" ng-click="$storage.project=project">
+				{{ project }}
+			</ons-list-item>
 		</div>
-	</div>
-	<ons-list ng-switch="ui.settings_project_tab">
-		<ons-list-item ng-switch-when="0" ng-repeat="project in $storage.recentProjects" modifier="tappable" ng-click="app.navigator.popPage();loadProject(project);">
-			{{ project }}
+		<ons-list-item class="group" gl-click="toggleAccordion('my-projects')">
+			<i class="fa toggle-button" ng-class="{expanded: isAccordionShown('my-projects')}"></i>
+			<div class="node-label">My projects</div>
 		</ons-list-item>
-		<ons-list-item ng-switch-when="1" ng-repeat="project in project.myProjects" modifier="tappable" ng-click="app.navigator.popPage();loadProject(project.project);">
-			{{ project.project }}
-		</ons-list-item>
-		<ons-list-item ng-switch-when="2">
-			<input type="text" class="text-input text-input--transparent" placeholder="Project" style="width: 100%" ng-model="$storage.project">
-		</ons-list-item>
+		<div class="group-content" ng-show="isAccordionShown('my-projects')" gl-height-animation>
+			<ons-list-item ng-repeat="project in userProjects" modifier="tappable" ng-click="$storage.project=project.project">
+				{{ project.project }}
+			</ons-list-item>
+		</div>
 	</ons-list>
 </ons-page>

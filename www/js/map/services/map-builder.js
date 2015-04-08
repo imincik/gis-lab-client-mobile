@@ -171,7 +171,6 @@
 				}),
 				renderer: ol.RendererType.CANVAS
 			});
-			map.getView().fitExtent(config.zoom_extent, map.getSize());
 			return map;
 		};
 		return new MapBuilder();
