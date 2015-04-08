@@ -128,16 +128,16 @@
 			{title: 'I1'},
 			{title: 'I2'},
 		];
-		$scope.baseLayers = projectProvider.baseLayers;
-		//$scope.baseLayers.tree = test_base_layers;
 
 		/* share the same reference to selected base layer in every node of tree model */
 		var selectedBaseLayer = {}
-		$scope.baseLayers.list.forEach(function(base_layer) {
+		projectProvider.baseLayers.list.forEach(function(base_layer) {
 			base_layer.selected = selectedBaseLayer;
 			if (base_layer.visible) {
 				selectedBaseLayer.name = base_layer.name;
 			}
 		});
+		$scope.baseLayers = projectProvider.baseLayers;
+		//$scope.baseLayers.tree = test_base_layers;
 	};
 })();
