@@ -204,7 +204,7 @@
 		});
 
 		$scope.updateScreenSize = function() {
-			$scope.panelHeight = document.body.clientHeight-36;
+			$scope.panelHeight = $scope.$storage.showHeader? document.body.clientHeight-22 : document.body.clientHeight;
 			$scope.mapWidth = document.body.clientWidth;
 			$scope.mapHeight = document.body.clientHeight;
 		};

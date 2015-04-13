@@ -46,6 +46,7 @@
 
 	<script type="text/javascript" src="js/mobile/mobile.module.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/MobileAppController.js"></script>
+	<script type="text/javascript" src="js/mobile/controllers/SettingsController.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/ProjectSettingsController.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/StartupConfigController.js"></script>
 	<script type="text/javascript" src="js/mobile/services/gislab-mobile-client.js"></script>
@@ -98,13 +99,14 @@
 			</div>
 		</ons-page>
 	</ons-template>
-
 	<ons-template id="panel_tab_container.html">
-		<ons-tabbar var="app.panel.tabbar" class="main-panel" hide-tabs="true">
-			<ons-tab page="empty.html" active="true"></ons-tab>
-			<ons-tab ng-repeat="tool in ::ui.toolbar | filter:{page:''}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index+1" no-reload>
-			</ons-tab>
-		</ons-tabbar>
+		<ons-page class="main-panel">
+			<ons-tabbar var="app.panel.tabbar" class="main-panel" hide-tabs="true">
+				<ons-tab page="empty.html" active="true"></ons-tab>
+				<ons-tab ng-repeat="tool in ::ui.toolbar | filter:{page:''}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index+1" no-reload>
+				</ons-tab>
+			</ons-tabbar>
+		</ons-page>
 	</ons-template>
 
 	<ons-template id="empty.html">

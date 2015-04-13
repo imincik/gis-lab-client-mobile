@@ -54,17 +54,58 @@ x.settings .list__item input {
 	border: none;
 }
 
-.tab-panel.navigation-bar {
-	height: 36px;
-	background-color: transparent;
+.settings .navigation-bar {
+	background-color: #f7f7f7;
+	height: 32px;
+	line-height: 32px;
+	color: #555;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+}
+.settings .navigation-bar__title, .settings .navigation-bar__left, .settings .navigation-bar__right {
+	line-height: 32px;
+	height: 32px;
+}
+.settings .toolbar-button {
+	color: #555;
+}
+.settings .toolbar-button--quiet i {
+	line-height: 26px!important;
+	font-size: 26px!important;
+}
+.settings ons-toolbar ~ .page__content {
+	top: 32px;
+}
+
+
+.settings .list__header {
+	padding-left: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	font-weight: bold;
+	color: #555;
 	border-bottom: 1px solid #ddd;
+	vertical-align: middle;
+}
+.settings .list__header i {
+	padding-left: 4px;
+	padding-right: 4px;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+.settings .tab-panel.navigation-bar {
+	height: 30px!important;
+	background-color: transparent;
+	border: none;
 }
 .tab-panel .navigation-bar__item, .tab-panel .navigation-bar__center {
-	height: 36px;
+	height: 22px;
 }
 
 .tab-panel .button-bar {
-	margin: 4px auto 0!important;
+	margin: 2px auto 0!important;
 }
 
 .button-bar__item.active > .button-bar__button, *:checked + .button-bar__button {
@@ -80,3 +121,35 @@ x.settings .list__item input {
 .button-bar__button:active, *:active + .button-bar__button {
 	background-color: rgba(212, 0, 0, 0.12);
 }
+
+.settings .list__item input.multiline-input {
+	display: inline-block!important;
+	font-size: 16px;
+	width: 500px;
+	xheight: inherit!important;
+	height: 100%!important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0.5;
+	xz-index: 1000;
+	color:red;
+	line-height: 16px!important;
+	word-wrap: break-word!important;
+	vertical-align: middle;
+}
+
+.settings .list__item span {
+	display: inline-block;
+	word-wrap: break-word;
+	font-size: 16px!important;
+	font-family: Noto Sans;
+	line-height: 26px!important;
+	xcolor: rgba(255, 0, 255, 0.9);
+	vertical-align: middle;
+}
+
+.switch__input:checked + .switch__toggle {
+	background-color: #d40000;
+}
+

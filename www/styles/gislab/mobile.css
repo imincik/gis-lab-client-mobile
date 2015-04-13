@@ -31,6 +31,9 @@
 .page__content {
 	margin-top: 0px!important;
 }
+.main-panel .page__content {
+	height: 100%;
+}
 
 .map-toolbar {
 	position: absolute;
@@ -135,22 +138,59 @@
 	border: 1px solid rgba(24,103,194,0.81);
 }
 
-.tab-bar--top {
+.main-panel .navigation-bar {
+	height: 26px;
+}
+
+.navigation-bar__item, .navigation-bar__left, .navigation-bar__right, .navigation-bar__center {
+	height: auto!important;
+}
+.main-panel ons-toolbar ~ .page__content {
+	top: 26px;
+}
+
+.main-panel .navigation-bar__title, .navigation-bar__line-height {
+	line-height: 26px;
+}
+
+.panel-header {
+	background-color: #d40000;
+	color: white;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	border-bottom: 1px solid gray;
+}
+
+.main-panel .navigation-bar.sub-toolbar .navigation-bar__title {
+	color: #555;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.tab-bar--bottom {
+	position: relative;
+}
+
+.tab-bar {
 	border: none;
 	background-color: #dfdfdf;
 }
 .tab-bar__button {
-	height: 33px;
+	height: 25px;
 	xbackground-color: #ddd;
 }
 :checked + .tab-bar__button {
-	background-color: gray;
+	background-color: white;
 }
 :checked + .tab-bar__button, :checked + .tab-bar__button .tab-bar__icon {
-	color: white;
+	color: #d40000;
+	
 }
 .tab-bar {
-	height: 33px;
+	height: 25px;
 }
 .tab-bar__button {
 	xborder-right: 1px solid gray;
@@ -163,14 +203,41 @@
 }
 .tab-bar__icon {
 	width: 100%;
-	height: 16px;
-	line-height: 15px;
+	height: 22px;
+	line-height: 22px;
 	vertical-align:top;
-	font-size: 19px;
+	font-size: 22px;
 }
 .tab-bar__icon::before {
 	line-height: 0px!important;
 }
+.tab-bar__item {
+	margin-top: 2px;
+}
+.tab-bar__item.border-both {
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-image:
+		linear-gradient(to top, transparent, transparent, gray, gray, gray, transparent, transparent) 1 100%;
+}
+.tab-bar__item.border-right {
+	border-width: 0 1px 0 0;
+	border-style: solid;
+	border-image:
+		linear-gradient(to top, transparent, transparent, gray, gray, gray, transparent, transparent) 1 100%;
+}
+
+.tab-separator {
+	width: 2px;
+	height: 100%;
+	background-color: black;
+	xdisplay: inline-block!important;
+	xposition: absolute;
+	xfloat: left;
+	sleft: 33%;
+	xz-index: 1000;
+}
+
 .carousel-slider-bg {
 	background-color: #bbb;
 	xborder-bottom: 1px solid gray;
@@ -440,22 +507,6 @@ xx.webgis-button {
 	line-height: 25px!important;
 }
 
-.navigation-bar {
-	height: 36px;
-	background-color: #ddd;
-	border-bottom: 2px solid #bbb;
-}
-.navigation-bar__item, .navigation-bar__left, .navigation-bar__right, .navigation-bar__center {
-	height: 36px;
-}
-ons-toolbar ~ .page__content {
-	top: 36px;
-}
-
-.navigation-bar__title, .navigation-bar__line-height {
-	line-height: 36px;
-}
-
 .toolbar-button--quiet i {
 	height: 36px!important;
 	font-size: 30px!important;
@@ -463,7 +514,19 @@ ons-toolbar ~ .page__content {
 }
 .toolbar-button--quiet i::before {
 	line-height: 20px!important;
-	height: 36px!important;
+	height: 20px!important;
+	vertical-align: middle!important;
+}
+
+.main-panel .toolbar-button--quiet i {
+	height: 18px!important;
+	font-size: 20px!important;
+	color: #555;
+	line-height: 24px!important;
+}
+.main-panel .toolbar-button--quiet i::before {
+	line-height: 20px!important;
+	height: 22px!important;
 	vertical-align: middle!important;
 }
 
@@ -619,9 +682,6 @@ ons-bottom-toolbar ons-toolbar-button.right {
 }
 ons-bottom-toolbar ons-toolbar-button span {
 	font-size: 20px!important;
-}
-ons-bottom-toolbar .navigation-bar__line-height {
-	line-height: 40px;
 }
 ons-bottom-toolbar .ons-icon--ion {
 	padding-left: 10px;

@@ -1,11 +1,7 @@
 <ons-page ng-controller="LegendController">
-	<ons-toolbar fixed-style>
-		<div class="left"></div>
-		<div class="center">Legend</div>
-		<div class="right">
-<!--			<ons-toolbar-button><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button>-->
-		</div>
-	</ons-toolbar>
+	<div class="panel-header" ng-if="$storage.showHeader">
+		<span>Legend</span>
+	</div>
 	<ons-scroller style="height: {{ panelHeight }}px;">
 		<div class="legend-container">
 			<img class="legend-item" ng-repeat="layer in ::layers.list" ng-if="layer.visible" ng-src="{{ layer.legendUrl }}" />
