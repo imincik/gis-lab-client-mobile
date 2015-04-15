@@ -35,53 +35,6 @@
 	height: 100%;
 }
 
-.map-toolbar {
-	position: absolute;
-	top:1px;
-	left: 1px;
-	padding: 1px;
-	border-radius: 4px;
-	background-color: rgba(255, 255, 255, 0.4);
-}
-
-.map-toolbar-horizontal ons-scroller {
-	height: 40px;
-}
-
-.map-toolbar-horizontal .ons-scroller__content {
-	height: 36px;
-	width: auto;
-	display: inline-block;
-	white-space:nowrap;
-}
-
-.map-toolbar-horizontal {
-	height: 40px;
-}
-
-.map-toolbar-vertical {
-	width: 40px;
-}
-
-.map-toolbar .ons-icon {
-	width: 36px;
-	height: 36px;
-	vertical-align: middle;
-	line-height: 36px!important;
-}
-.map-toolbar ons-button {
-	height: 36px;
-	padding: 0px;
-	margin: 2px;
-}
-
-.map-toolbar .fa {
-	width: 36px;
-	height: 36px;
-	text-align: center;
-	line-height: 36px!important;
-	font-size: 24px;
-}
 .ol-control button {
 	background-color: rgba(100, 100, 100, 0.8)!important;
 }
@@ -90,30 +43,6 @@
 }
 .ol-scale-line {
 	background-color: rgba(150, 150, 150, 0.8)!important;
-}
-
-.map-toolbar ons-button {
-	background-color: rgba(100, 100, 100, 0.8);
-}
-.map-toolbar .ng-click-active ons-icon {
-	background-color: rgba(100, 100, 100, 0.8)!important;
-}
-.map-toolbar ons-button.activated {
-	xbackground-color: rgba(250, 20, 20, 0.4);
-	background-color: #d40000;
-}
-
-.map-toolbar input {
-	opacity: 0.001;
-	z-index: 1;
-	position: absolute;
-	left: 0px;
-	top: -6px;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	width: 36px;
-	height: 36px;
 }
 
 :checked + ons-icon {
@@ -265,35 +194,6 @@
 }
 
 
-.tree-node {
-	border: 1px solid #dae2ea;
-	background: #f8faff;
-	color: #7c9eb2;
-}
-.tree-node-content {
-	margin: 10px;
-}
-.tree-handle {
-	padding: 10px;
-	background: #428bca;
-	color: #FFF;
-	margin-right: 10px;
-}
-.angular-ui-tree-handle:hover {
-}
-
-.angular-ui-tree-placeholder {
-	background: #f0f9ff;
-	border: 2px dashed #bed2db;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.btn {
-	width: 25px;
-}
-
 div.page__content {
 	overflow: hidden; position: relative;
 }
@@ -304,20 +204,6 @@ div.legend-container {
 }
 img.legend-item {
 	display: block;
-}
-
-
-.checkbox, .radio-button {
-	margin-top: 1px;
-	margin-bottom: 1px;
-	line-height: 1;
-}
-
-
-.layers-container select {
-	width: 90%;
-	height: 30px;
-	margin: 10px;
 }
 
 .layer-metadata-icon {
@@ -368,41 +254,6 @@ img.legend-item {
 	background-position-y: -108px !important;
 }
 
-.webgis-button.panel span, .webgis-button.menu span {
-	padding: 4px;
-	line-height: 22px;
-}
-
-.webgis-button {
-	position: absolute;
-	background: rgba(255,255,255,0.4);
-	border-radius: 4px;
-	padding: 0px;
-	vertical-align: middle;
-}
-.webgis-button.panel {
-	top: 9px;
-	left: 9px;
-}
-.webgis-button.menu {
-	top: 90px;
-	right: 9px;
-}
-xx.webgis-button {
-	display: block;
-	color: white;
-	font-size: 16px;
-	font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
-	font-weight: bold;
-	margin: 1px;
-	text-decoration: none;
-	text-align: center;
-	border-radius: 2px;
-	height: 22px;
-	width: 26px;
-	background: rgba(0,60,136,0.5);
-	padding-top: 4px;
-}
 
 .ui-grid-render-container, .ui-grid-viewport {
 	height: 100%!important;
@@ -415,96 +266,6 @@ xx.webgis-button {
 }
 .ui-grid-column-menu-button-last-col {
 	margin-right: 0px;
-}
-
-
-.radio-button__icon-checkmark::before, .checkbox__icon-checkmark::before {
-	width: 28px;
-	height: 28px;
-	text-align: center;
-	display: inline-block;
-	font-family: "FontAwesome";
-/*	font-family: "Ionicons";*/
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	font-size: 28px;
-	text-rendering: auto;
-	text-transform: none;
-	padding: 5px 0 5px 0;
-	z-index: 1;
-}
-
-.radio-button__icon-checkmark-fill::before {
-	width: 14px;
-	height: 14px;
-	text-align: center;
-	display: block;
-	font-family: "FontAwesome";
-	font-size: 14px;
-	padding: 5px 0 5px 0;
-}
-
-.radio-button__icon-checkmark-fill {
-	position: absolute;
-	left: 7px;
-	top: -1px;
-	z-index: 3;
-}
-.radio-button > input[type="radio"]:checked + .radio-button__icon-checkmark .radio-button__icon-checkmark-fill::before {
-	content: "\f0c8";
-}
-.radio-button__icon-checkmark::before {
-	content: "\f096";
-}
-
-.checkbox__icon-checkmark::before {
-	content: "\f096";
-}
-.checkbox > input[type="checkbox"]:checked + .checkbox__icon-checkmark::before {
-	content: "\f046";
-}
-.checkbox > input[type="checkbox"]:indeterminate + .checkbox__icon-checkmark::before {
-	content: "\f147";
-}
-
-.scroll-top-indicator-bg {
-	width: 36px;
-	height: 26px;
-	background: -webkit-linear-gradient(rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.3),transparent),-webkit-radial-gradient(50% 20%, 120% 100%,white,rgba(255, 255, 255, 0.2),transparent);
-	background: linear-gradient(rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.3),transparent),radial-gradient(120% 100% at 50% 20%,white,rgba(255, 255, 255, 0),transparent);
-	position: absolute;
-	pointer-events: none;
-	left: 3px;
-	top: 1px;
-}
-.scroll-bottom-indicator-bg {
-	width: 36px;
-	height: 24px;
-	background: -webkit-linear-gradient(transparent, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)),-webkit-radial-gradient(50% 80%, 120% 100%,white,rgba(255, 255, 255, 0.2),transparent);
-	background: linear-gradient(transparent, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)),radial-gradient(120% 100% at 50% 80%,white,rgba(255, 255, 255, 0),transparent);
-	position: absolute;
-	pointer-events: none;
-	left: 3px;
-	bottom: 1px;
-}
-.map-toolbar .ons-icon.scroll-top-indicator {
-	height: 25px;
-	position: absolute;
-	left: 0;
-	top: -6px;
-	line-height: 25px!important;
-	pointer-events: none;
-	font-size: 25px;
-}
-.map-toolbar .ons-icon.scroll-bottom-indicator {
-	height: 25px;
-	position: absolute;
-	left: 0;
-	bottom: -6px;
-	pointer-events: none;
-	font-size: 25px;
-	line-height: 25px!important;
 }
 
 .toolbar-button--quiet i {
@@ -530,115 +291,6 @@ xx.webgis-button {
 	vertical-align: middle!important;
 }
 
-.list__item header {
-	line-height: 32px;
-}
-
-.list-item-detail {
-	font-size: 13px;
-	color: #666;
-}
-
-.topics .list-item-title {
-	font-size: 15px;
-	line-height: 1.2em;
-}
-
-
-.topics .list__item {
-	min-height: 0px;
-	padding-left: 5px;
-	padding-right: 0px;
-}
-
-.list__item.item-accordion.list-item-detail {
-	padding: 0 3px 0 5px;
-}
-
-.list__item.item-accordion.list-item-detail label {
-	line-height: 15px;
-}
-
-.item-accordion {
-	display: block!important;
-	overflow: hidden;
-	line-height: 20px;
-	padding: 0 3px 0 5px;
-	transition: 0s linear all;
-	opacity: 1;
-}
-
-.item-accordion.ng-hide {
-	opacity: 0;
-	height: 0!important;
-	display: none!important;
-}
-
-.item-accordion.ng-hide-add-active, .item-accordion.ng-hide-remove {
-	/* this needs to be here to make it visible during the animation
-	since the .ng-hide class is already on the element rendering
-	it as hidden. */
-	display: block!important;
-	transition: 0.4s all ease-in-out;
-}
-
-.item-accordion label {
-	font-weight: bold;
-	display: inline-block;
-}
-.item-accordion label::before {
-	max-height: 8px;
-	display: block;
-	content: "\00a0"
-}
-
-ons-list-item.list__item:first-child:last-child,
-ons-list-item.list__item:last-child {
-	border-bottom: 1px solid #ddd!important;
-}
-
-.list__item--tappable.expanded {
-	background-color: #f7f7f7;
-}
-
-.list__item--tappable.expanded:active {
-	background-color: #d9d9d9;
-}
-
-.topic-visible-layers {
-	padding-left: 10px;
-}
-.topic-visible-layers label {
-	line-height: 6px;
-}
-
-.topics .toggle-btn {
-	width: 50px;
-	left: -20px;
-	float: right;
-}
-
-.topics .toggle-btn::before {
-	color: #ccc;
-	content: "\f107";
-	font-family: FontAwesome;
-	font-size: 20px;
-	font-style: normal;
-	font-weight: normal;
-	height: 20px;
-	line-height: 20px;
-	position: absolute;
-	right: 16px;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
-	pointer-events: none;
-	display: inline-block;
-}
-
-.topics .expanded .toggle-btn::before {
-	content: "\f106";
-}
 
 ons-carousel.wizard-carousel {
 	height: 100%;
@@ -704,4 +356,11 @@ ons-bottom-toolbar .ons-icon--ion {
 
 .modal.startup-wizard {
 	z-index: 10000;
+}
+
+.topic-visible-layers {
+	padding-left: 10px;
+}
+.topic-visible-layers label {
+	line-height: 6px;
 }

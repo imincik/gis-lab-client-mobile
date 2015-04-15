@@ -1,58 +1,15 @@
 
-.gl-tree {
-	font-size: 15px;
-	color: gray;
-}
-.gl-tree .node-label {
-	display: inline-block;
-	xwidth: 100%;
-}
-
-.gl-tree .list__item {
-	padding-right: 0px;
-	min-height: 0px;
-}
-
-.gl-tree .list__item.group {
+.list__item.group {
 	font-weight: bold;
 	background-color: #eee;
 	color: #555;
 }
 
-.gl-tree .list__item.list-item-detail {
-	font-size: 13.5px;
-	padding-left: 5px;
-	padding-right: 4px;
-}
-
-.gl-tree label {
-	font-weight: bold;
-}
-
-.gl-tree .expand-button {
-	width: 50px;
-	display: inline-block;
-	float: right;
-}
-
-.gl-tree .expand-button::before {
-	color: #ddd;
-	content: "\f107";
-	font-family: FontAwesome;
-	font-size: 20px;
-	font-style: normal;
-	font-weight: normal;
-	height: 20px;
-	line-height: 20px;
-	position: absolute;
-	right: 16px;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
-}
-
-.gl-tree .expanded .expand-button::before {
-	content: "\f106";
+.gl-tree .toggle-button {
+	float: left;
+	margin-left: 3px;
+	vertical-align: middle;
+	line-height: 38px;
 }
 
 .gl-tree .toggle-button::before {
@@ -66,33 +23,27 @@
 .gl-tree .indent {
 	display:inline-block;
 }
-.gl-tree .list__item[depth="2"] .indent {
-	width: 15px;
+
+.gl-tree .list__item[depth="1"] .radio-button__icon-checkmark,
+.gl-tree .list__item[depth="1"] .checkbox__icon-checkmark {
+	xpadding-left: 0px;
 }
+
+.gl-tree .list__item[depth="2"] .indent {
+	xwidth: 15px;
+	margin-left: 10px;
+}
+
 .gl-tree .list__item[depth="3"] .indent {
-	width: 30px;
+	xwidth: 30px;
+	margin-left: 25px;
 }
 .gl-tree .list__item[depth="4"] .indent {
 	width: 45px;
 }
 
-.gl-tree .list__item {
-	padding-left: 2px;
-}
-
 .gl-tree .list__item:last-child {
 	border-bottom: 1px solid #ddd;
-}
-.gl-tree .fa {
-	color: gray;
-	padding-left: 0px;
-	padding-right: 0px;
-}
-
-label.checkbox, label.radio-button {
-	vertical-align: middle;
-	line-height: 28px;
-	color: gray;
 }
 
 /* animations */
@@ -120,3 +71,9 @@ label.checkbox, label.radio-button {
 .group-content.height-anim-add-active, .group-content.height-anim-remove {
 	transition: 0.4s all ease-in-out;
 }
+
+.gl-tree .inline {
+	display: inline-block;
+	height: inherit!important;
+}
+
