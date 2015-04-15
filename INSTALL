@@ -24,23 +24,28 @@ wget http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz
 tar zxvf android-sdk_r24.1.2-linux.tgz
 
 
-export ANDROID_HOME="/home/vagrant/android-sdk/android-sdk-linux"
-export ANDROID_HOME=/<installation location>/android-sdk-linux
+export ANDROID_HOME="/home/vagrant/android-sdk-linux"
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 # Install:
-# * Android SDK Platform-tools, revision 22 (option 2)
-# * Android SDK Build-tools, revision 22 (option 3)
-# * SDK Platform Android 5.0.1, API 21, revision 2 (option 22)
+# * Android SDK Platform-tools
+# * Android SDK Build-tools
+# * SDK Platform Android 4.4.2, API 19
+
+( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --all --filter platform-tools,build-tools-22.0.1,android-19
+
 
 # To show list of available packages: android list sdk --all
 
-android update sdk --no-ui --all --filter 2,3,22
+# By parsing package number
+# sdk_package=$(android list sdk --all | grep "SDK Platform Android 4\.4\.2" | awk -F'-' '{print $1}' | tr -d ' ')
+# sdk_package=$(android list sdk --all | grep "SDK Platform Android 4\.4\.2" | cut -d '-' -f1 | tr -d ' ')
+# ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --all --filter platform-tools,build-tools-22.0.1,$sdk_package
 
 
 
 
-Install NPM package manager, Node.js, cordova
+Install NPM package manager, Node.js, Cordova
 =============================================
 
 sudo apt-get install npm
@@ -56,7 +61,6 @@ sudo npm cache clean -f
 sudo npm install -g n
 sudo n 0.10.32
 
-sudo npm install -g cordova
 sudo npm install -g cordova@4.2.0
 
 
@@ -72,5 +76,8 @@ Build project
 cd <project-dir>
 
 cordova platform add android
+
+# Install required Cordova plugins (from package.json)
+node tasks/plugins.js
 
 cordova build android
