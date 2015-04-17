@@ -19,7 +19,9 @@
 									</label>
 								</ons-col>
 								<ons-col class="left-center">
-									<span class="title">{{ ::topic.title }}</span>
+									<div class="title list__item--two-lines-max">
+										<span>{{ ::topic.title }}</span>
+									</div>
 								</ons-col>
 <!--								<ons-col width="30px">-->
 <!--									<div ng-click="topicDetail(topic, toggleAccordion);" class="toggle-btn">&nbsp;</div>-->
@@ -59,11 +61,13 @@
 					<div gl-tree-group-template>
 						<ons-list-item class="group" modifier="tappable" depth="{{ ::treeDepth }}" ng-click="isExpanded=!isExpanded">
 							<ons-row>
-								<ons-col class="indent" width="36px">
+								<ons-col class="indent" width="24px">
 									<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
 								</ons-col>
 								<ons-col class="left-center title">
-									<span>{{ ::node.title }}</span>
+									<div class="title list__item--two-lines-max">
+										<span>{{ ::node.title }}</span>
+									</div>
 								</ons-col>
 							</ons-row>
 						</ons-list-item>
@@ -84,7 +88,9 @@
 									</label>
 								</ons-col>
 								<ons-col class="left-center">
-									<span class="title">{{ ::node.title }}</span>
+									<div class="title list__item--two-lines-max">
+										<span>{{ ::node.title }}</span>
+									</div>
 								</ons-col>
 								<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
 							</ons-row>
@@ -116,7 +122,7 @@
 						<div gl-tree-group-template>
 							<ons-list-item class="group list__item--checkbox" modifier="tappable" depth="{{ ::treeDepth }}" gl-click="isExpanded=!isExpanded">
 								<ons-row>
-									<ons-col class="indent" width="54px">
+									<ons-col class="indent" width="52px">
 										<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
 										<label class="checkbox" gl-click="$event.stopPropagation();">
 											<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
@@ -124,7 +130,9 @@
 										</label>
 									</ons-col>
 									<ons-col class="left-center">
-										<span class="title">{{ ::node.title }}</span>
+										<div class="title list__item--two-lines-max">
+											<span>{{ ::node.title }}</span>
+										</div>
 									</ons-col>
 								</ons-row>
 							</ons-list-item>
@@ -142,8 +150,10 @@
 											<div class="checkbox__icon-checkmark"></div>
 										</label>
 									</ons-col>
-									<ons-col class="left-center">
-										<span class="title">{{ ::node.title }}</span>
+									<ons-col class="left-center title">
+										<div class="title list__item--two-lines-max">
+											<span>{{ ::node.title }}</span>
+										</div>
 									</ons-col>
 									<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
 								</ons-row>
