@@ -127,8 +127,7 @@
 					.then(function() {
 						$scope.currentServer = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);
 						login.resolve();
-					},
-					function() {
+					}, function() {
 						$scope.currentServer = null;
 						login.reject();
 					});
@@ -144,24 +143,38 @@
 			if ($scope.$storage.serverUrl) {
 				$scope.showProgressDialog($scope.app.progressBar, 'Login to GIS.lab server');
 				$scope.login()
-					.then(function() {
-						$scope.loginFailed = false;
-					}, function() {
+					.catch(function() {
 						$scope.loginFailed = true;
 					})
 					.finally(function () {
 						$scope.setProgressBarMessage('Loading project ...');
-						$scope.loadProject($scope.$storage.project).finally(function() {
-							$scope.hideProgressDialog($scope.app.progressBar, 1000, function() {
-								if ($scope.loginFailed) {
-									ons.notification.alert({
-										title: 'Warning',
-										message: 'Login to GIS.lab server has failed. Continue as Guest user.'
-									});
+						$scope.loadProject($scope.$storage.project)
+							.catch(function() {
+								$scope.invalidProject = true;
+							})
+							.finally(function() {
+								$scope.hideProgressDialog($scope.app.progressBar, 800, function() {
+									if ($scope.loginFailed && $scope.invalidProject) {
+										ons.notification.alert({
+											title: 'Warning',
+											message: 'Login to GIS.lab server has failed and failed to load project as Guest user.'
+										});
+									} else if ($scope.loginFailed) {
+										ons.notification.alert({
+											title: 'Warning',
+											message: 'Login to GIS.lab server has failed. Continue as Guest user.'
+										});
+										$scope.loginFailed = null;
+									} else if ($scope.invalidProject) {
+										ons.notification.alert({
+											title: 'Warning',
+											message: 'Failed to load project.'
+										});
+									}
 									$scope.loginFailed = null;
-								}
+									$scope.invalidProject = null;
+								});
 							});
-						});
 					});
 			} else {
 				$scope.loadProject(null);
@@ -291,7 +304,6 @@
 						}
 					})
 					.error(function(data, status, headers, config) {
-						console.log('error');
 						task.reject();
 					})
 			} else {
@@ -313,9 +325,22 @@
 		};
 		$scope.loadProjectWithProgressBar = function(projectName) {
 			$scope.showProgressDialog($scope.app.progressBar, 'Loading project ...');
-			$scope.loadProject(projectName).finally(function() {
-				$scope.hideProgressDialog($scope.app.progressBar, 500);
-			});
+			console.log($scope.loadProject(projectName));
+			$scope.loadProject(projectName)
+				.catch(function() {
+					$scope.invalidProject = true;
+				})
+				.finally(function() {
+					$scope.hideProgressDialog($scope.app.progressBar, 500, function() {
+						if ($scope.invalidProject) {
+							ons.notification.alert({
+								title: 'Warning',
+								message: 'Failed to load project.'
+							});
+							$scope.invalidProject = null;
+						}
+					});
+				});
 		}
 
 
