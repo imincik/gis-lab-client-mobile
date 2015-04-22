@@ -1,59 +1,32 @@
-<ons-page class="settings server-settings" xng-controller="ServerSettingsController">
+<ons-page class="settings server-settings" ng-controller="ServerSettingsController">
 	<ons-toolbar fixed-style>
 		<div class="left"><ons-back-button></ons-back-button></div>
 		<div class="center">Server</div>
+		<div class="right"><ons-toolbar-button ng-click="app.navigator.pushPage('server_profiles.html')"><i class="fa fa-history"></i></ons-toolbar-button></div>
 	</ons-toolbar>
-	<div class="tab-panel navigation-bar">
-		<div class="navigation-bar__center">
-
-			<!-- segment control -->
-			<div class="button-bar" style="width:300px; margin:8px auto 0;">
-				<div class="button-bar__item">
-					<input type="radio" name="server-tab" value="0" ng-model="ui.settings_server_tab">
-					<div class="button-bar__button">Current</div>
-				</div>
-				<div class="button-bar__item">
-					<input type="radio" name="server-tab" value="1" ng-model="ui.settings_server_tab">
-					<div class="button-bar__button">History</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
 	<div ng-switch="ui.settings_server_tab">
 		<ons-list ng-switch-when="0">
-			<ons-list-item>
-				<ons-row>
-					<ons-col width="36px" style="color: gray">
-						<ons-icon icon="ion-earth" size="24px" fixed-width="true"></ons-icon>
-					</ons-col>
-					<ons-col width="40px" style="color: gray">
-						<div class="right"><span>http://</span></div>
-					</ons-col>
-					<ons-col>
-						<span><input type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl" /></span>
-					</ons-col>
-				</ons-row>
+			<ons-list-header>
+				<i class="icon fa fa-globe"></i>Server URL
+			</ons-list-header>
+			<ons-list-item class="textarea-input">
+				<div style="width: 100%;">
+					<textarea type="text" class="http-prefix text-input text-input--transparent">http://</textarea>
+					<textarea style="text-indent: 50px;" type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl"></textarea>
+					<span style="text-indent: 50px;" class="multiline-wrapper" ng-bind="$storage.serverUrl"></span>
+				</div>
 			</ons-list-item>
+			<ons-list-header>
+				<i class="icon fa fa-user"></i>Username
+			</ons-list-header>
 			<ons-list-item>
-				<ons-row>
-					<ons-col width="36px">
-						<ons-icon icon="ion-person" size="24px" fixed-width="true" style="color: gray"></ons-icon>
-					</ons-col>
-					<ons-col>
-						<span /><input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
-					</ons-col>
-				</ons-row>
+				<input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
 			</ons-list-item>
+			<ons-list-header>
+				<i class="icon fa fa-lock"></i>Password
+			</ons-list-header>
 			<ons-list-item>
-				<ons-row>
-					<ons-col width="36px">
-						<ons-icon icon="ion-locked" size="24px" fixed-width="true" style="color: gray"></ons-icon>
-					</ons-col>
-					<ons-col>
-						<span /><input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
-					</ons-col>
-				</ons-row>
+				<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
 			</ons-list-item>
 		</ons-list>
 		<ons-list ng-switch-when="1">
@@ -62,4 +35,22 @@
 			</ons-list-item>
 		</ons-list-item>
 	</div>
+	<div class="bottom-toolbar">
+		<div class="center"><ons-toolbar-button ng-click="saveServerProfile($storage.serverUrl, $storage.username, $storage.password)"><i class="icon fa fa-plus-circle"></i>Save profile</ons-toolbar-button></div>
+	</div>
+
+	<ons-template id="server_profiles.html">
+		<ons-page class="settings server-settings" ng-controller="ServerSettingsController">
+			<ons-toolbar fixed-style>
+				<div class="left"><ons-back-button></ons-back-button></div>
+				<div class="center">Server profiles</div>
+			</ons-toolbar>
+			<ons-list class="gl-tree">
+				<ons-list-item ng-repeat="profile in $storage.serverProfiles" class="list__item--right-btn" modifier="tappable" ng-click="loadProfile(profile);app.navigator.popPage()">
+					<span>{{ profile.name }}</span>
+					<div class="delete-btn" ng-click="removeProfile(profile);$event.stopPropagation()"></div>
+				</ons-list-item>
+			</ons-list>
+		</ons-page>
+	</ons-template>
 </ons-page>

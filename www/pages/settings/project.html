@@ -8,15 +8,17 @@
 		<ons-list-header>
 		<i class="fa fa-pencil"></i>Current
 		</ons-list-header>
-		<ons-list-item>
-			<span /><input type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project">
+		<ons-list-item class="textarea-input">
+			<div style="width: 100%;">
+				<textarea type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project"></textarea>
+				<span class="multiline-wrapper" ng-bind="$storage.project"></span>
+			</div>
 		</ons-list-item>
 		<ons-list-header>
-			<i class="fa fa-bars"></i>
-			<div class="node-label">My projects</div>
+			<i class="fa fa-bars"></i>My projects
 		</ons-list-header>
 		<ons-list-item ng-repeat="project in userProjects" modifier="tappable" ng-click="$storage.project=project.project">
-			{{ project.project }}
+			<span>{{ project.project }}</span>
 		</ons-list-item>
 	</ons-list>
 
@@ -29,7 +31,7 @@
 			</ons-toolbar>
 			<ons-list class="gl-tree">
 				<ons-list-item ng-repeat="project in $storage.recentProjects" modifier="tappable" ng-click="$storage.project=project;app.navigator.popPage()">
-					{{ project }}
+					<span>{{ project }}</span>
 				</ons-list-item>
 			</ons-list>
 		</ons-page>

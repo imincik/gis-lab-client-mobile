@@ -15,7 +15,7 @@
 				$scope.showProgressDialog($scope.app.progressBar, 'Login to GIS.lab server');
 				$scope.login()
 					.then(function() {
-						$scope.setProgressBarMessage('Loading lsit of user projects ...');
+						$scope.setProgressBarMessage('Loading list of user projects ...');
 						gislabMobileClient.userProjects($scope.$storage.serverUrl)
 							.success(function(data, status, headers, config) {
 								if (angular.isArray(data)) {
@@ -24,7 +24,18 @@
 								$scope.hideProgressDialog($scope.app.progressBar, 500, $scope.app.wizard.carousel.next, $scope.app.wizard.carousel);
 							})
 							.error(function(data, status, headers, config) {
-								console.log('error: '+status);
+								/*
+								$scope.hideProgressDialog($scope.app.progressBar, 500, ons.notification.alert, null, {
+									title: 'Warning',
+									message: 'Failed to load list of your projects.'
+								});*/
+								$scope.hideProgressDialog($scope.app.progressBar, 500, function() {
+									$scope.app.wizard.carousel.next();
+									ons.notification.alert({
+										title: 'Warning',
+										message: 'Failed to load list of yours projects.'
+									});
+								});
 							});
 						
 					}, function() {

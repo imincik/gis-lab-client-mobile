@@ -49,6 +49,7 @@
 	<script type="text/javascript" src="js/mobile/mobile.module.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/MobileAppController.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/SettingsController.js"></script>
+	<script type="text/javascript" src="js/mobile/controllers/ServerSettingsController.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/ProjectSettingsController.js"></script>
 	<script type="text/javascript" src="js/mobile/controllers/StartupConfigController.js"></script>
 	<script type="text/javascript" src="js/mobile/services/gislab-mobile-client.js"></script>
@@ -179,43 +180,29 @@
 				<p>Welcome in GIS.lab mobile application. In order to use this application, you have to configure it!</p>
 				<ons-list class="wizard settings">
 					<ons-list-header>
-						This is field is mandatory.
+						<i class="icon fa fa-globe"></i>Server URL. This is field is mandatory.
 					</ons-list-header>
-					<ons-list-item>
-						<ons-row>
-							<ons-col width="36px" style="color: gray">
-								<ons-icon icon="ion-earth" size="24px" fixed-width="true"></ons-icon>
-							</ons-col>
-							<ons-col width="40px" style="color: gray">
-								<div class="right"><span>http://</span></div>
-							</ons-col>
-							<ons-col>
-								<span><input type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl" /></span>
-							</ons-col>
-						</ons-row>
+					<ons-list-item class="textarea-input">
+						<div style="width: 100%;">
+							<textarea type="text" class="http-prefix text-input text-input--transparent">http://</textarea>
+							<textarea style="text-indent: 50px;" type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl"></textarea>
+							<span style="text-indent: 50px;" class="multiline-wrapper" ng-bind="$storage.serverUrl"></span>
+						</div>
 					</ons-list-item>
 					<ons-list-header>
 						Some projects may require permission to open it.
 					</ons-list-header>
+					<ons-list-header>
+						<i class="icon fa fa-user"></i>Username
+					</ons-list-header>
 					<ons-list-item>
-						<ons-row>
-							<ons-col width="36px">
-								<ons-icon icon="ion-person" size="24px" fixed-width="true" style="color: gray"></ons-icon>
-							</ons-col>
-							<ons-col>
-								<span /><input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
-							</ons-col>
-						</ons-row>
+						<input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
 					</ons-list-item>
+					<ons-list-header>
+						<i class="icon fa fa-lock"></i>Password
+					</ons-list-header>
 					<ons-list-item>
-						<ons-row>
-							<ons-col width="36px">
-								<ons-icon icon="ion-locked" size="24px" fixed-width="true" style="color: gray"></ons-icon>
-							</ons-col>
-							<ons-col>
-								<span /><input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
-							</ons-col>
-						</ons-row>
+						<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
 					</ons-list-item>
 				</ons-list>
 				<ons-bottom-toolbar>
@@ -228,22 +215,21 @@
 			<div class="wizard-window" ng-init="myProjectsExpanded=true">
 				<p>Setup your first project!</p>
 				<ons-list class="wizard settings gl-tree">
-					<ons-list-item>
-						<ons-row>
-							<ons-col width="36px">
-								<ons-icon icon="ion-edit" size="24px" fixed-width="true" style="color: gray"></ons-icon>
-							</ons-col>
-							<ons-col>
-								<span /><input type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project"></input>
-							</ons-col>
-						</ons-row>
+					<ons-list-header>
+						<i class="icon fa fa-pencil"></i>Current
+					</ons-list-header>
+					<ons-list-item class="textarea-input">
+						<div style="width: 100%;">
+							<textarea type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project"></textarea>
+							<span class="multiline-wrapper" ng-bind="$storage.project"></span>
+						</div>
 					</ons-list-item>
-					<ons-list-item class="group">
-						<div class="node-label">My projects</div>
-					</ons-list-item>
-					<div class="group-content">
+					<div ng-if="$storage.username">
+						<ons-list-header>
+							<i class="icon fa fa-bars"></i>My projects
+						</ons-list-header>
 						<ons-list-item ng-repeat="project in userProjects" modifier="tappable" ng-click="$storage.project=project.project">
-							{{ project.project }}
+							<span>{{ project.project }}</span>
 						</ons-list-item>
 					</div>
 				</ons-list>

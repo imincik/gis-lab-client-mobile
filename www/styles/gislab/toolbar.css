@@ -123,3 +123,12 @@
 	height: 40px;
 }
 */
+
+.bottom-toolbar {
+	xposition: absolute;
+	bottom: 0;
+}
+
+.bottom-toolbar .center {
+	text-align: center;
+}

@@ -241,3 +241,19 @@
 	content: "\f106";
 }
 
+
+.list__item .delete-btn {
+	display: block;
+	float: right;
+	height: 100%;
+	width: 50px;
+	text-align: right;
+	font-family: "FontAwesome";
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	font-size: 28px;
+}
+.list__item .delete-btn::before {
+	content: '\f00d';
+}
