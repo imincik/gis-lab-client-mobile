@@ -16,7 +16,7 @@
 				$scope.login()
 					.then(function() {
 						$scope.setProgressBarMessage('Loading list of user projects ...');
-						gislabMobileClient.userProjects($scope.$storage.serverUrl)
+						gislabMobileClient.userProjects()
 							.success(function(data, status, headers, config) {
 								if (angular.isArray(data)) {
 									$scope.userProjects = data;

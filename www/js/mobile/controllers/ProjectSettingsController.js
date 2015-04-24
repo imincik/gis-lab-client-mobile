@@ -9,7 +9,7 @@
 		$scope.userProjects = [];
 
 		$scope.fetchUserProjects = function() {
-			gislabMobileClient.userProjects($scope.$storage.serverUrl)
+			gislabMobileClient.userProjects()
 				.success(function(data, status, headers, config) {
 					if (angular.isArray(data)) {
 						$scope.userProjects = data;

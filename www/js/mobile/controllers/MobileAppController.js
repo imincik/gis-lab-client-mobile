@@ -122,21 +122,14 @@
 
 		$scope.login = function() {
 			var login = $q.defer();
-			if ($scope.$storage.username && $scope.$storage.password) {
-				gislabMobileClient.login($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password)
-					.then(function() {
-						$scope.currentServer = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);
-						login.resolve();
-					}, function() {
-						$scope.currentServer = null;
-						login.reject();
-					});
-			} else {
-				$timeout(function() {
+			gislabMobileClient.login($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password)
+				.then(function() {
 					$scope.currentServer = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);
 					login.resolve();
+				}, function() {
+					$scope.currentServer = null;
+					login.reject();
 				});
-			}
 			return login.promise;
 		}
 		$scope.loginAndLoadProject = function() {
@@ -203,7 +196,14 @@
 				if (evt.leavePage.page === 'pages/settings/server.html') {
 					var server = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);
 					if ($scope.currentServer !== server) {
-						$scope.loginAndLoadProject();
+						if ($scope.currentServer) {
+							gislabMobileClient.logout()
+								.finally(function() {
+									$scope.loginAndLoadProject();
+								});
+						} else {
+							$scope.loginAndLoadProject();
+						}
 					}
 				}
 				if (evt.enterPage.page === 'map_container.html' && projectProvider.map && projectProvider.map.getSize()[0] === 0) {
@@ -259,7 +259,7 @@
 			$scope.$storage.project = projectName;
 
 			if ($scope.$storage.serverUrl) {
-				gislabMobileClient.project($scope.$storage.serverUrl, projectName)
+				gislabMobileClient.project(projectName)
 					.success(function(data, status, headers, config) {
 						projectProvider.load(data);
 						$scope.currentProject = projectName;

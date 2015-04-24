@@ -16,23 +16,32 @@
 				return result.join("&");
 			});
 		}])
-		.factory('gislabMobileClient', ['$http', gislabMobileClient]);
+		.factory('gislabMobileClient', ['$http', '$q', gislabMobileClient]);
 
-	function gislabMobileClient($http) {
+	function gislabMobileClient($http, $q) {
 		function GislabMobileClient() {};
 
-		GislabMobileClient.prototype.serverUrl = function(server) {
-			//var template = this._secure? 'https://{0}' : 'http://{0}';
-			var template = 'http://{0}';
-			return template.format(server);
-		};
-
 		GislabMobileClient.prototype.login = function(server, username, password) {
-			this._secure = true;
+			if (username && password) {
+				this._secure = true;
+				//this.serverUrl = 'https://{0}'.format(server);
+				this.serverUrl = 'http://{0}'.format(server);
+				return $http.post('{0}/mobile/login/'.format(this.serverUrl), {
+						username: username,
+						password: password
+					}, {
+						withCredentials: true
+					}
+				);
+			} else {
+				this._secure = false;
+				this.serverUrl = 'http://{0}'.format(server);
+				return $q.when();
+			}
 			/*
 			return $http({
 				method: 'POST',
-				url: '{0}/mobile/login/'.format(this.serverUrl(server)),
+				url: '{0}/mobile/login/'.format(this.getServerUrl(server)),
 				headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
 				transformRequest: function(obj) {
 					var str = [];
@@ -42,29 +51,33 @@
 				},
 				data: {username: username, password: password},
 			});*/
-			return $http.post('{0}/mobile/login/'.format(this.serverUrl(server)), {
-					username: username,
-					password: password
-				}, {
-					withCredentials: true
-				}
-			);
 		};
 
-		GislabMobileClient.prototype.project = function(server, project) {
+		GislabMobileClient.prototype.logout = function() {
+			if (this.serverUrl) {
+				return $http.get('{0}/mobile/logout/'.format(this.serverUrl), {
+						withCredentials: true
+					}
+				);
+			} else {
+				return $q.when();
+			}
+		}
+
+		GislabMobileClient.prototype.project = function(project) {
 			var url;
 			if (project && project !== 'empty') {
-				url = '{0}/mobile/config.json?PROJECT={1}'.format(this.serverUrl(server), encodeURIComponent(project));
+				url = '{0}/mobile/config.json?PROJECT={1}'.format(this.serverUrl, encodeURIComponent(project));
 			} else {
-				url = '{0}/mobile/config.json?'.format(this.serverUrl(server));
+				url = '{0}/mobile/config.json?'.format(this.serverUrl);
 			}
 			return $http.get(url, {
 					withCredentials: true
 			});
 		};
 
-		GislabMobileClient.prototype.userProjects = function(server) {
-			return $http.get('{0}/projects.json'.format(this.serverUrl(server)), {
+		GislabMobileClient.prototype.userProjects = function() {
+			return $http.get('{0}/projects.json'.format(this.serverUrl), {
 					withCredentials: true
 			});
 		};
