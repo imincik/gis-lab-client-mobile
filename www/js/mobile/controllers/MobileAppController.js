@@ -14,8 +14,6 @@
 		$scope.ui = {
 			tools_layers_tab: 0,
 			tools_settings_tab: 0,
-			settings_server_tab: 0,
-			settings_project_tab: 0,
 		};
 		$scope.ui.toolbar = [
 			{
@@ -81,7 +79,8 @@
 				persistent: true,
 			}, */{
 				icon: 'ion-gear-b',
-				page: 'pages/settings/settings.html'
+				page: 'pages/settings/settings.html',
+				disabled: false
 			}
 		];
 
@@ -218,8 +217,8 @@
 
 		$scope.updateScreenSize = function() {
 			$scope.panelHeight = $scope.$storage.showHeader? document.body.clientHeight-22 : document.body.clientHeight;
-			$scope.mapWidth = document.body.clientWidth;
-			$scope.mapHeight = document.body.clientHeight;
+			$scope.screenWidth = document.body.clientWidth;
+			$scope.screenHeight = document.body.clientHeight;
 		};
 
 		$scope.showProgressDialog = function(dialog, msg) {
@@ -284,7 +283,6 @@
 								}*/
 								$scope.$storage.recentProjects.splice(0, 0, data.project);
 							}
-							console.log(data);
 							//$scope.project = projectProvider.config;
 							$scope.project = data;
 							// initialize map page
@@ -375,11 +373,7 @@
 			document.addEventListener("resume", function() {
 				/*
 				console.log("--------RESUMED--------");
-				navigator.notification.alert(
-					"I'm Back!",
-					function() {},
-					"But Why?!"
-				);*/
+				*/
 			}, false);
 
 		};

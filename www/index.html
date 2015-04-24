@@ -96,7 +96,7 @@
 
 	<ons-template id="map_container.html">
 		<ons-page>
-			<div style="width: {{ mapWidth }}px;height: {{ mapHeight }}px;">
+			<div style="width: {{ screenWidth }}px;height: {{ screenHeight }}px;">
 				<ons-sliding-menu var="app.menu" main-page="map.html" menu-page="panel_tab_container.html" max-slide-distance="261px" swipe-target-width="20px" side="left" swipeable="false" type="reveal">
 				</ons-sliding-menu>
 			</div>
@@ -106,7 +106,7 @@
 		<ons-page class="main-panel">
 			<ons-tabbar var="app.panel.tabbar" class="main-panel" hide-tabs="true">
 				<ons-tab page="empty.html" active="true"></ons-tab>
-				<ons-tab ng-repeat="tool in ::ui.toolbar | filter:{page:''}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index+1" no-reload>
+				<ons-tab ng-repeat="tool in ::ui.toolbar | filter:{page:'',disabled:false}" page="{{ ::tool.page }}" gl-con-attr="{persistent: {{ ::tool.persistent == true }}}" ng-init="tool._tab_index = $index+1" no-reload>
 				</ons-tab>
 			</ons-tabbar>
 		</ons-page>
@@ -119,9 +119,9 @@
 	<ons-template id="map.html">
 		<ons-page id="map-page">
 
-			<div id="map" style="width: {{ mapWidth }}px; height: {{ mapHeight }}px;"></div>
+			<div id="map" style="width: {{ screenWidth }}px; height: {{ screenHeight }}px;"></div>
 <!--			<div ons-if-orientation="portrait" class="map-toolbar map-toolbar-horizontal">-->
-<!--				<ons-scroller style="max-width: {{ mapWidth }}px; ">-->
+<!--				<ons-scroller style="max-width: {{ screenWidth }}px; ">-->
 <!--					<ons-button ng-repeat="tool in toolbar" ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">-->
 <!--						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>-->
 <!--						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>-->
@@ -129,21 +129,21 @@
 <!--				</ons-scroller>-->
 <!--			</div>-->
 			<div class="map-toolbar map-toolbar-vertical">
-				<ons-scroller style="max-height: {{ mapHeight }}px;">
+				<ons-scroller style="max-height: {{ screenHeight }}px;">
 
-					<ons-button id="tool-{{ ::$index }}" ng-repeat="tool in ::ui.toolbar"
-							ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}"
-							gl-con-attr="{disabled: {{ ::tool.disabled == true }}}">
+					<ons-button ng-repeat="tool in ::ui.toolbar | filter:{disabled:false}"
+							ng-click="toolTaped(tool);" ng-class="{activated: tool.activated}">
+<!--							gl-con-attr="{disabled: {{ ::tool.disabled == true }}}">-->
 						<ons-icon ng-if="tool.icon" icon="{{ tool.icon }}" size="28px" fixed-width="true"></ons-icon>
 						<i ng-if="tool.faIcon" class="fa {{ tool.faIcon }}"></i>
 					</ons-button>
 
-					<gl-scroll-indicator gl-orientation="top" gl-update-on="mapHeight">
+					<gl-scroll-indicator gl-orientation="top" gl-update-on="screenHeight">
 						<div class="scroll-top-indicator-bg">
 							<ons-icon class="scroll-top-indicator" icon="ion-android-arrow-dropup" size="28px" fixed-width="true"></ons-icon>
 						</div>
 					</gl-scroll-indicator>
-					<gl-scroll-indicator gl-orientation="bottom" gl-update-on="mapHeight">
+					<gl-scroll-indicator gl-orientation="bottom" gl-update-on="screenHeight">
 						<div class="scroll-bottom-indicator-bg" gl-scroll-indicator="bottom">
 							<ons-icon class="scroll-bottom-indicator" icon="ion-android-arrow-dropdown" size="28px" fixed-width="true"></ons-icon>
 						</div>

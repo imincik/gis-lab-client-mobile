@@ -2,19 +2,6 @@
  General List
 */
 
-.list__item--two-lines-max {
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	max-height: 40px;
-	line-height: 18px;
-	text-overflow: ellipsis;
-}
-
-.list__item .title {
-	xdisplay: inline-block;
-}
 
 .list__item header {
 	line-height: 32px;
@@ -256,4 +243,14 @@
 }
 .list__item .delete-btn::before {
 	content: '\f00d';
+}
+
+.list__item--two-lines-max {
+	display: -webkit-box!important;
+	-webkit-line-clamp: 2!important;
+	-webkit-box-orient: vertical!important;
+	overflow: hidden!important;
+	max-height: 40px;
+	line-height: 18px;
+	text-overflow: ellipsis!important;
 }

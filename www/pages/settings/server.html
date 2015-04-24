@@ -4,8 +4,8 @@
 		<div class="center">Server</div>
 		<div class="right"><ons-toolbar-button ng-click="app.navigator.pushPage('server_profiles.html')"><i class="fa fa-history"></i></ons-toolbar-button></div>
 	</ons-toolbar>
-	<div ng-switch="ui.settings_server_tab">
-		<ons-list ng-switch-when="0">
+	<ons-scroller style="width: 100%; height: {{ screenHeight-64 }}px;">
+		<ons-list>
 			<ons-list-header>
 				<i class="icon fa fa-globe"></i>Server URL
 			</ons-list-header>
@@ -29,12 +29,7 @@
 				<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
 			</ons-list-item>
 		</ons-list>
-		<ons-list ng-switch-when="1">
-			<ons-list-item ng-repeat="project in $storage.serversHistory" modifier="chevron" ng-click="app.navigator.popPage();loadProject(project);">
-				{{ project }}
-			</ons-list-item>
-		</ons-list-item>
-	</div>
+	</ons-scroller>
 	<div class="bottom-toolbar">
 		<div class="center"><ons-toolbar-button ng-click="saveServerProfile($storage.serverUrl, $storage.username, $storage.password)"><i class="icon fa fa-plus-circle"></i>Save profile</ons-toolbar-button></div>
 	</div>

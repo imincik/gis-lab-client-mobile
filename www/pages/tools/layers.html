@@ -1,10 +1,11 @@
-<ons-page ng-controller="LayersController">
+<ons-page ng-controller="LayersController" ng-init="headers=[]">
 	<div class="panel-header" ng-if="$storage.showHeader">
-		<span>{{ ['Topics', 'Base Layer', 'Layers'][app.panel.carousel._lastActiveIndex] }}</span>
+		<span>{{ headers[app.panel.carousel._lastActiveIndex] }}</span>
 	</div>
-	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight-28 }}px;" swipeable auto-scroll>
-		<ons-carousel-item>
-			<ons-scroller style="height: 100%;" ng-if="::topics">
+	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight-(headers.length>1? 28 : 0) }}px;" swipeable auto-scroll>
+		</ons-carousel-cover>
+		<ons-carousel-item ng-if="::topics" ng-init="headers.splice(0,0,'Topics')">
+			<ons-scroller xstyle="height: 100%;">
 				<ons-list class="topics" ng-controller="AccordionController">
 					<div ng-repeat="topic in ::topics">
 						<ons-list-item class="list__item--checkbox list__item--accordion" modifier="tappable" ng-class="{expanded: isAccordionShown(topic)}">
@@ -44,12 +45,9 @@
 					</div>
 				</ons-list>
 			</ons-scroller>
-			<div class="empty-tab" ng-if="::!topics">
-				<span>Project doesn't have any topics.</span>
-			</div>
 		</ons-carousel-item>
 
-		<ons-carousel-item>
+		<ons-carousel-item ng-init="headers.splice(1,0,'Base Layer')">
 			<ons-scroller style="height: 100%;">
 				<ons-list class="baselayer-container gl-tree"
 					gl-tree-view="baseLayers.tree"
@@ -110,8 +108,8 @@
 			</ons-scroller>
 		</ons-carousel-item>
 
-		<ons-carousel-item>
-			<ons-scroller style="height: 100%;" ng-if="::layers.tree">
+		<ons-carousel-item ng-if="::layers.tree" ng-init="headers.splice(2,0,'Layers')">
+			<ons-scroller style="height: 100%;">
 				<ons-list class="layers-container gl-tree"
 					gl-check-tree-view="layers.tree"
 					gl-tree-label-attribute="title"
@@ -183,27 +181,29 @@
 			</div>
 		</ons-carousel-item>
 	</ons-carousel>
-	<gl-carousel-tab-slider gl-tab-model="ui.tools_layers_tab" gl-carousel="app.panel.carousel"></gl-carousel-tab-slider>
-	<div class="tab-bar tab-bar--bottom">
-		<label class="tab-bar__item">
-			<input type="radio" name="layers-tab-radio" value="0" ng-model="ui.tools_layers_tab">
-			<button class="tab-bar__button">
-				<i class="tab-bar__icon ion-images"></i>
-			</button>
-		</label>
+	<div ng-if="headers.length > 1">
+		<gl-carousel-tab-slider gl-tab-model="ui.tools_layers_tab" gl-carousel="app.panel.carousel"></gl-carousel-tab-slider>
+		<div class="tab-bar tab-bar--bottom">
+			<label class="tab-bar__item border-right" ng-if="::topics">
+				<input type="radio" name="layers-tab-radio" value="0" ng-model="ui.tools_layers_tab">
+				<button class="tab-bar__button">
+					<i class="tab-bar__icon ion-images"></i>
+				</button>
+			</label>
 
-		<label class="tab-bar__item border-both">
-			<input type="radio" name="layers-tab-radio" value="1" ng-model="ui.tools_layers_tab">
-			<button class="tab-bar__button">
-				<i class="tab-bar__icon ion-android-map"></i>
-			</button>
-		</label>
+			<label class="tab-bar__item">
+				<input type="radio" name="layers-tab-radio" value="{{::topics? '1' : '0'}}" ng-model="ui.tools_layers_tab">
+				<button class="tab-bar__button">
+					<i class="tab-bar__icon ion-android-map"></i>
+				</button>
+			</label>
 
-		<label class="tab-bar__item">
-			<input type="radio" name="layers-tab-radio" value="2" ng-model="ui.tools_layers_tab">
-			<button class="tab-bar__button">
-				<i class="tab-bar__icon ion-social-buffer"></i>
-			</button>
-		</label>
+			<label class="tab-bar__item border-left" ng-if="::layers.tree">
+				<input type="radio" name="layers-tab-radio" value="{{::topics? '2' : '1'}}" ng-model="ui.tools_layers_tab">
+				<button class="tab-bar__button">
+					<i class="tab-bar__icon ion-social-buffer"></i>
+				</button>
+			</label>
+		</div>
 	</div>
 </ons-page>

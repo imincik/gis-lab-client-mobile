@@ -35,6 +35,11 @@
 	height: 100%;
 }
 
+.ol-rotate {
+	top: 3px!important;
+	right: 42px!important;
+}
+
 .ol-control button {
 	background-color: rgba(100, 100, 100, 0.8)!important;
 }
@@ -145,6 +150,12 @@
 }
 .tab-bar__item.border-both {
 	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-image:
+		linear-gradient(to top, transparent, transparent, gray, gray, gray, transparent, transparent) 1 100%;
+}
+.tab-bar__item.border-left {
+	border-width: 0 0 0 1px;
 	border-style: solid;
 	border-image:
 		linear-gradient(to top, transparent, transparent, gray, gray, gray, transparent, transparent) 1 100%;
