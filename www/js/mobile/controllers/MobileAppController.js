@@ -206,7 +206,7 @@
 					}
 				}
 				if (evt.enterPage.page === 'map_container.html' && projectProvider.map && projectProvider.map.getSize()[0] === 0) {
-				//	projectProvider.map.updateSize();
+					projectProvider.map.updateSize();
 				}
 			});
 
