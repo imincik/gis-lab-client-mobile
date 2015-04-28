@@ -51,7 +51,7 @@
 				base_layer = new ol.layer.Tile({
 					source: new ol.source.OSM(),
 					extent: config.extent,
-					visible: config.visible
+					visible: config.visible || false
 				});
 			} else if (config.type === 'WMS') {
 				base_layer = new ol.layer.Image({
