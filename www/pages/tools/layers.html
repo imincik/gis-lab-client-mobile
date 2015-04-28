@@ -47,7 +47,7 @@
 			</ons-scroller>
 		</ons-carousel-item>
 
-		<ons-carousel-item ng-init="headers.splice(1,0,'Base Layer')">
+		<ons-carousel-item ng-if="::baseLayers.tree" ng-init="headers.splice(1,0,'Base Layer')">
 			<ons-scroller style="height: 100%;">
 				<ons-list class="baselayer-container gl-tree"
 					gl-tree-view="baseLayers.tree"
