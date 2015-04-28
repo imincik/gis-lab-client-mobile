@@ -142,7 +142,7 @@
 						<div gl-tree-leaf-template>
 							<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion  list__item--fa-button-right leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
 								<ons-row>
-									<ons-col class="indent" width="36px">
+									<ons-col class="indent" width="{{ ::treeDepth==1? '35px' : '39px' }}">
 										<label class="checkbox">
 											<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
 											<div class="checkbox__icon-checkmark"></div>

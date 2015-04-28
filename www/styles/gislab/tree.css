@@ -51,15 +51,25 @@
 	padding-left: 2px;
 }
 
-.gl-tree .list__item[depth="2"] .indent {
-	margin-left: 16px;
+.gl-tree .list__item.group[depth="2"] .indent {
+	margin-left: 18px;
+}
+.gl-tree .list__item.leaf[depth="2"] .indent {
+	margin-left: 14px;
 }
 
-.gl-tree .list__item[depth="3"] .indent {
+.gl-tree .list__item.group[depth="3"] .indent {
+	margin-left: 36px;
+}
+.gl-tree .list__item.leaf[depth="3"] .indent {
 	margin-left: 32px;
 }
-.gl-tree .list__item[depth="4"] .indent {
-	margin-left: 48px;
+
+.gl-tree .list__item.group[depth="4"] .indent {
+	margin-left: 54px;
+}
+.gl-tree .list__item.leaf[depth="4"] .indent {
+	margin-left: 50px;
 }
 
 .gl-tree .list__item:last-child {
