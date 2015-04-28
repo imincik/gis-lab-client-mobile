@@ -12,9 +12,14 @@
 	min-height: 39px;
 	color: #444;
 }
+.list__item. input,
+.list__item textarea {
+	color: #444;
+}
 
 .list__item .title {
 	font-size: 15px;
+	display: inline-block!important;
 }
 
 .left-center {
@@ -133,16 +138,49 @@
 .switch__toggle::before {
 	height: 24px;
 }
+
+/*
+ List Item with button on right side
+*/
+
+.list__item--fa-button-right {
+	padding-right: 0;
+}
+
+.list__item--fa-button-right .title{
+	padding-right: 30px;
+}
+
+.list__item--fa-button-right .list-button::before {
+	font-family: FontAwesome;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: normal;
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	padding-left: 20px;
+}
+
+.list__item--fa-button-right .list-button {
+	width: 50px;
+	height: 100%;
+	display: inline-block;
+	float: right;
+	right: 0;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	position: absolute;
+}
+
 /*
  List Accordion
 */
-
-.list__item--accordion {
-	padding-right: 0;
-}
-.list__item--accordion div.title{
-	padding-right: 30px;
-}
 
 .list__item--tappable.expanded {
 	background-color: #f7f7f7;
@@ -195,62 +233,26 @@
 	content: "\00a0"
 }
 
-.list__item--accordion .expand-button {
-	width: 50px;
-	height: 100%;
-	display: inline-block;
-	float: right;
-	right: 0;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
-	position: absolute;
-}
-
-.list__item--accordion .expand-button::before {
+.list__item--fa-button-right .expand::before {
 	color: #ddd;
 	content: "\f107";
-	font-family: FontAwesome;
-	font-size: 20px;
-	font-style: normal;
-	font-weight: normal;
-	height: 20px;
-	line-height: 20px;
-	position: absolute;
-	right: 12px;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
-	padding-left: 20px;
 }
 
-.list__item--accordion.expanded .expand-button::before {
+.list__item--fa-button-right.expanded .expand::before {
 	content: "\f106";
 }
 
-
-.list__item .delete-btn {
-	display: block;
-	float: right;
-	height: 100%;
-	width: 50px;
-	text-align: right;
-	font-family: "FontAwesome";
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	font-size: 28px;
-}
-.list__item .delete-btn::before {
+.list__item--fa-button-right .delete::before {
+	color: #444;
 	content: '\f00d';
 }
 
-.list__item--two-lines-max {
+.list__item--two-lines-max.title {
 	display: -webkit-box!important;
 	-webkit-line-clamp: 2!important;
 	-webkit-box-orient: vertical!important;
 	overflow: hidden!important;
 	max-height: 40px;
-	line-height: 18px;
+	line-height: 19px;
 	text-overflow: ellipsis!important;
 }

@@ -5,10 +5,10 @@
 	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight-(headers.length>1? 28 : 0) }}px;" swipeable auto-scroll>
 		</ons-carousel-cover>
 		<ons-carousel-item ng-if="::topics" ng-init="headers.splice(0,0,'Topics')">
-			<ons-scroller xstyle="height: 100%;">
-				<ons-list class="topics" ng-controller="AccordionController">
+			<ons-scroller style="height: 100%;">
+				<ons-list class="xtopics" ng-controller="AccordionController">
 					<div ng-repeat="topic in ::topics">
-						<ons-list-item class="list__item--checkbox list__item--accordion" modifier="tappable" ng-class="{expanded: isAccordionShown(topic)}">
+						<ons-list-item class="list__item--checkbox list__item--accordion list__item--fa-button-right" modifier="tappable" ng-class="{expanded: isAccordionShown(topic)}">
 							<ons-row>
 								<ons-col width="36px">
 									<label class="radio-button">
@@ -27,7 +27,7 @@
 <!--								<ons-col width="30px">-->
 <!--									<div ng-click="topicDetail(topic, toggleAccordion);" class="toggle-btn">&nbsp;</div>-->
 <!--								</ons-col>-->
-								<div class="expand-button" ng-click="topicDetail(topic, toggleAccordion)">&nbsp;</div>
+								<div class="list-button expand" ng-click="topicDetail(topic, toggleAccordion)">&nbsp;</div>
 							<ons-row>
 						</ons-list-item>
 						<ons-list-item class="list__item--accordion-content" ng-if="topic.detail" ng-show="isAccordionShown(topic)" gl-fixed-height>
@@ -39,7 +39,7 @@
 <!--								<span>{{ ::topic.visible_overlays.join(', ') }}</span>-->
 									<span ng-bind-html="::topic.detail.visibleLayers"></span>
 								</div>
-								<div style="height: 8px;"/>
+								<div style="height: 8px;"></div>
 							</div>
 						</ons-list-item>
 					</div>
@@ -62,7 +62,7 @@
 								<ons-col class="indent" width="24px">
 									<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
 								</ons-col>
-								<ons-col class="left-center title">
+								<ons-col class="left-center">
 									<div class="title list__item--two-lines-max">
 										<span>{{ ::node.title }}</span>
 									</div>
@@ -75,7 +75,7 @@
 					</div>
 
 					<div gl-tree-leaf-template>
-						<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
+						<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion  list__item--fa-button-right leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
 							<ons-row>
 								<ons-col class="indent" width="36px">
 									<label class="radio-button">
@@ -90,7 +90,7 @@
 										<span>{{ ::node.title }}</span>
 									</div>
 								</ons-col>
-								<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
+								<div class="list-button expand" ng-click="toggleAccordion(node)">&nbsp;</div>
 							</ons-row>
 						</ons-list-item>
 						<ons-list-item class="list__item--accordion-content" ng-show="isAccordionShown(node)" gl-fixed-height>
@@ -98,7 +98,7 @@
 							<label>Keywords list:</label><span> {{ ::node.metadata.keyword_list }}</span><br />
 							<label>Maximal scale:</label><span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
 							<label>Minimal scale:</label><span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
-							<div style="height: 8px;"/>
+							<div style="height: 8px;"></div>
 						</ons-list-item>
 					</div>
 					<div ng-controller="AccordionController">
@@ -140,7 +140,7 @@
 						</div>
 
 						<div gl-tree-leaf-template>
-							<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
+							<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion  list__item--fa-button-right leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
 								<ons-row>
 									<ons-col class="indent" width="36px">
 										<label class="checkbox">
@@ -148,12 +148,12 @@
 											<div class="checkbox__icon-checkmark"></div>
 										</label>
 									</ons-col>
-									<ons-col class="left-center title">
+									<ons-col class="left-center">
 										<div class="title list__item--two-lines-max">
-											<span>{{ ::node.title }}</span>
+											{{ ::node.title }}
 										</div>
 									</ons-col>
-									<div class="expand-button" ng-click="toggleAccordion(node)">&nbsp;</div>
+									<div class="list-button expand" ng-click="toggleAccordion(node)">&nbsp;</div>
 								</ons-row>
 							</ons-list-item>
 							<ons-list-item class="list__item--accordion-content" ng-show="isAccordionShown(node)" gl-fixed-height>
@@ -167,7 +167,7 @@
 								<label>Maximal scale:</label><span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
 								<label>Minimal scale:</label><span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
 								<label>Labels:</label><i class="layer-metadata-icon fa" ng-class="node.labels? 'fa-check' : 'fa-minus'"></i>
-								<div style="height: 8px;"/>
+								<div style="height: 8px;"></div>
 							</ons-list-item>
 						</div>
 

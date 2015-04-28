@@ -4,6 +4,7 @@
 
 }
 
+
 @-moz-document url-prefix() { 
 	ons-scroller {
 		overflow: hidden!important;
@@ -65,6 +66,7 @@
 .ol-attribution {
 	right: 0.2em!important;
 	bottom: 0.2em!important;
+	z-index: 1000;
 }
 
 .checkbox > input[type="checkbox"]:checked + .checkbox__checkmark:before {
@@ -160,6 +162,7 @@
 	border-image:
 		linear-gradient(to top, transparent, transparent, gray, gray, gray, transparent, transparent) 1 100%;
 }
+
 .tab-bar__item.border-right {
 	border-width: 0 1px 0 0;
 	border-style: solid;

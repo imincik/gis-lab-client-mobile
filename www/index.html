@@ -153,26 +153,6 @@
 		</ons-page>
 	</ons-template>
 
-	<ons-template id="wizard.html">
-		<ons-popover>
-			<ons-list>
-				<ons-list-item>
-				Item1
-				</ons-list-item>
-			</ons-list>
-		</ons-popover>
-	</ons-template>
-
-	<ons-template id="test.html">
-		<ons-page>
-			<ons-list>
-				<ons-list-item>
-				Item1
-				</ons-list-item>
-			</ons-list>
-		</ons-page>
-	</ons-template>
-
 	<ons-modal var="app.wizard" class="startup-wizard">
 		<ons-carousel var="app.wizard.carousel" class="wizard-carousel" ng-controller="StartupConfigController">
 		<ons-carousel-item>
@@ -212,11 +192,11 @@
 			</div>
 			</ons-carousel-item>
 		<ons-carousel-item>
-			<div class="wizard-window" ng-init="myProjectsExpanded=true">
+			<div class="wizard-window">
 				<p>Setup your first project!</p>
-				<ons-list class="wizard settings gl-tree">
+				<ons-list class="wizard settings gl-tree" ng-controller="AccordionController">
 					<ons-list-header>
-						<i class="icon fa fa-pencil"></i>Current
+						<i class="icon fa fa-pencil"></i>Project Name
 					</ons-list-header>
 					<ons-list-item class="textarea-input">
 						<div style="width: 100%;">
@@ -224,13 +204,36 @@
 							<span class="multiline-wrapper" ng-bind="$storage.project"></span>
 						</div>
 					</ons-list-item>
-					<div ng-if="$storage.username">
+					<div ng-if="$storage.username && $storage.password">
 						<ons-list-header>
 							<i class="icon fa fa-bars"></i>My projects
 						</ons-list-header>
-						<ons-list-item ng-repeat="project in userProjects" modifier="tappable" ng-click="$storage.project=project.project">
-							<span>{{ project.project }}</span>
-						</ons-list-item>
+
+						<div ng-repeat="project in userProjects">
+							<ons-list-item  modifier="tappable" class="list__item--fa-button-right list__item--accordion" ng-class="{expanded: isAccordionShown(project)}">
+								<ons-row>
+									<ons-col class="left-center" ng-click="$storage.project=project.project">
+										<div class="title list__item--two-lines-max"><span>{{ project.title }}</span></div>
+									</ons-col>
+									<ons-col width="30px">
+										<div class="list-button expand" ng-click="toggleAccordion(project)">&nbsp;</div>
+										<div style="display: inline-block;"></div>
+									</ons-col>
+								</ons-row>
+							</ons-list-item>
+							<ons-list-item class="list__item--accordion-content" ng-show="isAccordionShown(project)" gl-fixed-height>
+								<div>
+									<label>Path:</label>
+									<span>{{ ::project.project }}</span><br />
+									<label>Publication time:</label>
+									<span>{{ ::project.publish_date_text }}</span><br />
+									<label>Expiration time:</label>
+									<span>{{ ::project.expiration_date_text }}</span><br />
+									<div style="height: 8px;"></div>
+								</div>
+							</ons-list-item>
+						</div>
+
 					</div>
 				</ons-list>
 				<ons-bottom-toolbar>

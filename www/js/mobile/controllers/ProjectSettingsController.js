@@ -12,6 +12,10 @@
 			gislabMobileClient.userProjects()
 				.success(function(data, status, headers, config) {
 					if (angular.isArray(data)) {
+						data.forEach(function(projectData) {
+							projectData.publish_date_text = new Date(projectData.publication_time_unix*1000).toLocaleString();
+							projectData.expiration_date_text = projectData.expiration_time_unix? new Date(projectData.expiration_time_unix*1000).toLocaleString() : '-';
+						});
 						$scope.userProjects = data;
 					}
 				})

@@ -2,7 +2,6 @@
 	<ons-toolbar fixed-style>
 		<div class="left"><ons-back-button></ons-back-button></div>
 		<div class="center">Server</div>
-		<div class="right"><ons-toolbar-button ng-click="app.navigator.pushPage('server_profiles.html')"><i class="fa fa-history"></i></ons-toolbar-button></div>
 	</ons-toolbar>
 	<ons-scroller style="width: 100%; height: {{ screenHeight-64 }}px;">
 		<ons-list>
@@ -30,8 +29,20 @@
 			</ons-list-item>
 		</ons-list>
 	</ons-scroller>
-	<div class="bottom-toolbar">
-		<div class="center"><ons-toolbar-button ng-click="saveServerProfile($storage.serverUrl, $storage.username, $storage.password)"><i class="icon fa fa-plus-circle"></i>Save profile</ons-toolbar-button></div>
+	<div class="toolbar bottom-toolbar">
+		<ons-row>
+			<ons-col>
+				<ons-toolbar-button ng-click="saveServerProfile($storage.serverUrl, $storage.username, $storage.password)">
+					<i class="icon fa fa-plus-circle"></i>Save profile
+				</ons-toolbar-button>
+			</ons-col>
+			<ons-col width="1px" class="vertical-separator"></ons-col>
+			<ons-col>
+				<ons-toolbar-button ng-click="app.navigator.pushPage('server_profiles.html')">
+					<i class="icon fa fa-users"></i>Select profile
+				</ons-toolbar-button>
+			</ons-col>
+		</ons-row>
 	</div>
 
 	<ons-template id="server_profiles.html">
@@ -41,9 +52,15 @@
 				<div class="center">Server profiles</div>
 			</ons-toolbar>
 			<ons-list class="gl-tree">
-				<ons-list-item ng-repeat="profile in $storage.serverProfiles" class="list__item--right-btn" modifier="tappable" ng-click="loadProfile(profile);app.navigator.popPage()">
-					<span>{{ profile.name }}</span>
-					<div class="delete-btn" ng-click="removeProfile(profile);$event.stopPropagation()"></div>
+				<ons-list-item class="list__item--fa-button-right" ng-repeat="profile in $storage.serverProfiles" class="list__item--right-btn" modifier="tappable">
+					<ons-row>
+						<ons-col class="left-center" ng-click="loadProfile(profile);app.navigator.popPage()">
+							<div class="title"><span>{{ profile.name }}</span></div>
+						</ons-col>
+						<ons-col width="30px">
+							<div class="list-button delete" ng-click="removeProfile(profile)"></div>
+						</ons-col>
+					</ons-row>
 				</ons-list-item>
 			</ons-list>
 		</ons-page>

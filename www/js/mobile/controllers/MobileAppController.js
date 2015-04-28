@@ -268,22 +268,28 @@
 							$scope.ui.toolbar[2].disabled = false;
 							$scope.ui.toolbar[3].disabled = false;
 							projectProvider.map.addControl(new ol.control.ScaleLine());
+							//$scope.$storage.recentProjects = [];
+							var currentProjectData = {
+								project: data.project,
+								author: data.author,
+								publish_date_text: data.publish_date,
+								expiration_date: data.expiration_date
+							};
 							if (!$scope.$storage.recentProjects) {
-								$scope.$storage.recentProjects = [data.project];
+								$scope.$storage.recentProjects = [currentProjectData];
 							} else {
-								var index = $scope.$storage.recentProjects.indexOf(data.project);
-								if (index >= 0) {
+								var index = -1;
+								$scope.$storage.recentProjects.some(function(projectData, i) {
+									if (projectData.project === currentProjectData.project) {
+										index = i;
+										return true;
+									}
+								});
+								if (index !== -1) {
 									$scope.$storage.recentProjects.splice(index, 1);
 								}
-								/*
-								while (index >= 0) {
-									$scope.$storage.recentProjects.splice(index, 1);
-									index = $scope.$storage.recentProjects.indexOf(data.project);
-									console.log('remove');
-								}*/
-								$scope.$storage.recentProjects.splice(0, 0, data.project);
+								$scope.$storage.recentProjects.splice(0, 0, currentProjectData);
 							}
-							//$scope.project = projectProvider.config;
 							$scope.project = data;
 							// initialize map page
 							$timeout(function() {
