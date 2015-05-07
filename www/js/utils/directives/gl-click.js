@@ -3,7 +3,8 @@
 
 	angular
 		.module('gl.utils')
-		.directive('glClick', glClick);
+		.directive('glClick', glClick)
+		.directive('glOpenInBrowser', glOpenInBrowser);
 
 	function glClick($parse) {
 		return {
@@ -18,6 +19,18 @@
 						});
 					}
 				};
+			}
+		};
+	};
+
+	function glOpenInBrowser() {
+		return {
+			restrict: 'A',
+			link: function (scope, iElem, iAttrs) {
+				iElem.on('click', function(event) {
+					window.open(iAttrs.href, '_system', 'location=yes');
+					event.preventDefault();
+				});
 			}
 		};
 	};
