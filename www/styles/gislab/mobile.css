@@ -212,8 +212,7 @@ div.page__content {
 	overflow: hidden; position: relative;
 }
 
-div.legend-container {
-	background-color: white;
+.legend-container {
 	height: auto;
 }
 img.legend-item {

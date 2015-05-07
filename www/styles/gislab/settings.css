@@ -12,13 +12,10 @@
 	float: right;
 }
 
-.about label {
-	font-weight: bold;
-	display: inline-block;
-}
-
 .about .list__item {
-	font-size: 15px!important;
+	font-size: 14px!important;
+	line-height: 20px;
+	min-height: 30px;
 	padding-left: 3px;
 	padding-right: 3px;
 	color: #555;

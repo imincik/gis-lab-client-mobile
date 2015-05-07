@@ -193,10 +193,6 @@
 .list__item--accordion-content {
 	display: block!important;
 	overflow: hidden;
-	font-size: 13px;
-	color: #606060;
-	line-height: 15px;
-	padding: 0 3px 0 5px;
 	min-height: 0;
 	transition: 0s linear all;
 	opacity: 1;
@@ -221,17 +217,33 @@
 	transition: 0.4s all ease-in-out;
 }
 
-.list__item--accordion-content label {
+
+/*
+ List with info text content
+*/
+
+.list__item--info-content {
+	font-size: 13px;
+	line-height: 15px;
+	color: #606060;
+	padding: 0 3px 0 5px;
+}
+
+.list__item--info-content label {
 	font-weight: bold;
 	display: inline-block;
 	line-height: 15px;
 }
 
-.list__item--accordion-content label::before {
+.list__item--info-content label::before {
 	max-height: 8px;
 	display: block;
 	content: "\00a0"
 }
+
+/*
+ List item with button on right side
+*/
 
 .list__item--fa-button-right .expand::before {
 	color: #ddd;

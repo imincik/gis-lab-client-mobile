@@ -30,7 +30,7 @@
 								<div class="list-button expand" ng-click="topicDetail(topic, toggleAccordion)">&nbsp;</div>
 							<ons-row>
 						</ons-list-item>
-						<ons-list-item class="list__item--accordion-content" ng-if="topic.detail" ng-show="isAccordionShown(topic)" gl-fixed-height>
+						<ons-list-item class="list__item--accordion-content list__item--info-content" ng-if="topic.detail" ng-show="isAccordionShown(topic)" gl-fixed-height>
 							<div>
 								<label>Abstract:</label>
 								<span>{{ ::topic.detail.abstract }}</span><br />
@@ -93,7 +93,7 @@
 								<div class="list-button expand" ng-click="toggleAccordion(node)">&nbsp;</div>
 							</ons-row>
 						</ons-list-item>
-						<ons-list-item class="list__item--accordion-content" ng-show="isAccordionShown(node)" gl-fixed-height>
+						<ons-list-item class="list__item--accordion-content list__item--info-content" ng-show="isAccordionShown(node)" gl-fixed-height>
 							<label>Abstract:</label><span> {{ ::node.metadata.abstract }}</span><br />
 							<label>Keywords list:</label><span> {{ ::node.metadata.keyword_list }}</span><br />
 							<label>Maximal scale:</label><span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
@@ -156,7 +156,7 @@
 									<div class="list-button expand" ng-click="toggleAccordion(node)">&nbsp;</div>
 								</ons-row>
 							</ons-list-item>
-							<ons-list-item class="list__item--accordion-content" ng-show="isAccordionShown(node)" gl-fixed-height>
+							<ons-list-item class="list__item--accordion-content list__item--info-content" ng-show="isAccordionShown(node)" gl-fixed-height>
 								<label>Geometry:</label><span class="layer-metadata-icon {{::node.geom_type | lowercase}}-layer-icon"></span><br />
 								<label>Identification:</label>
 <!--									<span> {{ ::node.queryable? 'Yes' : 'No' }}</span>-->
