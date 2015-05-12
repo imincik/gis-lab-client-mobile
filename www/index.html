@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="styles/gislab/tree.css"/>
 	<link rel="stylesheet" href="styles/gislab/list.css"/>
 	<link rel="stylesheet" href="styles/gislab/toolbar.css"/>
+	<link rel="stylesheet" href="styles/gislab/wizard.css"/>
 
 	<script src="lib/onsen/js/angular/angular.js"></script>
 	<script src="lib/onsen/js/angular/angular-touch.js"></script>
@@ -153,94 +154,100 @@
 		</ons-page>
 	</ons-template>
 
-	<ons-modal var="app.wizard" class="startup-wizard">
+	<ons-modal var="app.wizard.dialog" class="startup-wizard">
 		<ons-carousel var="app.wizard.carousel" class="wizard-carousel" ng-controller="StartupConfigController">
-		<ons-carousel-item>
-			<div class="wizard-window">
-				<p>Welcome in GIS.lab mobile application. In order to use this application, you have to configure it!</p>
-				<ons-list class="wizard settings">
-					<ons-list-header>
-						<i class="icon fa fa-globe"></i>Server URL. This is field is mandatory.
-					</ons-list-header>
-					<ons-list-item class="textarea-input">
-						<div style="width: 100%;">
-							<textarea type="text" class="http-prefix text-input text-input--transparent">http://</textarea>
-							<textarea style="text-indent: 50px;" type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl"></textarea>
-							<span style="text-indent: 50px;" class="multiline-wrapper" ng-bind="$storage.serverUrl"></span>
-						</div>
-					</ons-list-item>
-					<ons-list-header>
-						Some projects may require permission to open it.
-					</ons-list-header>
-					<ons-list-header>
-						<i class="icon fa fa-user"></i>Username
-					</ons-list-header>
-					<ons-list-item>
-						<input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
-					</ons-list-item>
-					<ons-list-header>
-						<i class="icon fa fa-lock"></i>Password
-					</ons-list-header>
-					<ons-list-item>
-						<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
-					</ons-list-item>
-				</ons-list>
-				<ons-bottom-toolbar>
-					<ons-toolbar-button class="left" ng-click="app.wizard.hide()">Cancel</ons-toolbar-button>
-					<ons-toolbar-button class="right" ng-click="wizardLogin()">Next<ons-icon icon="ion-chevron-right" size="22px"></ons-icon></ons-toolbar-button>
-				</ons-bottom-toolbar>
-			</div>
-			</ons-carousel-item>
-		<ons-carousel-item>
-			<div class="wizard-window">
-				<p>Setup your first project!</p>
-				<ons-list class="wizard settings gl-tree" ng-controller="AccordionController">
-					<ons-list-header>
-						<i class="icon fa fa-pencil"></i>Project Name
-					</ons-list-header>
-					<ons-list-item class="textarea-input">
-						<div style="width: 100%;">
-							<textarea type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project"></textarea>
-							<span class="multiline-wrapper" ng-bind="$storage.project"></span>
-						</div>
-					</ons-list-item>
-					<div ng-if="$storage.username && $storage.password">
+			<ons-carousel-item class="flex-container-vertical">
+				<div class="wizard-header">
+					Welcome in GIS.lab mobile application. In order to use this application, you have to configure it!
+				</div>
+				<ons-scroller class="wizard-content">
+					<ons-list class="wizard settings">
 						<ons-list-header>
-							<i class="icon fa fa-bars"></i>My projects
+							<i class="icon fa fa-globe"></i>Server URL. This is field is mandatory.
 						</ons-list-header>
+						<ons-list-item class="textarea-input">
+							<div style="width: 100%;">
+								<textarea type="text" class="http-prefix text-input text-input--transparent">http://</textarea>
+								<textarea style="text-indent: 50px;" type="text" class="text-input text-input--transparent" ng-model="$storage.serverUrl"></textarea>
+								<span style="text-indent: 50px;" class="multiline-wrapper" ng-bind="$storage.serverUrl"></span>
+							</div>
+						</ons-list-item>
+						<ons-list-header>
+							Some projects may require permission to open it.
+						</ons-list-header>
+						<ons-list-header>
+							<i class="icon fa fa-user"></i>Username
+						</ons-list-header>
+						<ons-list-item>
+							<input type="text" class="text-input text-input--transparent" placeholder="Username" ng-model="$storage.username">
+						</ons-list-item>
+						<ons-list-header>
+							<i class="icon fa fa-lock"></i>Password
+						</ons-list-header>
+						<ons-list-item>
+							<input type="password" class="text-input text-input--transparent" placeholder="Password" ng-model="$storage.password">
+						</ons-list-item>
+					</ons-list>
+				</ons-scroller>
+				<div class="wizard-footer bottom-toolbar">
+					<ons-toolbar-button class="left" ng-click="close()">Cancel</ons-toolbar-button>
+					<ons-toolbar-button class="right" ng-click="wizardLogin()">Next&nbsp;<ons-icon icon="ion-chevron-right" size="22px"></ons-icon></ons-toolbar-button>
+				</div>
+			</ons-carousel-item>
+			<ons-carousel-item class="flex-container-vertical">
+				<div class="wizard-header">
+					Setup your first project!
+				</div>
+				<ons-scroller class="wizard-content">
+					<ons-list class="wizard settings gl-tree" ng-controller="AccordionController">
+						<ons-list-header>
+							<i class="icon fa fa-pencil"></i>Project Name
+						</ons-list-header>
+						<ons-list-item class="textarea-input">
+							<div style="width: 100%;">
+								<textarea type="text" class="text-input text-input--transparent" placeholder="Project" ng-model="$storage.project"></textarea>
+								<span class="multiline-wrapper" ng-bind="$storage.project"></span>
+							</div>
+						</ons-list-item>
+						<div ng-if="$storage.username && $storage.password">
+							<ons-list-header>
+								<i class="icon fa fa-bars"></i>My projects
+							</ons-list-header>
 
-						<div ng-repeat="project in userProjects">
-							<ons-list-item  modifier="tappable" class="list__item--fa-button-right list__item--accordion" ng-class="{expanded: isAccordionShown(project)}">
-								<ons-row>
-									<ons-col class="left-center" ng-click="$storage.project=project.project">
-										<div class="title list__item--two-lines-max"><span>{{ project.title }}</span></div>
-									</ons-col>
-									<ons-col width="30px">
-										<div class="list-button expand" ng-click="toggleAccordion(project)">&nbsp;</div>
-										<div style="display: inline-block;"></div>
-									</ons-col>
-								</ons-row>
-							</ons-list-item>
-							<ons-list-item class="list__item--accordion-content list__item--info-content" ng-show="isAccordionShown(project)" gl-fixed-height>
-								<div>
-									<label>Path:</label>
-									<span>{{ ::project.project }}</span><br />
-									<label>Publication time:</label>
-									<span>{{ ::project.publish_date_text }}</span><br />
-									<label>Expiration time:</label>
-									<span>{{ ::project.expiration_date_text }}</span><br />
-									<div style="height: 8px;"></div>
-								</div>
-							</ons-list-item>
+							<div ng-repeat="project in userProjects">
+								<ons-list-item  modifier="tappable" class="list__item--fa-button-right list__item--accordion" ng-class="{expanded: isAccordionShown(project)}">
+									<ons-row>
+										<ons-col class="left-center" ng-click="$storage.project=project.project">
+											<div class="title list__item--two-lines-max"><span>{{ project.title }}</span></div>
+										</ons-col>
+										<ons-col width="30px">
+											<div class="list-button expand" ng-click="toggleAccordion(project)">&nbsp;</div>
+											<div style="display: inline-block;"></div>
+										</ons-col>
+									</ons-row>
+								</ons-list-item>
+								<ons-list-item class="list__item--accordion-content list__item--info-content" ng-show="isAccordionShown(project)" gl-fixed-height>
+									<div>
+										<label>Path:</label>
+										<span>{{ ::project.project }}</span><br />
+										<label>Publication time:</label>
+										<span>{{ ::project.publish_date_text }}</span><br />
+										<label>Expiration time:</label>
+										<span>{{ ::project.expiration_date_text }}</span><br />
+										<div style="height: 8px;"></div>
+									</div>
+								</ons-list-item>
+							</div>
+
 						</div>
-
-					</div>
-				</ons-list>
-				<ons-bottom-toolbar>
-					<ons-toolbar-button class="left" ng-click="app.wizard.carousel.prev()"><ons-icon icon="ion-chevron-left" size="22px"></ons-icon>Back</ons-toolbar-button>
-					<ons-toolbar-button class="right" ng-click="finish()">Finish</ons-icon></ons-toolbar-button>
-				</ons-bottom-toolbar>
-			</div>
+					</ons-list>
+				</ons-scroller>
+				<div class="wizard-footer bottom-toolbar">
+					<ons-toolbar-button class="left" ng-click="app.wizard.carousel.prev()">
+						<ons-icon icon="ion-chevron-left" size="22px"></ons-icon>&nbsp;Back
+					</ons-toolbar-button>
+					<ons-toolbar-button class="right" ng-click="finish()">Finish</ons-toolbar-button>
+				</div>
 			</ons-carousel-item>
 		</ons-carousel>
 	</ons-modal>

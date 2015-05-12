@@ -171,7 +171,7 @@
 			} else {
 				$scope.loadProject(null);
 				$scope.app.wizard.carousel.setActiveCarouselItemIndex(0);
-				$scope.app.wizard.show();
+				$scope.app.wizard.dialog.show();
 			}
 		}
 
@@ -212,7 +212,7 @@
 
 			$scope.updateScreenSize();
 			$scope.loginAndLoadProject();
-			//$scope.app.wizard.show();
+			//$scope.app.wizard.dialog.show();
 		});
 
 		$scope.updateScreenSize = function() {

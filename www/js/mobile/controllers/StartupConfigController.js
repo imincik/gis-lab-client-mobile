@@ -6,10 +6,6 @@
 		.controller('StartupConfigController', StartupConfigController);
 
 	function StartupConfigController($scope, $timeout, gislabMobileClient) {
-		console.log('StartupConfigController');
-		$scope.init = function() {
-			console.log('StartupConfigController INIT');
-		}
 		$scope.wizardLogin = function() {
 			if ($scope.$storage.username && $scope.$storage.password) {
 				$scope.showProgressDialog($scope.app.progressBar, 'Login to GIS.lab server');
@@ -52,8 +48,31 @@
 				$scope.app.wizard.carousel.next();
 			}
 		};
+		var updateCarouselLayout = function() {
+			var carousel = $scope.app.wizard.carousel;
+			var carouselIndex = carousel.getActiveCarouselItemIndex();
+			carousel._currentElementSize = null;
+			carousel.refresh();
+			carousel._scroll = carouselIndex * carousel._getCarouselItemSize();
+			carousel._scrollTo(carousel._scroll);
+		};
+		setImmediate(function() {
+			// fix carousel view after change of screen orientation
+			window.addEventListener('orientationchange', updateCarouselLayout);
+			$scope.app.wizard.dialog.getDeviceBackButtonHandler().setListener(function() {
+				if ($scope.app.wizard.carousel.getActiveCarouselItemIndex() > 0) {
+					$scope.app.wizard.carousel.prev();
+				} else {
+					$scope.close();
+				}
+			});
+		});
+		$scope.close = function() {
+			window.removeEventListener('orientationchange', updateCarouselLayout);
+			$scope.app.wizard.dialog.hide();
+		};
 		$scope.finish = function() {
-			$scope.app.wizard.hide();
+			$scope.close();
 			$scope.loadProjectWithProgressBar($scope.$storage.project);
 		};
 		//$scope.userProjects = [{project: 'project1'}, {project: 'project2'}, {project: 'project3'}];

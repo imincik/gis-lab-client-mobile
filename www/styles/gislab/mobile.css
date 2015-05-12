@@ -98,6 +98,7 @@
 	padding-top: 1px;
 	padding-bottom: 1px;
 	border-bottom: 1px solid gray;
+	flex-grow: 0;
 }
 
 .main-panel .navigation-bar.sub-toolbar .navigation-bar__title {
@@ -305,56 +306,6 @@ img.legend-item {
 }
 
 
-ons-carousel.wizard-carousel {
-	height: 100%;
-}
-
-.wizard-carousel ons-bottom-toolbar {
-	border-bottom-left-radius: 15px!important;
-	border-bottom-right-radius: 15px!important;
-}
-
-ons-carousel.wizard-carousel {
-	width: 90%;
-	height: 80%;
-	left: 5%;
-	top: 10%;
-	position: absolute;
-	border-radius: 15px;
-	background-color: #eee;
-}
-
-.wizard-window {
-	color: #444;
-	height: 90%;
-}
-div.wizzard-control {
-	bottom: 0;
-	position: absolute;
-	width: 100%;
-}
-
-
-.wizard-carousel {
-	border-bottom-left-radius: 15px;
-	border-bottom-right-radius: 15px;
-}
-ons-bottom-toolbar ons-toolbar-button.left {
-	float: left;
-}
-ons-bottom-toolbar ons-toolbar-button.right {
-	float: right;
-}
-ons-bottom-toolbar ons-toolbar-button span {
-	font-size: 20px!important;
-}
-ons-bottom-toolbar .ons-icon--ion {
-	padding-left: 10px;
-	padding-right: 10px;
-	line-height: 22px!important;
-	vertical-align: middle;
-}
-
 .empty-tab {
 	display: table;
 	width: 100%;
@@ -365,10 +316,6 @@ ons-bottom-toolbar .ons-icon--ion {
 	vertical-align: middle;
 	text-align: center;
 	color: #999;
-}
-
-.modal.startup-wizard {
-	z-index: 10000;
 }
 
 .topic-visible-layers {
