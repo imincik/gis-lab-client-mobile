@@ -5,13 +5,17 @@
 		.module('gl.mobile')
 		.controller('SettingsController', SettingsController);
 
-	function SettingsController($scope) {
+	function SettingsController($scope, projectProvider) {
 		$scope.showHeaderChanged = function() {
-			console.log('showHeaderChanged');
-		}
-		$scope.$watch('$storage.showHeader', function(value) {
-			console.log('watching showHeaderChanged');
 			$scope.updateScreenSize();
-		});
+		}
+		$scope.showScaleLineChanged = function(value) {
+			var control = projectProvider.map.getControlByClass(ol.control.ScaleLine);
+			control.setMap(value? projectProvider.map : null);
+		};
+		$scope.showZoomControlsChanged = function(value) {
+			var control = projectProvider.map.getControlByClass(ol.control.Zoom);
+			control.setMap(value? projectProvider.map : null);
+		};
 	};
 })();

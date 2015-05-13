@@ -267,7 +267,16 @@
 							$scope.ui.toolbar[1].disabled = !angular.isDefined(projectProvider.map.getLayer('qgislayer'));
 							$scope.ui.toolbar[2].disabled = false;
 							$scope.ui.toolbar[3].disabled = false;
-							projectProvider.map.addControl(new ol.control.ScaleLine());
+							var scaleLineControl = new ol.control.ScaleLine();
+							projectProvider.map.addControl(scaleLineControl);
+							// set visibility of map controls by user settings
+							if (!$scope.$storage.showScaleLine) {
+								scaleLineControl.setMap(null);
+							}
+							if (!$scope.$storage.showZoomControls) {
+								var zoomControl = projectProvider.map.getControlByClass(ol.control.Zoom);
+								zoomControl.setMap(null);
+							}
 							//$scope.$storage.recentProjects = [];
 							var currentProjectData = {
 								project: data.project,

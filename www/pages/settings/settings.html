@@ -6,7 +6,7 @@
 		<div class="center"><span>{{ ['Settings', 'About'][app.settings.carousel._lastActiveIndex] }}</span></div>
 	</div>
 	<ons-carousel var="app.settings.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight-28 }}px" swipeable auto-scroll>
-		<ons-carousel-item class="xsettings">
+		<ons-carousel-item class="panel-settings">
 			<ons-scroller style="height: 100%;">
 <!--				<ons-list>-->
 <!--					<ons-list-header>Server/Account</ons-list-header>-->
@@ -24,8 +24,17 @@
 					<ons-list-item modifier="chevron" ng-click="app.navigator.pushPage('pages/settings/project.html');">
 					Project
 					</ons-list-item>
+					<ons-list-header>
+						<i class="fa fa-tablet"></i>Appearance
+					</ons-list-header>
 					<ons-list-item>
-						Panel header<ons-switch var="app.settings.showHeader" modifier="list-item" ng-model="$storage.showHeader" ng-change="showHeaderChanged"></ons-switch>
+						Panel Header<ons-switch modifier="list-item" ng-model="$storage.showHeader" ng-change="showHeaderChanged()"></ons-switch>
+					</ons-list-item>
+					<ons-list-item>
+						Zoom Controls<ons-switch var="app.settings.showZoomControls" modifier="list-item" ng-model="$storage.showZoomControls" ng-change="showZoomControlsChanged(app.settings.showZoomControls.isChecked())"></ons-switch>
+					</ons-list-item>
+					<ons-list-item>
+						Graphical Scale<ons-switch var="app.settings.showScaleLine" modifier="list-item" ng-model="$storage.showScaleLine" ng-change="showScaleLineChanged(app.settings.showScaleLine.isChecked())"></ons-switch>
 					</ons-list-item>
 				</ons-list>
 			</ons-scroller>

@@ -173,3 +173,14 @@ ol.View.prototype.getScale = function () {
 	var scale = resolution * mpu * 39.37 * dpi;
 	return scale;
 };
+
+ol.Map.prototype.getControlByClass = function (clazz) {
+	var control;
+	this.getControls().getArray().some(function (ctrl) {
+		if (ctrl instanceof clazz) {
+			control = ctrl;
+			return true;
+		}
+	});
+	return control;
+};
