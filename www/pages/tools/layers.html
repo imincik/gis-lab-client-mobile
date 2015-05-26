@@ -1,8 +1,8 @@
-<ons-page ng-controller="LayersController" ng-init="headers=[]">
+<ons-page ng-controller="LayersController" ng-init="headers=[]" class="flex-container-vertical">
 	<div class="panel-header" ng-if="$storage.showHeader">
 		<span>{{ headers[app.panel.carousel._lastActiveIndex] }}</span>
 	</div>
-	<ons-carousel var="app.panel.carousel" class="map-panel" style="width: 100%; height: {{ panelHeight-(headers.length>1? 28 : 0) }}px;" swipeable auto-scroll>
+	<ons-carousel var="app.panel.carousel" class="main-panel-content" swipeable auto-scroll>
 		</ons-carousel-cover>
 		<ons-carousel-item ng-if="::topics" ng-init="headers.splice(0,0,'Topics')">
 			<ons-scroller style="height: 100%;">
@@ -181,7 +181,7 @@
 			</div>
 		</ons-carousel-item>
 	</ons-carousel>
-	<div ng-if="headers.length > 1">
+	<div ng-if="headers.length > 1" class="carousel-tab-bar--bottom">
 		<gl-carousel-tab-slider gl-tab-model="ui.tools_layers_tab" gl-carousel="app.panel.carousel"></gl-carousel-tab-slider>
 		<div class="tab-bar tab-bar--bottom">
 			<label class="tab-bar__item border-right" ng-if="::topics">

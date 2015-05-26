@@ -32,9 +32,6 @@
 .page__content {
 	margin-top: 0px!important;
 }
-.main-panel .page__content {
-	height: 100%;
-}
 
 .ol-rotate {
 	top: 3px!important;
@@ -89,6 +86,15 @@
 	line-height: 26px;
 }
 
+ons-page.flex-container-vertical {
+	display: block;
+}
+
+.flex-container-vertical .page__content {
+	display: flex;
+	flex-direction: column;
+}
+
 .panel-header {
 	background-color: #d40000;
 	color: white;
@@ -99,6 +105,22 @@
 	padding-bottom: 1px;
 	border-bottom: 1px solid gray;
 	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.carousel-tab-bar--bottom {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.main-panel-content {
+	flex-grow: 1;
+	flex-shrink: 1;
+	xoverflow: hidden;
+}
+
+.legend-panel .main-panel-content {
+	background-color: white;
 }
 
 .main-panel .navigation-bar.sub-toolbar .navigation-bar__title {
@@ -208,9 +230,8 @@
 	height: 150px;
 }
 
-
 div.page__content {
-	overflow: hidden; position: relative;
+	overflow: hidden;
 }
 
 .legend-container {

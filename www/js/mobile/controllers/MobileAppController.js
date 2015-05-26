@@ -216,9 +216,22 @@
 		});
 
 		$scope.updateScreenSize = function() {
-			$scope.panelHeight = $scope.$storage.showHeader? document.body.clientHeight-22 : document.body.clientHeight;
-			$scope.screenWidth = document.body.clientWidth;
-			$scope.screenHeight = document.body.clientHeight;
+			var width, height;
+			if (window.orientation === 0 || window.orientation === 180) {
+				width = Math.min(window.innerWidth, window.innerHeight);
+				height = Math.max(window.innerWidth, window.innerHeight);
+			} else {
+				width = Math.max(window.innerWidth, window.innerHeight);
+				height = Math.min(window.innerWidth, window.innerHeight);
+			}
+			$scope.screenWidth = width;
+			$scope.screenHeight = height;
+			if (projectProvider.map) {
+				projectProvider.map.updateSize();
+			}
+			//console.log('orientation: {0}'.format(window.orientation));
+			//console.log('screenWidth: {0}'.format($scope.screenWidth));
+			//console.log('screenHeight: {0}'.format($scope.screenHeight));
 		};
 
 		$scope.showProgressDialog = function(dialog, msg) {
@@ -379,10 +392,6 @@
 
 			window.addEventListener('orientationchange', function() {
 				$scope.updateScreenSize();
-				$scope.$apply();
-				if (projectProvider.map) {
-					projectProvider.map.updateSize();
-				}
 			});
 			document.addEventListener("pause", onPause, false);
 			document.addEventListener("resume", function() {
