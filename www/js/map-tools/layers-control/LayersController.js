@@ -53,24 +53,16 @@
 		}
 
 		$scope.loadTopic = function(topic) {
-			projectProvider.map.getLayer('qgislayer').getSource().setVisibleLayers(topic.visible_overlays);
-			layersControl.syncWithMap(projectProvider.map, projectProvider.layers);
+			layersControl.setVisibleLayers(projectProvider.map, topic.visible_overlays);
+			$scope.app.panel.layersTreeView.setSelectedNodes(topic.visible_overlays)
 		}
 
 		$scope.setBaseLayer = function(layername) {
 			if (!projectProvider.map)
 				return;
-			projectProvider.map.getLayers().forEach(function (layer) {
-				if (layer.get('type') === 'baselayer') {
-					if (layer.getVisible() && layer.get('name') !== layername) {
-						layer.setVisible(false);
-					}
-					if (!layer.getVisible() && layer.get('name') === layername) {
-						layer.setVisible(true);
-					}
-				}
-			});
+			layersControl.setBaseLayer(projectProvider.map, layername)
 		};
+
 		$scope.layersVisibilityChanged = function(node) {
 			$scope.selectedTopic.index = null;
 			var visible_layers = [];
@@ -79,7 +71,7 @@
 					visible_layers.push(layer_data.name);
 				}
 			});
-			projectProvider.map.getLayer('qgislayer').getSource().setVisibleLayers(visible_layers);
+			layersControl.setVisibleLayers(projectProvider.map, visible_layers);
 		};
 
 		$scope.layers = projectProvider.layers;

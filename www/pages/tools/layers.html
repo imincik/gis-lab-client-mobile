@@ -57,10 +57,10 @@
 					gl-tree-view-change-handler="setBaseLayer(node.name)">
 
 					<div gl-tree-group-template>
-						<ons-list-item class="group" modifier="tappable" depth="{{ ::treeDepth }}" ng-click="isExpanded=!isExpanded">
+						<ons-list-item class="group" modifier="tappable" depth="{{ ::$node.treeDepth }}" ng-click="$node.isExpanded=!$node.isExpanded">
 							<ons-row>
 								<ons-col class="indent" width="24px">
-									<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
+									<i class="fa toggle-button" ng-class="{expanded: $node.isExpanded}"></i>
 								</ons-col>
 								<ons-col class="left-center">
 									<div class="title list__item--two-lines-max">
@@ -69,13 +69,13 @@
 								</ons-col>
 							</ons-row>
 						</ons-list-item>
-						<div class="group-content" ng-show="isExpanded" gl-height-animation>
-							<div ng-repeat="child in node.layers" gl-tree-node="child"></div>
+						<div class="group-content" ng-show="$node.isExpanded" gl-height-animation>
+							<div ng-repeat="node in node.layers" gl-tree-node="node"></div>
 						</div>
 					</div>
 
 					<div gl-tree-leaf-template>
-						<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion  list__item--fa-button-right leaf" depth="{{ ::treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
+						<ons-list-item modifier="tappable" class="list__item--checkbox list__item--accordion  list__item--fa-button-right leaf" depth="{{ ::$node.treeDepth }}" ng-class="{expanded: isAccordionShown(node)}">
 							<ons-row>
 								<ons-col class="indent" width="36px">
 									<label class="radio-button">
@@ -102,7 +102,7 @@
 						</ons-list-item>
 					</div>
 					<div ng-controller="AccordionController">
-						<div ng-repeat="n in root" gl-tree-node="n"></div>
+						<div ng-repeat="node in rootNodes" gl-tree-node="node"></div>
 					</div>
 				</ons-list>
 			</ons-scroller>
@@ -111,17 +111,20 @@
 		<ons-carousel-item ng-if="::layers.tree" ng-init="headers.splice(2,0,'Layers')">
 			<ons-scroller style="height: 100%;">
 				<ons-list class="layers-container gl-tree"
+					gl-var="app.panel.layersTreeView"
 					gl-check-tree-view="layers.tree"
+					gl-tree-id-attribute="name"
 					gl-tree-label-attribute="title"
 					gl-tree-children-attribute="layers"
 					gl-tree-selected-attribute="visible"
-					gl-tree-view-change-handler="layersVisibilityChanged()">
+					gl-tree-view-change-handler="layersVisibilityChanged(node)">
 
 						<div gl-tree-group-template>
-							<ons-list-item class="group list__item--checkbox" modifier="tappable" depth="{{ ::treeDepth }}" gl-click="isExpanded=!isExpanded">
+							<ons-list-item class="group list__item--checkbox" modifier="tappable"
+								depth="{{ ::$node.treeDepth }}" gl-click="$node.isExpanded=!$node.isExpanded">
 								<ons-row>
 									<ons-col class="indent" width="52px">
-										<i class="fa toggle-button" ng-class="{expanded: isExpanded}"></i>
+										<i class="fa toggle-button" ng-class="{expanded: $node.isExpanded}"></i>
 										<label class="checkbox" gl-click="$event.stopPropagation();">
 											<input type="checkbox" ng-model="node.visible" ng-change="nodeSelected(node, node.visible)"/>
 											<div class="checkbox__icon-checkmark"></div>
@@ -172,7 +175,7 @@
 						</div>
 
 						<div ng-controller="AccordionController">
-							<div ng-repeat="n in root" gl-check-tree-node="n"></div>
+							<div ng-repeat="node in rootNodes" gl-check-tree-node="node"></div>
 						</div>
 				</ons-list>
 			</ons-scroller>

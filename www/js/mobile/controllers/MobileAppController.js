@@ -22,7 +22,9 @@
 				persistent: true,
 				disabled: true,
 				activate: function() {
-					layersControl.syncWithMap(projectProvider.map, projectProvider.layers);
+					if ($scope.app.panel.layersTreeView) {
+						$scope.app.panel.layersTreeView.setSelectedNodes(layersControl.getVisibleLayers(projectProvider.map));
+					}
 				},
 			}, {
 				icon: 'ion-android-color-palette',
@@ -131,7 +133,7 @@
 				});
 			return login.promise;
 		}
-		$scope.loginAndLoadProject = function() {
+		$scope.loginAndLoadProject = function(viewConfig) {
 			if ($scope.$storage.serverUrl) {
 				$scope.showProgressDialog($scope.app.progressBar, 'Login to GIS.lab server');
 				$scope.login()
@@ -140,7 +142,7 @@
 					})
 					.finally(function () {
 						$scope.setProgressBarMessage('Loading project ...');
-						$scope.loadProject($scope.$storage.project)
+						$scope.loadProject($scope.$storage.project, viewConfig)
 							.catch(function() {
 								$scope.invalidProject = true;
 							})
@@ -211,7 +213,7 @@
 			});
 
 			$scope.updateScreenSize();
-			$scope.loginAndLoadProject();
+			$scope.loginAndLoadProject($scope.$storage.mapState);
 			//$scope.app.wizard.dialog.show();
 		});
 
@@ -264,7 +266,7 @@
 			$scope.progressBarMessage = msg;
 		};
 
-		$scope.loadProject = function(projectName) {
+		$scope.loadProject = function(projectName, viewConfig) {
 			var task = $q.defer();
 			//$scope.showProgressDialog($scope.app.modal.loadingProject)
 			console.log('loadProject '+projectName);
@@ -321,7 +323,25 @@
 								$scope.app.menu.setMainPage('map.html');
 								$timeout(function() {
 									projectProvider.map.setTarget('map');
-									projectProvider.map.getView().fitExtent(data.zoom_extent, projectProvider.map.getSize());
+									if (viewConfig) {
+										projectProvider.map.getView().setCenter(viewConfig.center);
+										projectProvider.map.getView().setZoom(viewConfig.zoom);
+										projectProvider.map.getView().setRotation(viewConfig.rotation);
+										if (viewConfig.baseLayer) {
+											layersControl.setBaseLayer(projectProvider.map, viewConfig.baseLayer);
+											projectProvider.baseLayers.list.forEach(function(baseLayerModel) {
+												baseLayerModel.visible = viewConfig.baseLayer === baseLayerModel.name;
+											});
+										}
+										if (viewConfig.visibleLayers) {
+											layersControl.setVisibleLayers(projectProvider.map, viewConfig.visibleLayers);
+											projectProvider.layers.list.forEach(function(layerModel) {
+												layerModel.visible = viewConfig.visibleLayers.indexOf(layerModel.name) !== -1;
+											});
+										}
+									} else {
+										projectProvider.map.getView().fitExtent(data.zoom_extent, projectProvider.map.getSize());
+									}
 									task.resolve();
 								});
 							});
@@ -351,7 +371,6 @@
 		};
 		$scope.loadProjectWithProgressBar = function(projectName) {
 			$scope.showProgressDialog($scope.app.progressBar, 'Loading project ...');
-			console.log($scope.loadProject(projectName));
 			$scope.loadProject(projectName)
 				.catch(function() {
 					$scope.invalidProject = true;
@@ -367,8 +386,21 @@
 						}
 					});
 				});
-		}
-
+		};
+		$scope.saveMapState = function() {
+			var map = projectProvider.map;
+			if (map) {
+				$scope.$apply(function() {
+					$scope.$storage.mapState = {
+						center: map.getView().getCenter(),
+						zoom: map.getView().getZoom(),
+						rotation: map.getView().getRotation(),
+						visibleLayers: layersControl.getVisibleLayers(map),
+						baseLayer: layersControl.getVisibleBaseLayer(map).get('name')
+					};
+				});
+			}
+		};
 
 		// device APIs are available
 		function onDeviceReady() {
@@ -382,6 +414,7 @@
 						message: 'Are you sure to close the app?',
 						callback: function(index) {
 							if (index === 1) { // OK button
+								$scope.saveMapState();
 								navigator.app.exitApp(); // Close the app
 							}
 							$scope.exitDialogShown = false;
@@ -403,6 +436,7 @@
 		};
 		function onPause() {
 			console.log("--------PAUSE--------");
+			$scope.saveMapState();
 		}
 		console.log('register deviceready');
 		document.addEventListener("deviceready", onDeviceReady, false);

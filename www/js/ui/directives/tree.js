@@ -10,11 +10,12 @@
 	.directive('glTreeGroupTemplate', glTreeGroupTemplate)
 	.directive('glTreeLeafTemplate', glTreeLeafTemplate);
 
-	function glTreeView($parse) {
+	function glTreeView() {
 		return {
 			restrict: 'A',
 			scope: {
-				root: '=glTreeView',
+				rootNodes: '=glTreeView',
+				idAttribute: '@glTreeIdAttribute',
 				labelAttribute: '@glTreeLabelAttribute',
 				childrenAttribute: '@glTreeChildrenAttribute',
 				changeHandler: '&glTreeViewChangeHandler'
@@ -26,96 +27,9 @@
 				});
 			},
 			controller: ['$scope', function($scope) {
-				$scope.treeDepth = 0;
-				$scope.isGroup = function(node) {
-					return node.hasOwnProperty($scope.childrenAttribute);
-				};
 				$scope.children = function(node) {
 					return node[$scope.childrenAttribute];
 				};
-			}]
-		}
-	}
-
-	function glCheckTreeView() {
-		return {
-			restrict: 'A',
-			scope: {
-				root: '=glCheckTreeView',
-				selectAttribute: '@glTreeSelectedAttribute',
-				childrenAttribute: '@glTreeChildrenAttribute',
-				changeHandler: '&glTreeViewChangeHandler'
-			},
-			transclude: true,
-			link: function(scope, iElem, iAttrs, ctrl, transclude) {
-				transclude(scope, function(clone) {
-					iElem.append(clone);
-				});
-				scope.updateGroupsCheckState();
-			},
-			controller: ['$scope', '$timeout', function($scope, $timeout) {
-				$scope.treeDepth = 0;
-				$scope.isGroup = function(node) {
-					return node.hasOwnProperty($scope.childrenAttribute);
-				};
-				$scope.children = function(node) {
-					return node[$scope.childrenAttribute];
-				};
-				$scope.selectAll = function(node, isSelected) {
-					$scope.children(node).forEach(function(child) {
-						if ($scope.isGroup(child)) {
-							$scope.selectAll(child, isSelected);
-							$scope.setGroupCheckState(child, isSelected);
-						}
-						child[$scope.selectAttribute] = isSelected;
-					});
-				};
-				$scope.nodeSelected = function(node, isSelected) {
-					if ($scope.isGroup(node)) {
-						$scope.selectAll(node, isSelected);
-					}
-					$scope.updateParentCheckState(node);
-					$scope.changeHandler({node: node});
-				};
-				$scope.groupCheckState = function(node) {
-					var allChecked = true;
-					var allUnchecked = true;
-					$scope.children(node).forEach(function(child) {
-						if (child[$scope.selectAttribute] !== true) {
-							allChecked = false;
-						}
-						if (child[$scope.selectAttribute] !== false) {
-							allUnchecked = false;
-						}
-					});
-					return allChecked? true : allUnchecked? false : null;
-				};
-				$scope.setGroupCheckState = function(node, isSelected) {
-					node._checkboxElement.prop('indeterminate', isSelected === null);
-					node[$scope.selectAttribute] = isSelected;
-				}
-				$scope.updateParentCheckState = function(node) {
-					var n = node;
-					while(n._parent) {
-						n = n._parent;
-						$scope.setGroupCheckState(n, $scope.groupCheckState(n));
-					}
-				};
-				$scope.updateGroupsCheckState = function() {
-					$timeout(function() {
-						var fn = function(layers) {
-							layers.forEach(function(node) {
-								var children = $scope.children(node);
-								if (children) {
-									fn(children);
-									$scope.setGroupCheckState(node, $scope.groupCheckState(node));
-								}
-							});
-						}
-						fn($scope.root);
-					});
-				};
-				$scope.root.updateGroupsCheckState = $scope.updateGroupsCheckState;
 			}]
 		}
 	}
@@ -131,20 +45,151 @@
 				}
 
 				$scope.buildHtml = function() {
-					var template = $scope.isGroup($scope.node)? $scope.groupTemplate : $scope.leafTemplate;
+					var template = $scope.$node.isGroup? $scope.groupTemplate : $scope.leafTemplate;
 					$element.append($compile(template)($scope));
 				};
 			}],
 			compile: function(tElem, tAttrs) {
 				return {
 					pre: function(scope, iElem, iAttrs) {
-						scope.node = scope.$eval(iAttrs.glTreeNode);
-						scope.treeDepth = scope.treeDepth+1;
-						scope.isExpanded = true;
+						var nodeModel = scope.$eval(iAttrs.glTreeNode);
+						scope.$node = {
+							data: nodeModel,
+							treeDepth: scope.$node? scope.$node.treeDepth+1 : 1,
+							isGroup: nodeModel.hasOwnProperty(scope.childrenAttribute),
+							isExpanded: true
+						};
 						scope.buildHtml();
 					}
 				};
 			}
+		}
+	}
+
+	function CheckTreeView(rootNodes, idAttribute, childrenAttribute, selectAttribute) {
+		this.rootNodes = rootNodes;
+		this.idAttribute = idAttribute;
+		this.childrenAttribute = childrenAttribute;
+		this.selectAttribute = selectAttribute;
+		this._nodesElements = {};
+		this._nodesParents = {};
+	};
+
+	CheckTreeView.prototype.addNode = function(node, parent, domElement) {
+		this._nodesParents[node[this.idAttribute]] = parent;
+		this._nodesElements[node[this.idAttribute]] = domElement;
+	};
+
+	CheckTreeView.prototype.getParentNode = function(node) {
+		return this._nodesParents[node[this.idAttribute]];
+	};
+
+	CheckTreeView.prototype.isGroup = function(node) {
+		return node.hasOwnProperty(this.childrenAttribute);
+	};
+
+	CheckTreeView.prototype.children = function(node) {
+		return node[this.childrenAttribute];
+	};
+
+	CheckTreeView.prototype.selectAll = function(node, isSelected) {
+		this.children(node).forEach(function(child) {
+			if (this.isGroup(child)) {
+				this.selectAll(child, isSelected);
+				this.setGroupCheckState(child, isSelected);
+			}
+			child[this.selectAttribute] = isSelected;
+		}, this);
+	};
+
+	CheckTreeView.prototype.groupCheckState = function(node) {
+		var allChecked = true;
+		var allUnchecked = true;
+		this.children(node).forEach(function(child) {
+			if (child[this.selectAttribute] !== true) {
+				allChecked = false;
+			}
+			if (child[this.selectAttribute] !== false) {
+				allUnchecked = false;
+			}
+		}, this);
+		return allChecked? true : allUnchecked? false : null;
+	};
+
+	CheckTreeView.prototype.setGroupCheckState = function(node, isSelected) {
+		this._nodesElements[node[this.idAttribute]].prop('indeterminate', isSelected === null);
+		node[this.selectAttribute] = isSelected;
+	}
+
+	CheckTreeView.prototype.updateParentCheckState = function(node) {
+		var parent = this.getParentNode(node);
+		while(parent) {
+			this.setGroupCheckState(parent, this.groupCheckState(parent));
+			parent = this.getParentNode(parent);
+		}
+	};
+
+	CheckTreeView.prototype.updateGroupsCheckState = function() {
+		var fn = function(layers) {
+			layers.forEach(function(node) {
+				var children = this.children(node);
+				if (children) {
+					fn(children);
+					this.setGroupCheckState(node, this.groupCheckState(node));
+				}
+			}, this);
+		}.bind(this);
+		fn(this.rootNodes);
+	};
+
+	CheckTreeView.prototype.setSelectedNodes = function(selectedNodes) {
+		var fn = function(layers) {
+			layers.forEach(function(node) {
+				var children = this.children(node);
+				if (children) {
+					fn(children);
+					this.setGroupCheckState(node, this.groupCheckState(node));
+				} else {
+					var visible = selectedNodes.indexOf(node[this.idAttribute]) != -1;
+					node[this.selectAttribute] = visible;
+				}
+			}, this);
+		}.bind(this);
+		fn(this.rootNodes);
+	};
+
+	function glCheckTreeView($timeout, $parse) {
+		return {
+			restrict: 'A',
+			scope: {
+				rootNodes: '=glCheckTreeView',
+				idAttribute: '@glTreeIdAttribute',
+				selectAttribute: '@glTreeSelectedAttribute',
+				childrenAttribute: '@glTreeChildrenAttribute',
+				changeHandler: '&glTreeViewChangeHandler'
+			},
+			transclude: true,
+			link: function(scope, iElem, iAttrs, ctrl, transclude) {
+				transclude(scope, function(clone) {
+					iElem.append(clone);
+				});
+				if (iAttrs.glVar) {
+					$parse(iAttrs.glVar).assign(scope.$parent, scope.treeView);
+				}
+				$timeout(function() {
+					scope.treeView.updateGroupsCheckState();
+				});
+			},
+			controller: ['$scope', function($scope) {
+				$scope.nodeSelected = function(node, isSelected) {
+					if ($scope.treeView.isGroup(node)) {
+						$scope.treeView.selectAll(node, isSelected);
+					}
+					$scope.treeView.updateParentCheckState(node);
+					$scope.changeHandler({node: node});
+				};
+				$scope.treeView = new CheckTreeView($scope.rootNodes, $scope.idAttribute, $scope.childrenAttribute, $scope.selectAttribute);
+			}]
 		}
 	}
 
@@ -154,24 +199,26 @@
 			scope: true,
 			controller: ['$scope', '$compile', '$element', function($scope, $compile, $element) {
 				$scope.buildHtml = function() {
-					var template = $scope.isGroup($scope.node)? $scope.groupTemplate : $scope.leafTemplate;
+					var template = $scope.treeView.isGroup($scope.$node.data)? $scope.groupTemplate : $scope.leafTemplate;
 					$element.append($compile(angular.element(template))($scope));
 				};
 			}],
 			compile: function(tElem, tAttrs) {
 				return {
 					pre: function(scope, iElem, iAttrs) {
-						scope.node = scope.$eval(iAttrs.glCheckTreeNode);
-						scope.treeDepth = scope.treeDepth+1;
-						scope.isExpanded = true;
-						scope.node._parent = scope.$parent.node;
-						if (!scope.isGroup(scope.node) && !angular.isDefined(scope.node[scope.selectAttribute])) {
-							scope.node[$scope.selectAttribute] = false;
+						var nodeModel = scope.$eval(iAttrs.glCheckTreeNode);
+						if (!scope.treeView.isGroup(nodeModel) && !angular.isDefined(nodeModel[scope.selectAttribute])) {
+							nodeModel[$scope.selectAttribute] = false;
 						}
+						scope.$node = {
+							data: nodeModel,
+							treeDepth: scope.$node? scope.$node.treeDepth+1 : 1,
+							isExpanded: true
+						};
 						scope.buildHtml();
 					},
 					post: function(scope, iElem, iAttrs) {
-						scope.node._checkboxElement = angular.element(iElem.children()[0]).find('input');
+						scope.treeView.addNode(scope.$node.data, scope.$parent.$node? scope.$parent.$node.data : null, angular.element(iElem.children()[0]).find('input'));
 					}
 				};
 			}
