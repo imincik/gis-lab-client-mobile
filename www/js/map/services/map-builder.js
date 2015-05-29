@@ -150,17 +150,20 @@
 			if (overlays_layer) {
 				layers.push(overlays_layer);
 			}
+
+			if (Object.keys(ol.proj.projections_).indexOf(config.projection.code) === -1) {
+				proj4.defs(config.projection.code, config.projection.proj4);
+			}
+			var projection = ol.proj.get(config.projection.code);
+			projection.setExtent(config.project_extent);
 			var map = new ol.Map({
 				target: config.target,
 				layers: layers,
 				view: new ol.View({
-					projection: new ol.proj.Projection({
-						code: config.projection.code,
-						units: config.units,
-						extent: config.project_extent,
-					}),
+					projection: projection,
 					resolutions: config.tile_resolutions,
 					extent: config.project_extent,
+					//rotation: Math.PI / 6,
 				}),
 				controls: ol.control.defaults({
 					attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
