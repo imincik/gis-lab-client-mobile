@@ -13,6 +13,7 @@ ol.source.WebgisTileImage = function(opt_options) {
 	this.tilesUrl = goog.isDef(options.tilesUrl) ? options.tilesUrl : '';
 	this.project = goog.isDef(options.project) ? options.project : '';
 	this.layersAttributions = goog.isDef(options.layersAttributions) ? options.layersAttributions : {};
+	this.layersOrder = goog.isDef(options.layersOrder) ? options.layersOrder : {};
 	this.tileUrlFunction = this._tileUrlFunction;
 
 	// create legend url tempalte
@@ -50,13 +51,12 @@ ol.source.WebgisTileImage.prototype._tileUrlFunction = function(tileCoord, pixel
 };
 
 ol.source.WebgisTileImage.prototype.setVisibleLayers = function(layers) {
-	if (layers == this.visibleLayers) {
-		return;
-	}
-	// TODO sort layers
-	// TODO change visibility when no visible layers set
-	var layers_names = [].concat(layers).reverse().join(",");
-	this.visibleLayers = layers;
+	var ordered_layers = [].concat(layers);
+	ordered_layers.sort(function(l1, l2) {
+		return this.layersOrder[l2]-this.layersOrder[l1];
+	}.bind(this));
+	this.visibleLayers = ordered_layers;
+	var layers_names = ordered_layers.join(",");
 	this.tileUrlTemplate = "{mapcache_url}{hash}/{z}/{x}/{y}.png?PROJECT={project}&LAYERS={layers}"
 			.replace('{mapcache_url}', this.tilesUrl)
 			.replace('{hash}', CryptoJS.MD5(layers_names).toString())
@@ -68,7 +68,7 @@ ol.source.WebgisTileImage.prototype.setVisibleLayers = function(layers) {
 	if (this.layersAttributions) {
 		var attributions = [];
 		var attributions_html = [];
-		layers.forEach(function(layername) {
+		ordered_layers.forEach(function(layername) {
 			var attribution = this.layersAttributions[layername];
 			if (attribution && attributions_html.indexOf(attribution.getHTML()) == -1) {
 				attributions.push(attribution);
@@ -102,6 +102,7 @@ ol.source.WebgisImageWMS = function(opt_options) {
 	var options = goog.isDef(opt_options) ? opt_options : {};
 	goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
 	this.layersAttributions = goog.isDef(options.layersAttributions) ? options.layersAttributions : {};
+	this.layersOrder = goog.isDef(options.layersOrder) ? options.layersOrder : {};
 	var legendUrlParams = {
 		'SERVICE': 'WMS',
 		'VERSION': '1.1.1',
@@ -121,16 +122,15 @@ ol.source.WebgisImageWMS = function(opt_options) {
 goog.inherits(ol.source.WebgisImageWMS, ol.source.ImageWMS);
 
 ol.source.WebgisImageWMS.prototype.setVisibleLayers = function(layers) {
-	if (layers == this.visibleLayers) {
-		return;
-	}
-	this.visibleLayers = layers;
-	var layers_names = [].concat(layers).reverse().join(",");
+	var ordered_layers = [].concat(layers);
+	ordered_layers.sort(function(l2, l1) {
+		return this.layersOrder[l1]-this.layersOrder[l2];
+	}.bind(this));
 	// update attributions
 	if (this.layersAttributions) {
 		var attributions = [];
 		var attributions_html = [];
-		layers.forEach(function(layername) {
+		ordered_layers.forEach(function(layername) {
 			var attribution = this.layersAttributions[layername];
 			if (attribution && attributions_html.indexOf(attribution.getHTML()) == -1) {
 				attributions.push(attribution);
@@ -139,7 +139,8 @@ ol.source.WebgisImageWMS.prototype.setVisibleLayers = function(layers) {
 		}, this);
 		this.setAttributions(attributions);
 	}
-	this.updateParams({LAYERS: layers_names});
+	this.updateParams({LAYERS: ordered_layers.join(",")});
+	this.visibleLayers = ordered_layers;
 };
 
 ol.source.WebgisImageWMS.prototype.getVisibleLayers = function() {

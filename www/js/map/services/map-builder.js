@@ -82,11 +82,13 @@
 				var layers_data = this.layersTreeToList({layers: config.layers}, true);
 				var visible_layers = [];
 				var attributions = {};
+				var layers_order = {};
 				layers_data.forEach(function(layer_config) {
 					//console.log(layer_config);
 					if (layer_config.visible) {
 						visible_layers.push(layer_config.name);
 					}
+					layers_order[layer_config.name] = layer_config.drawing_order;
 					var attribution = layer_config.attribution;
 					if (attribution) {
 						var attribution_html;
@@ -112,6 +114,7 @@
 							}),
 							visibleLayers: visible_layers,
 							layersAttributions: attributions,
+							layersOrder: layers_order,
 							//tilePixelRatio: 1.325
 						}),
 						extent: config.project_extent,
@@ -122,6 +125,7 @@
 							url: config.ows_url,
 							visibleLayers: visible_layers,
 							layersAttributions: attributions,
+							layersOrder: layers_order,
 							params: {
 								'FORMAT': 'image/png',
 							},
