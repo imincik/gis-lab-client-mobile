@@ -213,7 +213,11 @@
 			});
 
 			$scope.updateScreenSize();
-			$scope.loginAndLoadProject($scope.$storage.mapState);
+			if ($scope.$storage.mapState && $scope.$storage.mapState.project === $scope.$storage.project) {
+				$scope.loginAndLoadProject($scope.$storage.mapState);
+			} else {
+				$scope.loginAndLoadProject();
+			}
 			//$scope.app.wizard.dialog.show();
 		});
 
@@ -390,13 +394,15 @@
 		$scope.saveMapState = function() {
 			var map = projectProvider.map;
 			if (map) {
+				var baseLayer = layersControl.getVisibleBaseLayer(map);
 				$scope.$apply(function() {
 					$scope.$storage.mapState = {
+						project: $scope.$storage.project,
 						center: map.getView().getCenter(),
 						zoom: map.getView().getZoom(),
 						rotation: map.getView().getRotation(),
 						visibleLayers: layersControl.getVisibleLayers(map),
-						baseLayer: layersControl.getVisibleBaseLayer(map).get('name')
+						baseLayer: baseLayer? baseLayer.get('name') : ''
 					};
 				});
 			}
