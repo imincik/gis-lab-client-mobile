@@ -74,14 +74,17 @@
 			layersControl.setVisibleLayers(projectProvider.map, visible_layers);
 		};
 
+		$scope.baseLayers = projectProvider.baseLayers;
 		$scope.layers = projectProvider.layers;
-		$scope.layers.list.forEach(function(layer_data) {
+		$scope.layers.list.concat($scope.baseLayers.list).forEach(function(layer_data) {
 			if (!layer_data.isGroup) {
-				if (!angular.isDefined(layer_data.visibility_scale_max)) {
-					layer_data.visibility_scale_max = 'TODO';
-				}
-				if (!angular.isDefined(layer_data.visibility_scale_min)) {
-					layer_data.visibility_scale_min = 'TODO';
+				if (projectProvider.config.scales) {
+					if (!angular.isDefined(layer_data.visibility_scale_max)) {
+						layer_data.visibility_scale_max = projectProvider.config.scales[0];
+					}
+					if (!angular.isDefined(layer_data.visibility_scale_min)) {
+						layer_data.visibility_scale_min = projectProvider.config.scales[projectProvider.config.scales.length-1];
+					}
 				}
 			}
 		});
@@ -120,16 +123,15 @@
 			{title: 'I1'},
 			{title: 'I2'},
 		];
+		//$scope.baseLayers.tree = test_base_layers;
 
 		/* share the same reference to selected base layer in every node of tree model */
 		var selectedBaseLayer = {}
-		projectProvider.baseLayers.list.forEach(function(base_layer) {
+		$scope.baseLayers.list.forEach(function(base_layer) {
 			base_layer.selected = selectedBaseLayer;
 			if (base_layer.visible) {
 				selectedBaseLayer.name = base_layer.name;
 			}
 		});
-		$scope.baseLayers = projectProvider.baseLayers;
-		//$scope.baseLayers.tree = test_base_layers;
 	};
 })();
