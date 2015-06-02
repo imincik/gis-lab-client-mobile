@@ -32,7 +32,15 @@
 		};
 
 		LayersControl.prototype.setVisibleLayers = function(map, visibleLayers) {
-			map.getLayer('qgislayer').getSource().setVisibleLayers(visibleLayers);
+			var layer = map.getLayer('qgislayer');
+			if (visibleLayers.length) {
+				if (!layer.getVisible()) {
+					layer.setVisible(true);
+				}
+			} else {
+				layer.setVisible(false);
+			}
+			layer.getSource().setVisibleLayers(visibleLayers);
 		};
 
 		LayersControl.prototype.getVisibleLayers = function(map) {
