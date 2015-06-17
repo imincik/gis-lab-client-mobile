@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.gislab.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>GIS.lab client</name>
+    <name>GIS.lab Mobile</name>
     <project name="GIS.lab.client" />
     <description>
-        GIS.lab mobile client.
+        GIS.lab Mobile client.
     </description>
     <author email="dancakm@gmail.com">
         Marcel Dancák
