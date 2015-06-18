@@ -12,10 +12,6 @@ sudo apt-get install openjdk-7-jdk
 Android SDK
 ===========
 
-For 64bit OS only (to make adb work):
--------------------------------------
-sudo apt-get install libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386 ia32-libs
-
 
 wget http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz
 tar zxvf android-sdk_r24.1.2-linux.tgz
@@ -27,29 +23,23 @@ export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 # Install:
 # * Android SDK Platform-tools
 # * Android SDK Build-tools
-# * SDK Platform Android 4.4.2, API 19
+# * SDK Platform Android 5.1.1, API 22
 
 # To show list of available packages: android list sdk --all
 
 
-( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --all --filter platform-tools,build-tools-22.0.1,android-19
+( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --all --filter platform-tools,build-tools-22.0.1,android-22
 
 
-Install NPM package manager, Node.js, Cordova
+Install Node.js, NPM package manager, Cordova
 =============================================
 
-virtualenv android-build
-source android-build/bin/activate
-mkdir android-build/npm
-cd android-build/npm
-wget http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz
-tar zxvf node-v0.10.32.tar.gz
-cd node-v0.10.32
-./configure --prefix=$VIRTUAL_ENV
-make install
+wget http://nodejs.org/dist/v0.10.32/node-v0.10.32-linux-x86.tar.gz
+tar zxvf node-v0.10.32-linux-x86.tar.gz
 
-npm install -g cordova@4.2.0
-(npm install -g <tarball url>)
+sudo ln -s $PWD/node-v0.10.32-linux-x86/bin/node /usr/local/bin/node
+sudo ln -s $PWD/node-v0.10.32-linux-x86/bin/npm /usr/local/bin/npm
+sudo npm install -g cordova@5.1.1
 
 
 Install Ant
@@ -68,5 +58,4 @@ cordova platform add android
 # Install required Cordova plugins (from package.json)
 node tasks/plugins.js
 
-cordova build android
-
+ANDROID_BUILD=ant cordova build android
